@@ -73,20 +73,20 @@ async function runTests() {
     const tableNames = tables.map((t: any) => t.table_name);
     logResult('Table Count', 'PASS', `Found ${tableNames.length} tables in database`, tableNames);
 
-    // Expected tables based on our 12 entities
+    // Expected tables based on our 12 entities (TypeORM creates plural names)
     const expectedTables = [
-      'user',
-      'client',
-      'site',
-      'contract',
-      'zone',
-      'zone_assignment',
-      'zone_assignment_history',
-      'intervention',
-      'schedule',
-      'checklist_template',
-      'checklist_instance',
-      'checklist_item',
+      'users',
+      'clients',
+      'sites',
+      'contracts',
+      'zones',
+      'site_assignments',
+      'agent_zone_assignments',
+      'interventions',
+      'schedules',
+      'checklist_templates',
+      'checklist_instances',
+      'checklist_items',
     ];
 
     const missingTables = expectedTables.filter(t => !tableNames.includes(t));
@@ -157,7 +157,7 @@ async function runTests() {
       // CREATE
       const testEmail = `test-${Date.now()}@nettoyageplus.com`;
       const insertResult = await dataSource.query(`
-        INSERT INTO "user" (email, password, "firstName", "lastName", phone, role, status)
+        INSERT INTO "users" (email, password, "firstName", "lastName", phone, role, status)
         VALUES ($1, $2, $3, $4, $5, $6, $7)
         RETURNING id, email, "firstName", "lastName", role;
       `, [testEmail, 'hashed_password', 'Test', 'User', '12345678', 'AGENT', 'ACTIVE']);
@@ -166,17 +166,17 @@ async function runTests() {
       logResult('CREATE Operation', 'PASS', 'User created successfully', insertResult[0]);
 
       // READ
-      const readResult = await dataSource.query(`SELECT * FROM "user" WHERE id = $1;`, [userId]);
+      const readResult = await dataSource.query(`SELECT * FROM "users" WHERE id = $1;`, [userId]);
       logResult('READ Operation', 'PASS', 'User retrieved successfully', readResult[0]);
 
       // UPDATE
-      await dataSource.query(`UPDATE "user" SET "lastName" = $1 WHERE id = $2;`, ['UpdatedUser', userId]);
-      const afterUpdate = await dataSource.query(`SELECT "lastName" FROM "user" WHERE id = $1;`, [userId]);
+      await dataSource.query(`UPDATE "users" SET "lastName" = $1 WHERE id = $2;`, ['UpdatedUser', userId]);
+      const afterUpdate = await dataSource.query(`SELECT "lastName" FROM "users" WHERE id = $1;`, [userId]);
       logResult('UPDATE Operation', 'PASS', 'User updated successfully', afterUpdate[0]);
 
       // DELETE
-      await dataSource.query(`DELETE FROM "user" WHERE id = $1;`, [userId]);
-      const afterDelete = await dataSource.query(`SELECT * FROM "user" WHERE id = $1;`, [userId]);
+      await dataSource.query(`DELETE FROM "users" WHERE id = $1;`, [userId]);
+      const afterDelete = await dataSource.query(`SELECT * FROM "users" WHERE id = $1;`, [userId]);
       if (afterDelete.length === 0) {
         logResult('DELETE Operation', 'PASS', 'User deleted successfully');
       } else {
@@ -202,11 +202,11 @@ async function runTests() {
       logResult('Record Counts', 'PASS', 'Successfully counted records in all tables', counts);
 
       // Test a JOIN query (if data exists)
-      if (tableNames.includes('contract') && tableNames.includes('client')) {
+      if (tableNames.includes('contracts') && tableNames.includes('clients')) {
         const joinResult = await dataSource.query(`
           SELECT c.id, c."contractCode", cl.name as client_name
-          FROM contract c
-          LEFT JOIN client cl ON c."clientId" = cl.id
+          FROM contracts c
+          LEFT JOIN clients cl ON c."clientId" = cl.id
           LIMIT 5;
         `);
         logResult('JOIN Query', 'PASS', `Retrieved ${joinResult.length} contracts with client info`);

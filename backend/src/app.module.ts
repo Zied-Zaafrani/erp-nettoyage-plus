@@ -15,6 +15,8 @@ import { ZonesModule } from './modules/zones/zones.module';
 import { InterventionsModule } from './modules/interventions/interventions.module';
 import { SchedulesModule } from './modules/schedules/schedules.module';
 import { ChecklistsModule } from './modules/checklists/checklists.module';
+import { AbsencesModule } from './modules/absences/absences.module';
+import { DashboardModule } from './modules/dashboard/dashboard.module';
 import { JwtAuthGuard } from './common/guards';
 
 @Module({
@@ -33,6 +35,8 @@ import { JwtAuthGuard } from './common/guards';
     InterventionsModule,
     SchedulesModule,
     ChecklistsModule,
+    AbsencesModule,
+    DashboardModule,
   ],
   controllers: [AppController],
   providers: [

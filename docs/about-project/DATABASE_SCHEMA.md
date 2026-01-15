@@ -1,30 +1,31 @@
 # Database Schema - Nettoyage Plus
 
-**Last Updated:** January 15, 2026
+**Last Updated:** January 15, 2026  
+**Status:** All 13 entities implemented and synced with code
 
 ---
 
-## Core Entities
+## Implemented Core Entities (✅ Complete)
 
 ### Users
 - id (UUID, PK)
-- email, password_hash
+- email (unique), password (bcrypt hashed)
 - firstName, lastName, phone
 - role (enum: SUPER_ADMIN, DIRECTOR, ASSISTANT, SECTOR_CHIEF, ZONE_CHIEF, TEAM_CHIEF, AGENT, QUALITY_CONTROLLER, ACCOUNTANT, CLIENT)
 - status (enum: ACTIVE, SUSPENDED, ARCHIVED)
 - emailVerified (boolean, default: false)
-- emailVerifiedAt (nullable)
-- failedLoginAttempts (default: 0)
-- lastFailedLoginAt (nullable)
-- lastLoginAt (nullable)
-- createdAt, updatedAt, deletedAt
+- emailVerifiedAt (DateTime, nullable)
+- failedLoginAttempts (integer, default: 0)
+- lastFailedLoginAt (DateTime, nullable)
+- lastLoginAt (DateTime, nullable)
+- createdAt, updatedAt, deletedAt (soft delete)
 
 ### Clients
 - id (UUID, PK)
 - clientCode (unique, auto-generated: CLI-0001, CLI-0002, etc.)
 - name, type (enum: INDIVIDUAL, COMPANY, MULTI_SITE)
-- userId (FK → Users, nullable) - for client portal login
-- contact (email, phone, address, city, postalCode, country)
+- userId (FK → Users, nullable, SET NULL on delete) - for client portal login
+- email (unique, nullable), phone, address, city, postalCode, country
 - contactPerson, contactPhone - secondary contact
 - notes (text)
 - status (enum: PROSPECT, ACTIVE, SUSPENDED, TERMINATED)
@@ -43,61 +44,147 @@
 
 ### Contracts
 - id (UUID, PK)
-- clientId (FK → Clients)
-- siteId (FK → Sites)
+- contractCode (unique, auto-generated: CNT-0001, CNT-0002, etc.)
+- clientId (FK → Clients, RESTRICT on delete)
+- siteId (FK → Sites, RESTRICT on delete)
 - type (enum: PERMANENT, ONE_TIME)
-- start_date, end_date
-- frequency (for permanent: DAILY, WEEKLY, etc.)
-- status (enum: ACTIVE, SUSPENDED, COMPLETED)
-- createdAt, updatedAt, deletedAt
-
-### Interventions
-- id (UUID, PK)
-- contractId (FK → Contracts)
-- siteId (FK → Sites)
-- type (enum: RECURRING, ONE_TIME)
-- scheduled_date, completed_date
-- status (enum: PLANNED, IN_PROGRESS, COMPLETED, CANCELLED)
-- createdAt, updatedAt, deletedAt
-
-### Employees
-- id (UUID, PK)
-- userId (FK → Users)
-- personal_info (name, ID card, contract_type)
-- zoneId (FK → Zones)
-- status (enum: ACTIVE, ABSENT, ON_LEAVE)
+- frequency (enum: DAILY, WEEKLY, BIWEEKLY, MONTHLY, QUARTERLY, CUSTOM - required for PERMANENT)
+- startDate, endDate (Date, endDate nullable for indefinite)
+- status (enum: DRAFT, ACTIVE, SUSPENDED, COMPLETED, TERMINATED)
+- pricing (JSONB: hourly rate, monthly fee, etc.)
+- serviceScope (JSONB: tasks, zones, schedules)
+- notes (text)
 - createdAt, updatedAt, deletedAt
 
 ### Zones
 - id (UUID, PK)
-- name (zone_1, zone_2, etc.)
-- chiefId (FK → Employees) - Zone Chief
+- zoneName (string, e.g., "Zone Nord", "Zone Sud")
+- zoneCode (unique, e.g., "Z1", "Z2")
+- zoneChiefId (FK → Users, nullable, role: ZONE_CHIEF)
+- status (enum: ACTIVE, INACTIVE, REORGANIZING)
+- description (text)
 - createdAt, updatedAt, deletedAt
+
+### SiteAssignment
+- id (UUID, PK)
+- siteId (FK → Sites, CASCADE on delete)
+- zoneId (FK → Zones, CASCADE on delete)
+- assignedAt (DateTime)
+- unassignedAt (DateTime, nullable)
+- isActive (boolean)
+- createdAt, updatedAt
+
+### AgentZoneAssignment
+- id (UUID, PK)
+- userId (FK → Users, CASCADE on delete)
+- zoneId (FK → Zones, CASCADE on delete)
+- role (enum: ZONE_CHIEF, TEAM_CHIEF, AGENT)
+- assignedAt (DateTime)
+- unassignedAt (DateTime, nullable)
+- isActive (boolean)
+- createdAt, updatedAt
+
+### Schedules
+- id (UUID, PK)
+- contractId (FK → Contracts, RESTRICT on delete)
+- siteId (FK → Sites, RESTRICT on delete)
+- zoneId (FK → Zones, SET NULL on delete, nullable)
+- recurrencePattern (enum: DAILY, WEEKLY, BIWEEKLY, MONTHLY, QUARTERLY, CUSTOM)
+- daysOfWeek (integer[], nullable, for WEEKLY: 0=Sunday, 1=Monday, etc.)
+- dayOfMonth (integer, nullable, for MONTHLY: 1-31)
+- startTime, endTime (Time, HH:MM format)
+- status (enum: ACTIVE, PAUSED, EXPIRED)
+- validFrom, validUntil (Date, validUntil nullable)
+- defaultZoneChiefId, defaultTeamChiefId (UUID, nullable)
+- defaultAgentIds (UUID[], nullable)
+- generatedInterventionIds (string[], tracks generated interventions)
+- exceptionDates (string[], ISO date strings to skip)
+- notes (text)
+- createdAt, updatedAt, deletedAt
+
+### Interventions
+- id (UUID, PK)
+- interventionCode (unique, auto-generated: INT-0001, INT-0002, etc.)
+- contractId (FK → Contracts, RESTRICT on delete)
+- siteId (FK → Sites, RESTRICT on delete)
+- scheduledDate (Date)
+- scheduledStartTime, scheduledEndTime (Time, HH:MM format)
+- actualStartTime, actualEndTime (DateTime, nullable)
+- status (enum: SCHEDULED, IN_PROGRESS, COMPLETED, CANCELLED, RESCHEDULED)
+- assignedZoneChiefId (FK → Users, nullable, role: ZONE_CHIEF)
+- assignedTeamChiefId (FK → Users, nullable, role: TEAM_CHIEF)
+- assignedAgentIds (UUID[], array of agent IDs)
+- checklistTemplateId (UUID, nullable)
+- checklistCompleted (boolean, default: false)
+- gpsCheckInLat, gpsCheckInLng (decimal(10,7), nullable)
+- gpsCheckInTime (DateTime, nullable)
+- gpsCheckOutLat, gpsCheckOutLng (decimal(10,7), nullable)
+- gpsCheckOutTime (DateTime, nullable)
+- photoUrls (string[], array of image URLs)
+- qualityScore (integer, 1-5, nullable, from Zone Chief)
+- clientRating (integer, 1-5, nullable)
+- clientFeedback (text, nullable)
+- incidents (text, nullable)
+- notes (text)
+- createdAt, updatedAt, deletedAt
+
+### ChecklistTemplate
+- id (UUID, PK)
+- name (string, e.g., "Checklist Quotidienne")
+- description (text)
+- frequency (enum: DAILY, WEEKLY, MONTHLY, QUARTERLY)
+- siteSize (enum: SMALL, MEDIUM, LARGE, nullable - applies to all if null)
+- zones (JSON: array of {zoneName: string, tasks: string[]})
+- isActive (boolean, default: true)
+- createdAt, updatedAt, deletedAt
+
+### ChecklistInstance
+- id (UUID, PK)
+- interventionId (FK → Interventions, CASCADE on delete)
+- templateId (FK → ChecklistTemplates, RESTRICT on delete)
+- status (enum: NOT_STARTED, IN_PROGRESS, COMPLETED)
+- startedAt, completedAt (DateTime, nullable)
+- completionPercentage (integer, 0-100, auto-calculated)
+- qualityScore (integer, 1-5, nullable, from Zone Chief review)
+- reviewedBy (FK → Users, nullable)
+- reviewNotes (text, nullable)
+- createdAt, updatedAt
+
+### ChecklistItem
+- id (UUID, PK)
+- checklistInstanceId (FK → ChecklistInstances, CASCADE on delete)
+- zoneName (string, e.g., "Bureau 1", "Sanitaire 2")
+- taskDescription (text)
+- isCompleted (boolean, default: false)
+- completedAt (DateTime, nullable)
+- completedBy (FK → Users, nullable)
+- notes (text, nullable)
+- createdAt, updatedAt
+
+### Absences
+- id (UUID, PK)
+- agentId (FK → Users, CASCADE on delete)
+- absenceType (enum: VACATION, SICK_LEAVE, UNPAID, AUTHORIZED, UNAUTHORIZED)
+- startDate, endDate (Date range)
+- totalDays (integer, working days, auto-calculated, excludes weekends)
+- reason (text, agent's explanation)
+- status (enum: PENDING, APPROVED, REJECTED, CANCELLED)
+- requestedAt (DateTime, when request submitted)
+- reviewedBy (FK → Users, nullable, Zone Chief or supervisor)
+- reviewedAt (DateTime, nullable)
+- reviewNotes (text, nullable, approval/rejection reason)
+- attachmentUrl (varchar(500), nullable, medical certificate, etc.)
+- createdAt, updatedAt, deletedAt
+
+**Business Rules:**
+- VACATION days: 25 allocated per year (French law)
+- Working days exclude weekends (Saturday, Sunday)
+- Cannot overlap with existing approved absences
+- Only ZONE_CHIEF and above can approve/reject
 
 ---
 
-## Operations
-
-### Assignments
-- id (UUID, PK)
-- interventionId (FK → Interventions)
-- employeeId (FK → Employees)
-- role (enum: CHIEF, AGENT)
-- createdAt, updatedAt, deletedAt
-
-### Attendance
-- id (UUID, PK)
-- employeeId (FK → Employees)
-- siteId (FK → Sites)
-- check_in_time, check_out_time
-- gps_location (lat, lng)
-- photo_url
-- date
-- createdAt
-
-### CheckLists
-- id (UUID, PK)
-- interventionId (FK → Interventions)
+## Future Entities (Not Yet Implemented)
 - template_type (enum: DAILY, WEEKLY, MONTHLY, QUARTERLY)
 - tasks (JSON: [{task, done, remarks}])
 - completed_by (FK → Employees)
@@ -202,6 +289,32 @@
 - rating (1-5), feedback
 - submitted_at
 - createdAt
+
+---
+
+## Employee Management
+
+### Absences
+- id (UUID, PK)
+- agentId (FK → Users)
+- absenceType (enum: VACATION, SICK_LEAVE, UNPAID, AUTHORIZED, UNAUTHORIZED)
+- startDate, endDate (Date range)
+- totalDays (integer - working days, auto-calculated, excludes weekends)
+- reason (text - agent's explanation)
+- status (enum: PENDING, APPROVED, REJECTED, CANCELLED)
+- requestedAt (DateTime - when request submitted)
+- reviewedBy (FK → Users, nullable - Zone Chief or supervisor)
+- reviewedAt (DateTime, nullable)
+- reviewNotes (text, nullable - approval/rejection reason)
+- attachmentUrl (varchar(500), nullable - medical certificate, etc.)
+- createdAt, updatedAt, deletedAt
+
+**Business Rules:**
+- VACATION days: 25 allocated per year (French law)
+- Working days exclude weekends (Saturday, Sunday)
+- Cannot overlap with existing approved absences
+- Only ZONE_CHIEF and above can approve/reject
+- Agents can cancel before start date
 
 ---
 

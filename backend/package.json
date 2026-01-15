@@ -12,7 +12,12 @@
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
-    "format": "prettier --write \"src/**/*.ts\""
+    "format": "prettier --write \"src/**/*.ts\"",
+    "test:db": "ts-node test-database.ts",
+    "test:api": "ts-node test-api-endpoints.ts",
+    "test:validation": "ts-node test-validation.ts",
+    "test:all": "npm run test:db && npm run test:validation",
+    "db:clean": "ts-node clean-database.ts"
   },
   "dependencies": {
     "@nestjs/common": "^10.3.0",
@@ -39,11 +44,12 @@
     "@nestjs/schematics": "^10.0.3",
     "@types/bcrypt": "^5.0.2",
     "@types/express": "^4.17.21",
-    "@types/node": "^20.10.6",
+    "@types/node": "^20.19.30",
     "@types/passport-jwt": "^4.0.0",
     "@types/passport-local": "^1.0.38",
     "@typescript-eslint/eslint-plugin": "^6.15.0",
     "@typescript-eslint/parser": "^6.15.0",
+    "axios": "^1.13.2",
     "eslint": "^8.56.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.1.0",
