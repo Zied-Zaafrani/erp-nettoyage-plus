@@ -7,6 +7,14 @@ import { AppService } from './app.service';
 import configuration from './config/configuration';
 import { getDatabaseConfig } from './config/database.config';
 import { AuthModule } from './modules/auth/auth.module';
+import { UsersModule } from './modules/users/users.module';
+import { ClientsModule } from './modules/clients/clients.module';
+import { SitesModule } from './modules/sites/sites.module';
+import { ContractsModule } from './modules/contracts/contracts.module';
+import { ZonesModule } from './modules/zones/zones.module';
+import { InterventionsModule } from './modules/interventions/interventions.module';
+import { SchedulesModule } from './modules/schedules/schedules.module';
+import { ChecklistsModule } from './modules/checklists/checklists.module';
 import { JwtAuthGuard } from './common/guards';
 
 @Module({
@@ -17,6 +25,14 @@ import { JwtAuthGuard } from './common/guards';
     }),
     TypeOrmModule.forRoot(getDatabaseConfig()),
     AuthModule,
+    UsersModule,
+    ClientsModule,
+    SitesModule,
+    ContractsModule,
+    ZonesModule,
+    InterventionsModule,
+    SchedulesModule,
+    ChecklistsModule,
   ],
   controllers: [AppController],
   providers: [

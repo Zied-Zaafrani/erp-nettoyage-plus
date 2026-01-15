@@ -1,111 +1,64 @@
 # Users Module
 
-## Purpose
-Defines the User entity and user-related types for the Nettoyage Plus system. This module provides the database schema for user accounts.
+## What This Module Does
 
-> **Note:** This module currently only contains the entity definition. Full CRUD operations will be added when the Users management feature is built.
+Manages all employee and staff accounts in the Nettoyage Plus system. Each user account represents someone who works for or with the company.
 
-## Entities
+## Key Features
 
-### User Entity
+**User Information Stored:**
+- Personal details: Email, first name, last name, phone
+- Account role: Determines job function and system permissions
+- Account status: Active, Suspended, or Archived
+- Login tracking: When user last logged in
 
-| Field | Type | Description |
-|-------|------|-------------|
-| id | UUID | Primary key (auto-generated) |
-| email | string | Unique email address (stored lowercase) |
-| password | string | Bcrypt hashed password |
-| firstName | string | User's first name (optional) |
-| lastName | string | User's last name (optional) |
-| role | UserRole | User's role in the system |
-| status | UserStatus | Account status |
-| phone | string | Phone number (optional) |
-| lastLoginAt | Date | Timestamp of last login (optional) |
-| createdAt | Date | When account was created |
-| updatedAt | Date | When account was last modified |
-| deletedAt | Date | Soft delete timestamp (null if not deleted) |
+**Available Roles:**
+- Super Admin: Full system control
+- Director: Company leadership
+- Assistant: Administrative support
+- Sector Chief: Regional management
+- Zone Chief: Area supervisors
+- Team Chief: Team leaders
+- Agent: Cleaning staff
+- Accountant: Financial operations
+- Quality Controller: Service quality oversight
+- Client: Customer portal access
 
-### User Roles
-```typescript
-enum UserRole {
-  ADMIN = 'ADMIN',
-  SUPERVISOR = 'SUPERVISOR',
-  ZONE_CHIEF = 'ZONE_CHIEF',
-  TEAM_CHIEF = 'TEAM_CHIEF',
-  AGENT = 'AGENT',
-  ACCOUNTANT = 'ACCOUNTANT',
-  QUALITY_CONTROLLER = 'QUALITY_CONTROLLER',
-  CLIENT = 'CLIENT',
-}
-```
+**What You Can Do:**
+- Create user accounts individually or in bulk
+- Search users by email, phone, role, or status
+- Update user details and change roles
+- Suspend or archive accounts (soft delete - can be restored)
+- View user activity and login history
 
-### User Status
-```typescript
-enum UserStatus {
-  ACTIVE = 'ACTIVE',
-  SUSPENDED = 'SUSPENDED',
-  ARCHIVED = 'ARCHIVED',
-}
-```
+**Business Rules:**
+- Email addresses must be unique
+- Passwords must be at least 18 characters
+- Users default to Agent role if not specified
+- Deleted users can be restored if needed
 
-## Database Table
-Table name: `users`
+## Available Functions
 
-**Indexes:**
-- Primary key on `id`
-- Unique constraint on `email`
+**create()** - Creates a new user account with hashed password
 
-**Soft Delete:**
-- Uses `deletedAt` column
-- Soft-deleted users excluded from normal queries
+**createBatch()** - Creates multiple users at once, returns successes and errors
 
-## Usage
+**findAll()** - Lists all users with pagination, filtering by role/status, and search
 
-### Import the Entity
-```typescript
-import { User } from '../users/entities/user.entity';
-```
+**findOne()** - Finds a single user by ID, email, or phone
 
-### Import Types
-```typescript
-import { UserRole, UserStatus } from '../../shared/types/user.types';
-```
+**findById()** - Gets a specific user by their unique ID
 
-### Password Handling
-Password is automatically hashed before insert/update:
-```typescript
-const user = new User();
-user.email = 'test@example.com';
-user.password = 'plaintext'; // Will be hashed automatically
-await userRepository.save(user);
-```
+**update()** - Updates user information (email changes checked for uniqueness)
 
-### Validate Password
-```typescript
-const isValid = await user.validatePassword('plaintext');
-```
+**updateBatch()** - Updates multiple users at once
 
-## Dependencies
-- `typeorm` - ORM for database operations
-- `bcrypt` - Password hashing
+**remove()** - Soft deletes a user (can be restored later)
 
-## Files
-```
-users/
-├── entities/
-│   └── user.entity.ts
-└── README.md
-```
+**removeBatch()** - Soft deletes multiple users at once
 
-## Future Endpoints (To Be Built)
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/api/users` | List all users (with pagination) |
-| GET | `/api/users/:id` | Get user by ID |
-| GET | `/api/users/search` | Search users by criteria |
-| POST | `/api/users` | Create new user (admin) |
-| PATCH | `/api/users/:id` | Update user |
-| DELETE | `/api/users/:id` | Soft delete user |
-| POST | `/api/users/:id/restore` | Restore soft-deleted user |
+**restore()** - Restores a previously deleted user
 
----
-**Last Updated:** December 27, 2025
+**restoreBatch()** - Restores multiple deleted users at once
+
+**sanitizeUser()** - Internal function that removes password from responses

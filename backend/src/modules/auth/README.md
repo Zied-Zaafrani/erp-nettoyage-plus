@@ -1,144 +1,41 @@
-# Auth Module
+# Authentication Module
 
-## Purpose
-Handles user authentication and authorization for the Nettoyage Plus API. Provides JWT-based authentication with role-based access control.
+## What This Module Does
 
-## Entities
-This module uses the `User` entity from `/modules/users/entities/user.entity.ts`.
+Controls who can access the Nettoyage Plus system. This module verifies user identities and ensures only authorized people can perform actions.
 
-## Endpoints
+## Key Features
 
-| Method | Endpoint | Auth | Description |
-|--------|----------|------|-------------|
-| POST | `/api/auth/register` | Public | Register a new user account |
-| POST | `/api/auth/login` | Public | Login with email and password |
-| GET | `/api/auth/me` | Protected | Get current authenticated user |
+**User Registration:**
+- Create new user accounts with email and password
+- Password is securely encrypted and stored
+- Each user is assigned a role (determines what they can do)
 
-### POST /api/auth/register
+**User Login:**
+- Users log in with email and password
+- System generates a secure token (like a digital key)
+- Token is used to access protected parts of the system
+- Tokens expire after 7 days for security
 
-**Request Body:**
-```json
-{
-  "email": "user@example.com",
-  "password": "password123",
-  "firstName": "John",
-  "lastName": "Doe",
-  "phone": "+1234567890",
-  "role": "AGENT"
-}
-```
+**Access Control:**
+- Different roles have different permissions
+- Some features require specific roles (e.g., only admins can delete users)
+- System automatically checks permissions on every action
 
-**Response (201):**
-```json
-{
-  "user": {
-    "id": "uuid",
-    "email": "user@example.com",
-    "firstName": "John",
-    "lastName": "Doe",
-    "role": "AGENT",
-    "status": "ACTIVE",
-    "createdAt": "2025-12-27T12:00:00.000Z"
-  },
-  "accessToken": "eyJhbGciOiJIUzI1NiIs..."
-}
-```
+**Security Features:**
+- Passwords are never stored in plain text
+- Tracks last login time
+- Prepared for future features: email verification, failed login tracking, account lockout
 
-### POST /api/auth/login
+## Available Functions
 
-**Request Body:**
-```json
-{
-  "email": "user@example.com",
-  "password": "password123"
-}
-```
+**register()** - Creates a new user account, hashes password, generates JWT token
 
-**Response (200):**
-```json
-{
-  "user": { ... },
-  "accessToken": "eyJhbGciOiJIUzI1NiIs..."
-}
-```
+**login()** - Validates credentials, updates last login time, returns JWT token
 
-### GET /api/auth/me
+**validateUser()** - Verifies email and password match, returns user if valid
 
-**Headers:**
-```
-Authorization: Bearer <accessToken>
-```
-
-**Response (200):**
-```json
-{
-  "user": {
-    "id": "uuid",
-    "email": "user@example.com",
-    "role": "AGENT",
-    "firstName": "John",
-    "lastName": "Doe"
-  }
-}
-```
-
-## Usage
-
-### Protecting Routes
-All routes are protected by default (global JwtAuthGuard). To make a route public:
-
-```typescript
-import { Public } from '../../common/decorators';
-
-@Public()
-@Get('public-endpoint')
-async publicEndpoint() { ... }
-```
-
-### Restricting to Specific Roles
-```typescript
-import { Roles } from '../../common/decorators';
-import { UserRole } from '../../shared/types/user.types';
-
-@Roles(UserRole.ADMIN, UserRole.SUPERVISOR)
-@Get('admin-only')
-async adminEndpoint() { ... }
-```
-
-### Getting Current User
-```typescript
-import { CurrentUser } from '../../common/decorators';
-
-@Get('profile')
-async getProfile(@CurrentUser() user: any) {
-  return user;
-}
-
-// Or get specific field
-@Get('my-id')
-async getMyId(@CurrentUser('id') userId: string) {
-  return { userId };
-}
-```
-
-## Dependencies
-- `@nestjs/jwt` - JWT token generation
-- `@nestjs/passport` - Passport integration
-- `passport-jwt` - JWT strategy
-- `bcrypt` - Password hashing
-- `class-validator` - DTO validation
-
-## Configuration
-Environment variables required:
-- `JWT_SECRET` - Secret key for signing tokens
-- `JWT_EXPIRATION` - Token expiration time (default: 7d)
-
-## Notes
-- Passwords are hashed using bcrypt (10 rounds)
-- Tokens include user ID, email, and role in payload
-- Soft-deleted or suspended users cannot login
-- Email is stored lowercase and must be unique
-- Default role for new users is AGENT
+**generateToken()** - Creates a secure JWT token containing user ID, email, and role
 
 ## Files
 ```
@@ -154,6 +51,3 @@ auth/
 ├── auth.service.ts
 └── README.md
 ```
-
----
-**Last Updated:** December 27, 2025
