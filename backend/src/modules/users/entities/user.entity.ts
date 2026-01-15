@@ -8,24 +8,27 @@ import {
   BeforeInsert,
   BeforeUpdate,
 } from 'typeorm';
-import * as bcrypt from 'bcrypt';
 import { UserRole, UserStatus } from '../../../shared/types/user.types';
+import {
+  ensurePasswordHashed,
+  validatePassword as validatePwd,
+} from '../../../shared/utils/password.util';
 
 @Entity('users')
 export class User {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ unique: true })
+  @Column({ type: 'varchar', length: 255, unique: true })
   email: string;
 
-  @Column()
+  @Column({ type: 'varchar', length: 255 })
   password: string;
 
-  @Column({ nullable: true })
+  @Column({ type: 'varchar', length: 100, nullable: true })
   firstName: string;
 
-  @Column({ nullable: true })
+  @Column({ type: 'varchar', length: 100, nullable: true })
   lastName: string;
 
   @Column({
@@ -42,10 +45,24 @@ export class User {
   })
   status: UserStatus;
 
-  @Column({ nullable: true })
+  @Column({ type: 'varchar', length: 20, nullable: true })
   phone: string;
 
-  @Column({ nullable: true })
+  // Email verification (prepared for future use)
+  @Column({ default: false })
+  emailVerified: boolean;
+
+  @Column({ type: 'timestamp', nullable: true })
+  emailVerifiedAt: Date;
+
+  // Security: track failed login attempts (for future lockout feature)
+  @Column({ default: 0 })
+  failedLoginAttempts: number;
+
+  @Column({ type: 'timestamp', nullable: true })
+  lastFailedLoginAt: Date;
+
+  @Column({ type: 'timestamp', nullable: true })
   lastLoginAt: Date;
 
   @CreateDateColumn()
@@ -57,23 +74,27 @@ export class User {
   @DeleteDateColumn()
   deletedAt: Date;
 
-  // Hash password before saving
+  // Hash password before saving (uses shared utility)
   @BeforeInsert()
   @BeforeUpdate()
   async hashPassword() {
-    // Only hash if password is being set/changed and isn't already hashed
-    if (this.password && !this.password.startsWith('$2b$')) {
-      this.password = await bcrypt.hash(this.password, 10);
+    if (this.password) {
+      this.password = await ensurePasswordHashed(this.password);
     }
   }
 
   // Validate password (used in auth)
   async validatePassword(password: string): Promise<boolean> {
-    return bcrypt.compare(password, this.password);
+    return validatePwd(password, this.password);
   }
 
   // Helper to check if user is active
   get isActive(): boolean {
     return this.status === UserStatus.ACTIVE;
+  }
+
+  // Helper to check if email is verified
+  get isEmailVerified(): boolean {
+    return this.emailVerified;
   }
 }

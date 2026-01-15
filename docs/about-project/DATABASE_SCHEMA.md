@@ -1,6 +1,6 @@
 # Database Schema - Nettoyage Plus
 
-**Last Updated:** December 27, 2025
+**Last Updated:** January 15, 2026
 
 ---
 
@@ -9,23 +9,36 @@
 ### Users
 - id (UUID, PK)
 - email, password_hash
-- role (enum: ADMIN, SUPERVISOR, ZONE_CHIEF, TEAM_CHIEF, AGENT, ACCOUNTANT, QUALITY_CONTROLLER, CLIENT)
+- firstName, lastName, phone
+- role (enum: SUPER_ADMIN, DIRECTOR, ASSISTANT, SECTOR_CHIEF, ZONE_CHIEF, TEAM_CHIEF, AGENT, QUALITY_CONTROLLER, ACCOUNTANT, CLIENT)
 - status (enum: ACTIVE, SUSPENDED, ARCHIVED)
+- emailVerified (boolean, default: false)
+- emailVerifiedAt (nullable)
+- failedLoginAttempts (default: 0)
+- lastFailedLoginAt (nullable)
+- lastLoginAt (nullable)
 - createdAt, updatedAt, deletedAt
 
 ### Clients
 - id (UUID, PK)
+- clientCode (unique, auto-generated: CLI-0001, CLI-0002, etc.)
 - name, type (enum: INDIVIDUAL, COMPANY, MULTI_SITE)
-- contact (email, phone, address)
-- status (enum: ACTIVE, SUSPENDED, TERMINATED)
+- userId (FK → Users, nullable) - for client portal login
+- contact (email, phone, address, city, postalCode, country)
+- contactPerson, contactPhone - secondary contact
+- notes (text)
+- status (enum: PROSPECT, ACTIVE, SUSPENDED, TERMINATED)
 - createdAt, updatedAt, deletedAt
 
 ### Sites
 - id (UUID, PK)
-- clientId (FK → Clients)
-- name, address, access_instructions
-- size (enum: SMALL, MEDIUM, LARGE)
-- working_hours
+- clientId (FK → Clients, CASCADE on delete)
+- name, size (enum: SMALL, MEDIUM, LARGE, default: MEDIUM)
+- address, city, postalCode, country (location details)
+- accessInstructions (text), workingHours (e.g., "Mon-Fri 8:00-17:00")
+- contactPerson, contactPhone, contactEmail (on-site contact)
+- notes (text)
+- status (enum: ACTIVE, INACTIVE, UNDER_MAINTENANCE, CLOSED, default: ACTIVE)
 - createdAt, updatedAt, deletedAt
 
 ### Contracts
