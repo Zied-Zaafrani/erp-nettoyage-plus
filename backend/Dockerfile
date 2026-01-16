@@ -3,20 +3,17 @@ FROM node:18-alpine
 
 WORKDIR /app
 
-# Copy package files first for better caching
-COPY package*.json ./
-
-# Install all dependencies
-RUN npm ci
-
-# Copy source code
+# Copy everything
 COPY . .
 
-# Build the application
-RUN npm run build
+# Install dependencies and build
+RUN npm ci && npm run build
 
-# Prune dev dependencies
-RUN npm prune --production
+# Verify build output exists
+RUN test -f dist/main.js || (echo "ERROR: dist/main.js not found!" && exit 1)
+
+# List what's in dist for debugging
+RUN ls -la dist/
 
 # Expose port
 EXPOSE 3000
