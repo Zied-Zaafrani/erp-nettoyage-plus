@@ -19,7 +19,7 @@ const createUserSchema = z.object({
   firstName: z.string().min(1, 'First name is required'),
   lastName: z.string().min(1, 'Last name is required'),
   phone: z.string().optional(),
-  role: z.enum(['SUPER_ADMIN', 'DIRECTOR', 'ASSISTANT', 'SECTOR_CHIEF', 'ZONE_CHIEF', 'TEAM_CHIEF', 'AGENT', 'QUALITY_CONTROLLER', 'ACCOUNTANT', 'CLIENT']),
+  role: z.enum(['SUPER_ADMIN', 'SUPERVISOR', 'AGENT', 'CLIENT']),
 });
 
 const updateUserSchema = z.object({
@@ -27,7 +27,7 @@ const updateUserSchema = z.object({
   firstName: z.string().min(1, 'First name is required').optional(),
   lastName: z.string().min(1, 'Last name is required').optional(),
   phone: z.string().optional(),
-  role: z.enum(['SUPER_ADMIN', 'DIRECTOR', 'ASSISTANT', 'SECTOR_CHIEF', 'ZONE_CHIEF', 'TEAM_CHIEF', 'AGENT', 'QUALITY_CONTROLLER', 'ACCOUNTANT', 'CLIENT']).optional(),
+  role: z.enum(['SUPER_ADMIN', 'SUPERVISOR', 'AGENT', 'CLIENT']).optional(),
   status: z.enum(['ACTIVE', 'SUSPENDED', 'ARCHIVED']).optional(),
 });
 

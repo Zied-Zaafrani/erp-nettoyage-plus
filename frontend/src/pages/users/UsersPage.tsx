@@ -110,8 +110,8 @@ export default function UsersPage() {
   };
 
   // Check permissions
-  const canCreate = hasRole(['SUPER_ADMIN', 'DIRECTOR']);
-  const canEdit = hasRole(['SUPER_ADMIN', 'DIRECTOR']);
+  const canCreate = hasRole(['SUPER_ADMIN', 'SUPERVISOR']);
+  const canEdit = hasRole(['SUPER_ADMIN', 'SUPERVISOR']);
   const canDelete = hasRole('SUPER_ADMIN');
 
   return (

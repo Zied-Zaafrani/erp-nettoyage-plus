@@ -167,15 +167,17 @@ export default function DashboardPage() {
             PHASE 2
           </Badge>
         </div>
-        <CardHeader
-          title={
-            <div className="flex items-center gap-2">
-              <Lock size={20} className="text-gray-400" />
-              <span>{t('dashboard.advancedReports')}</span>
+        <div className="border-b border-gray-200 px-6 py-4">
+          <div className="flex items-center justify-between">
+            <div>
+              <div className="flex items-center gap-2">
+                <Lock size={20} className="text-gray-400" />
+                <h3 className="text-lg font-semibold text-gray-900">{t('dashboard.advancedReports')}</h3>
+              </div>
+              <p className="text-sm text-gray-500 mt-1">{t('dashboard.availableInPhase2')}</p>
             </div>
-          }
-          subtitle={t('dashboard.availableInPhase2')}
-        />
+          </div>
+        </div>
         <CardContent>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             <div className="rounded-lg border border-gray-200 p-4 bg-gray-50">

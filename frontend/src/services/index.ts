@@ -24,10 +24,6 @@ import {
   CreateContractDto,
   UpdateContractDto,
   ContractFilters,
-  // Zone
-  Zone,
-  CreateZoneDto,
-  UpdateZoneDto,
   // Schedule
   Schedule,
   CreateScheduleDto,
@@ -39,11 +35,6 @@ import {
   StartInterventionDto,
   CompleteInterventionDto,
   InterventionFilters,
-  // Checklist
-  Checklist,
-  CreateChecklistDto,
-  UpdateChecklistDto,
-  UpdateChecklistItemDto,
   // Absence
   Absence,
   CreateAbsenceDto,
@@ -51,8 +42,6 @@ import {
   AbsenceFilters,
   // Dashboard
   DashboardSummary,
-  ZonePerformance,
-  RecentActivity,
   // Common
   PaginatedResponse,
   PaginationParams,
@@ -294,43 +283,6 @@ export const contractsService = {
 };
 
 // ============================================
-// ZONES SERVICE
-// ============================================
-
-export const zonesService = {
-  async getAll(params?: PaginationParams & { siteId?: string }): Promise<PaginatedResponse<Zone>> {
-    const { data } = await apiClient.get<PaginatedResponse<Zone>>(
-      `/zones${buildQueryString(params || {})}`
-    );
-    return data;
-  },
-
-  async getById(id: string): Promise<Zone> {
-    const { data } = await apiClient.get<Zone>(`/zones/${id}`);
-    return data;
-  },
-
-  async create(dto: CreateZoneDto): Promise<Zone> {
-    const { data } = await apiClient.post<Zone>('/zones', dto);
-    return data;
-  },
-
-  async update(id: string, dto: UpdateZoneDto): Promise<Zone> {
-    const { data } = await apiClient.patch<Zone>(`/zones/${id}`, dto);
-    return data;
-  },
-
-  async delete(id: string): Promise<void> {
-    await apiClient.delete(`/zones/${id}`);
-  },
-
-  async restore(id: string): Promise<Zone> {
-    const { data } = await apiClient.post<Zone>(`/zones/${id}/restore`);
-    return data;
-  },
-};
-
-// ============================================
 // SCHEDULES SERVICE
 // ============================================
 
@@ -420,51 +372,6 @@ export const interventionsService = {
 };
 
 // ============================================
-// CHECKLISTS SERVICE
-// ============================================
-
-export const checklistsService = {
-  async getAll(params?: PaginationParams & { interventionId?: string }): Promise<PaginatedResponse<Checklist>> {
-    const { data } = await apiClient.get<PaginatedResponse<Checklist>>(
-      `/checklists${buildQueryString(params || {})}`
-    );
-    return data;
-  },
-
-  async getById(id: string): Promise<Checklist> {
-    const { data } = await apiClient.get<Checklist>(`/checklists/${id}`);
-    return data;
-  },
-
-  async create(dto: CreateChecklistDto): Promise<Checklist> {
-    const { data } = await apiClient.post<Checklist>('/checklists', dto);
-    return data;
-  },
-
-  async update(id: string, dto: UpdateChecklistDto): Promise<Checklist> {
-    const { data } = await apiClient.patch<Checklist>(`/checklists/${id}`, dto);
-    return data;
-  },
-
-  async delete(id: string): Promise<void> {
-    await apiClient.delete(`/checklists/${id}`);
-  },
-
-  async updateItem(checklistId: string, itemId: string, dto: UpdateChecklistItemDto): Promise<Checklist> {
-    const { data } = await apiClient.patch<Checklist>(
-      `/checklists/${checklistId}/items/${itemId}`,
-      dto
-    );
-    return data;
-  },
-
-  async complete(id: string): Promise<Checklist> {
-    const { data } = await apiClient.post<Checklist>(`/checklists/${id}/complete`);
-    return data;
-  },
-};
-
-// ============================================
 // ABSENCES SERVICE
 // ============================================
 
@@ -520,16 +427,6 @@ export const dashboardService = {
 
   async getInterventionsWeek(): Promise<Intervention[]> {
     const { data } = await apiClient.get<Intervention[]>('/dashboard/interventions/week');
-    return data;
-  },
-
-  async getZonePerformance(): Promise<ZonePerformance[]> {
-    const { data } = await apiClient.get<ZonePerformance[]>('/dashboard/zones/performance');
-    return data;
-  },
-
-  async getRecentActivity(): Promise<RecentActivity[]> {
-    const { data } = await apiClient.get<RecentActivity[]>('/dashboard/activity/recent');
     return data;
   },
 
