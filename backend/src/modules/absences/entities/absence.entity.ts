@@ -70,7 +70,7 @@ export class Absence {
   reviewedAt: Date;
 
   @Column({ type: 'text', nullable: true })
-  reviewNotes: string; // Reason for approval/rejection
+  reviewNotes: string | null; // Reason for approval/rejection
 
   // Supporting documents (medical certificate, etc.)
   @Column({ type: 'varchar', length: 500, nullable: true })
