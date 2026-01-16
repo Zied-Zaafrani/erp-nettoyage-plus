@@ -14,9 +14,12 @@ async function bootstrap() {
     }),
   );
 
-  // CORS configuration - allow all origins for development
+  // CORS configuration - dynamic origin
   app.enableCors({
-    origin: true, // This allows any origin and sends back the requesting origin
+    origin: (origin, callback) => {
+      // Allow all origins in development
+      callback(null, true);
+    },
     methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE', 'OPTIONS'],
     credentials: true,
     allowedHeaders: ['Content-Type', 'Accept', 'Authorization'],
