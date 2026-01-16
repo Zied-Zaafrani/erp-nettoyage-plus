@@ -14,12 +14,12 @@ async function bootstrap() {
     }),
   );
 
-  // CORS configuration - allow all origins for now
+  // CORS configuration - allow all origins for development
   app.enableCors({
-    origin: '*',
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
-    credentials: false,
-    allowedHeaders: 'Content-Type, Accept, Authorization',
+    origin: true, // This allows any origin and sends back the requesting origin
+    methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE', 'OPTIONS'],
+    credentials: true,
+    allowedHeaders: ['Content-Type', 'Accept', 'Authorization'],
   });
 
   // Global prefix for all routes
