@@ -1,17 +1,11 @@
 // ============================================
-// USER TYPES
+// USER TYPES - PHASE 1 MVP
 // ============================================
 
 export type UserRole = 
   | 'SUPER_ADMIN'
-  | 'DIRECTOR'
-  | 'ASSISTANT'
-  | 'SECTOR_CHIEF'
-  | 'ZONE_CHIEF'
-  | 'TEAM_CHIEF'
+  | 'SUPERVISOR'
   | 'AGENT'
-  | 'QUALITY_CONTROLLER'
-  | 'ACCOUNTANT'
   | 'CLIENT';
 
 export type UserStatus = 'ACTIVE' | 'SUSPENDED' | 'ARCHIVED';
@@ -139,7 +133,6 @@ export interface Site {
   createdAt: string;
   updatedAt: string;
   deletedAt?: string;
-  zones?: Zone[];
 }
 
 export interface CreateSiteDto {
@@ -210,42 +203,7 @@ export interface UpdateContractDto extends Partial<CreateContractDto> {
 }
 
 // ============================================
-// ZONE TYPES
-// ============================================
-
-export type ZonePriority = 'low' | 'medium' | 'high' | 'critical';
-
-export interface Zone {
-  id: string;
-  name: string;
-  description?: string;
-  floor?: string;
-  areaSize?: number;
-  priority: ZonePriority;
-  estimatedDuration?: number;
-  specialInstructions?: string;
-  siteId: string;
-  site?: Site;
-  createdAt: string;
-  updatedAt: string;
-  deletedAt?: string;
-}
-
-export interface CreateZoneDto {
-  name: string;
-  description?: string;
-  floor?: string;
-  areaSize?: number;
-  priority?: ZonePriority;
-  estimatedDuration?: number;
-  specialInstructions?: string;
-  siteId: string;
-}
-
-export interface UpdateZoneDto extends Partial<CreateZoneDto> {}
-
-// ============================================
-// SCHEDULE TYPES
+// SCHEDULE TYPES - PHASE 1 (Simplified)
 // ============================================
 
 export type DayOfWeek = 'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday' | 'sunday';
@@ -257,10 +215,10 @@ export interface Schedule {
   endTime: string;
   isActive: boolean;
   contractId: string;
-  zoneId: string;
+  siteId: string;
   agentId: string;
   contract?: Contract;
-  zone?: Zone;
+  site?: Site;
   agent?: User;
   createdAt: string;
   updatedAt: string;
@@ -273,14 +231,14 @@ export interface CreateScheduleDto {
   endTime: string;
   isActive?: boolean;
   contractId: string;
-  zoneId: string;
+  siteId: string;
   agentId: string;
 }
 
 export interface UpdateScheduleDto extends Partial<CreateScheduleDto> {}
 
 // ============================================
-// INTERVENTION TYPES
+// INTERVENTION TYPES - PHASE 1
 // ============================================
 
 export type InterventionStatus = 'scheduled' | 'in_progress' | 'completed' | 'cancelled' | 'missed';
@@ -300,10 +258,10 @@ export interface Intervention {
   endLongitude?: number;
   photoUrls?: string[];
   scheduleId?: string;
-  zoneId: string;
+  siteId: string;
   agentId: string;
   schedule?: Schedule;
-  zone?: Zone;
+  site?: Site;
   agent?: User;
   createdAt: string;
   updatedAt: string;
@@ -315,7 +273,7 @@ export interface CreateInterventionDto {
   scheduledEndTime: string;
   notes?: string;
   scheduleId?: string;
-  zoneId: string;
+  siteId: string;
   agentId: string;
 }
 
@@ -336,51 +294,6 @@ export interface CompleteInterventionDto {
   longitude?: number;
   notes?: string;
   photoUrls?: string[];
-}
-
-// ============================================
-// CHECKLIST TYPES
-// ============================================
-
-export type ChecklistStatus = 'pending' | 'in_progress' | 'completed';
-
-export interface ChecklistItem {
-  id: string;
-  task: string;
-  isCompleted: boolean;
-  notes?: string;
-  completedAt?: string;
-}
-
-export interface Checklist {
-  id: string;
-  name: string;
-  status: ChecklistStatus;
-  items: ChecklistItem[];
-  interventionId: string;
-  inspectorId?: string;
-  intervention?: Intervention;
-  inspector?: User;
-  completedAt?: string;
-  createdAt: string;
-  updatedAt: string;
-}
-
-export interface CreateChecklistDto {
-  name: string;
-  items: { task: string }[];
-  interventionId: string;
-  inspectorId?: string;
-}
-
-export interface UpdateChecklistDto {
-  name?: string;
-  status?: ChecklistStatus;
-}
-
-export interface UpdateChecklistItemDto {
-  isCompleted?: boolean;
-  notes?: string;
 }
 
 // ============================================
@@ -421,7 +334,7 @@ export interface ReviewAbsenceDto {
 }
 
 // ============================================
-// DASHBOARD TYPES
+// DASHBOARD TYPES - PHASE 1 (Simplified)
 // ============================================
 
 export interface DashboardSummary {
@@ -435,26 +348,6 @@ export interface DashboardSummary {
   availableAgents: number;
   totalContracts: number;
   activeContracts: number;
-}
-
-export interface ZonePerformance {
-  zoneId: string;
-  zoneName: string;
-  siteName: string;
-  totalInterventions: number;
-  completedInterventions: number;
-  averageDuration: number;
-  completionRate: number;
-}
-
-export interface RecentActivity {
-  id: string;
-  type: 'intervention' | 'absence' | 'checklist';
-  action: string;
-  description: string;
-  timestamp: string;
-  userId?: string;
-  userName?: string;
 }
 
 // ============================================
@@ -518,7 +411,7 @@ export interface ContractFilters extends SearchParams {
 
 export interface InterventionFilters extends SearchParams {
   agentId?: string;
-  zoneId?: string;
+  siteId?: string;
   status?: InterventionStatus;
   startDate?: string;
   endDate?: string;

@@ -7,9 +7,7 @@ import {
   Building2,
   MapPin,
   FileText,
-  Layers,
   Calendar,
-  ClipboardCheck,
   CalendarOff,
   ChevronLeft,
   LogOut,
@@ -37,14 +35,12 @@ interface NavItem {
 
 const navItems: NavItem[] = [
   { labelKey: 'nav.dashboard', path: '/dashboard', icon: <LayoutDashboard size={20} /> },
-  { labelKey: 'nav.users', path: '/users', icon: <Users size={20} />, roles: ['SUPER_ADMIN', 'DIRECTOR'] },
-  { labelKey: 'nav.clients', path: '/clients', icon: <Building2 size={20} />, roles: ['SUPER_ADMIN', 'DIRECTOR', 'ASSISTANT', 'ACCOUNTANT'] },
-  { labelKey: 'nav.sites', path: '/sites', icon: <MapPin size={20} />, roles: ['SUPER_ADMIN', 'DIRECTOR', 'ASSISTANT', 'SECTOR_CHIEF', 'ZONE_CHIEF'] },
-  { labelKey: 'nav.contracts', path: '/contracts', icon: <FileText size={20} />, roles: ['SUPER_ADMIN', 'DIRECTOR', 'ACCOUNTANT'] },
-  { labelKey: 'nav.zones', path: '/zones', icon: <Layers size={20} />, roles: ['SUPER_ADMIN', 'DIRECTOR', 'SECTOR_CHIEF', 'ZONE_CHIEF'] },
+  { labelKey: 'nav.users', path: '/users', icon: <Users size={20} />, roles: ['SUPER_ADMIN', 'SUPERVISOR'] },
+  { labelKey: 'nav.clients', path: '/clients', icon: <Building2 size={20} />, roles: ['SUPER_ADMIN', 'SUPERVISOR'] },
+  { labelKey: 'nav.sites', path: '/sites', icon: <MapPin size={20} />, roles: ['SUPER_ADMIN', 'SUPERVISOR'] },
+  { labelKey: 'nav.contracts', path: '/contracts', icon: <FileText size={20} />, roles: ['SUPER_ADMIN', 'SUPERVISOR'] },
   { labelKey: 'nav.schedules', path: '/schedules', icon: <Calendar size={20} /> },
   { labelKey: 'nav.interventions', path: '/interventions', icon: <CheckCircle size={20} /> },
-  { labelKey: 'nav.checklists', path: '/checklists', icon: <ClipboardCheck size={20} />, roles: ['SUPER_ADMIN', 'DIRECTOR', 'QUALITY_CONTROLLER', 'SECTOR_CHIEF', 'ZONE_CHIEF', 'TEAM_CHIEF'] },
   { labelKey: 'nav.absences', path: '/absences', icon: <CalendarOff size={20} /> },
 ];
 

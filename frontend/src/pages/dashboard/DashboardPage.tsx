@@ -1,42 +1,31 @@
 import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 import {
   Users,
   Building2,
   FileText,
   CheckCircle,
   Clock,
-  TrendingUp,
-  AlertCircle,
   CalendarCheck,
+  ArrowRight,
+  Lock,
+  BarChart3,
 } from 'lucide-react';
 import { Card, CardHeader, CardContent, Badge } from '@/components/ui';
 import { dashboardService } from '@/services';
-import { formatDistanceToNow } from 'date-fns';
 
 // ============================================
-// DASHBOARD PAGE
+// DASHBOARD PAGE - PHASE 1 MVP
 // ============================================
 
 export default function DashboardPage() {
   const { t } = useTranslation();
   
-  // Fetch dashboard summary
-  const { data: summary, isLoading: summaryLoading } = useQuery({
-    queryKey: ['dashboard', 'summary'],
-    queryFn: dashboardService.getSummary,
-  });
-
   // Fetch today's interventions
   const { data: todayInterventions, isLoading: interventionsLoading } = useQuery({
     queryKey: ['dashboard', 'interventions', 'today'],
     queryFn: dashboardService.getInterventionsToday,
-  });
-
-  // Fetch recent activity
-  const { data: recentActivity, isLoading: activityLoading } = useQuery({
-    queryKey: ['dashboard', 'activity'],
-    queryFn: dashboardService.getRecentActivity,
   });
 
   return (
@@ -51,43 +40,39 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      {/* Stats grid */}
+      {/* Quick Navigation Cards - Phase 1 */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <StatCard
-          title={t('dashboard.todayInterventions')}
-          value={summary?.totalInterventions || 0}
-          subtitle={`${summary?.completedInterventions || 0} ${t('dashboard.completedInterventions')}`}
-          icon={<CheckCircle className="h-6 w-6" />}
-          iconBg="bg-primary-100"
-          iconColor="text-primary-600"
-          isLoading={summaryLoading}
-        />
-        <StatCard
-          title={t('dashboard.completionRate')}
-          value={`${summary?.completionRate || 0}%`}
-          subtitle={t('dashboard.thisMonth')}
-          icon={<TrendingUp className="h-6 w-6" />}
-          iconBg="bg-success-100"
-          iconColor="text-success-600"
-          isLoading={summaryLoading}
-        />
-        <StatCard
-          title={t('dashboard.totalClients')}
-          value={summary?.activeClients || 0}
-          subtitle={`${summary?.totalClients || 0} ${t('common.results')}`}
+        <QuickNavCard
+          title={t('nav.clients')}
+          count="View All"
           icon={<Building2 className="h-6 w-6" />}
-          iconBg="bg-secondary-100"
-          iconColor="text-secondary-600"
-          isLoading={summaryLoading}
+          iconBg="bg-blue-100"
+          iconColor="text-blue-600"
+          href="/clients"
         />
-        <StatCard
-          title={t('dashboard.activeContracts')}
-          value={summary?.activeContracts || 0}
-          subtitle={`${summary?.totalContracts || 0} ${t('common.results')}`}
+        <QuickNavCard
+          title={t('nav.sites')}
+          count="View All"
           icon={<FileText className="h-6 w-6" />}
-          iconBg="bg-warning-100"
-          iconColor="text-warning-600"
-          isLoading={summaryLoading}
+          iconBg="bg-green-100"
+          iconColor="text-green-600"
+          href="/sites"
+        />
+        <QuickNavCard
+          title={t('nav.contracts')}
+          count="View All"
+          icon={<FileText className="h-6 w-6" />}
+          iconBg="bg-purple-100"
+          iconColor="text-purple-600"
+          href="/contracts"
+        />
+        <QuickNavCard
+          title={t('nav.interventions')}
+          count="View All"
+          icon={<CheckCircle className="h-6 w-6" />}
+          iconBg="bg-orange-100"
+          iconColor="text-orange-600"
+          href="/interventions"
         />
       </div>
 
@@ -98,6 +83,15 @@ export default function DashboardPage() {
           <CardHeader
             title={t('dashboard.todayInterventionsTitle')}
             subtitle={`${todayInterventions?.length || 0} ${t('dashboard.scheduledForToday')}`}
+            action={
+              <Link 
+                to="/interventions"
+                className="flex items-center gap-1 text-sm font-medium text-primary-600 hover:text-primary-700"
+              >
+                {t('common.viewAll')}
+                <ArrowRight size={16} />
+              </Link>
+            }
           />
           <CardContent>
             {interventionsLoading ? (
@@ -117,78 +111,104 @@ export default function DashboardPage() {
           </CardContent>
         </Card>
 
-        {/* Recent activity */}
+        {/* Quick Actions */}
         <Card>
           <CardHeader
-            title={t('dashboard.recentActivityTitle')}
-            subtitle={t('dashboard.latestUpdates')}
+            title={t('dashboard.quickActions')}
+            subtitle={t('dashboard.commonTasks')}
           />
           <CardContent>
-            {activityLoading ? (
-              <LoadingSkeleton rows={5} />
-            ) : recentActivity && recentActivity.length > 0 ? (
-              <div className="space-y-4">
-                {recentActivity.slice(0, 6).map((activity) => (
-                  <ActivityItem key={activity.id} activity={activity} />
-                ))}
-              </div>
-            ) : (
-              <EmptyMessage
-                icon={<Clock className="h-8 w-8" />}
-                message={t('dashboard.noActivityMessage')}
-              />
-            )}
+            <div className="space-y-2">
+              <Link
+                to="/schedules"
+                className="flex items-center justify-between rounded-lg border border-gray-200 p-3 hover:bg-gray-50 transition-colors"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-100">
+                    <CalendarCheck className="h-5 w-5 text-blue-600" />
+                  </div>
+                  <span className="font-medium text-gray-900">{t('nav.schedules')}</span>
+                </div>
+                <ArrowRight size={20} className="text-gray-400" />
+              </Link>
+              <Link
+                to="/users"
+                className="flex items-center justify-between rounded-lg border border-gray-200 p-3 hover:bg-gray-50 transition-colors"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-green-100">
+                    <Users className="h-5 w-5 text-green-600" />
+                  </div>
+                  <span className="font-medium text-gray-900">{t('nav.users')}</span>
+                </div>
+                <ArrowRight size={20} className="text-gray-400" />
+              </Link>
+              <Link
+                to="/absences"
+                className="flex items-center justify-between rounded-lg border border-gray-200 p-3 hover:bg-gray-50 transition-colors"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-yellow-100">
+                    <Clock className="h-5 w-5 text-yellow-600" />
+                  </div>
+                  <span className="font-medium text-gray-900">{t('nav.absences')}</span>
+                </div>
+                <ArrowRight size={20} className="text-gray-400" />
+              </Link>
+            </div>
           </CardContent>
         </Card>
       </div>
 
-      {/* Quick stats */}
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <Card className="flex items-center gap-4">
-          <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-blue-100">
-            <Users className="h-6 w-6 text-blue-600" />
+      {/* PHASE 2 - Advanced Reports & Analytics - LOCKED */}
+      <Card className="relative overflow-hidden opacity-60 pointer-events-none">
+        <div className="absolute top-4 right-4 z-10">
+          <Badge className="bg-primary-600 text-white font-semibold px-3 py-1 text-xs">
+            PHASE 2
+          </Badge>
+        </div>
+        <CardHeader
+          title={
+            <div className="flex items-center gap-2">
+              <Lock size={20} className="text-gray-400" />
+              <span>{t('dashboard.advancedReports')}</span>
+            </div>
+          }
+          subtitle={t('dashboard.availableInPhase2')}
+        />
+        <CardContent>
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="rounded-lg border border-gray-200 p-4 bg-gray-50">
+              <div className="flex items-center gap-3 mb-2">
+                <BarChart3 className="h-5 w-5 text-gray-400" />
+                <span className="text-sm font-medium text-gray-500">Completion Rate</span>
+              </div>
+              <p className="text-2xl font-bold text-gray-400">--</p>
+            </div>
+            <div className="rounded-lg border border-gray-200 p-4 bg-gray-50">
+              <div className="flex items-center gap-3 mb-2">
+                <BarChart3 className="h-5 w-5 text-gray-400" />
+                <span className="text-sm font-medium text-gray-500">Performance Score</span>
+              </div>
+              <p className="text-2xl font-bold text-gray-400">--</p>
+            </div>
+            <div className="rounded-lg border border-gray-200 p-4 bg-gray-50">
+              <div className="flex items-center gap-3 mb-2">
+                <BarChart3 className="h-5 w-5 text-gray-400" />
+                <span className="text-sm font-medium text-gray-500">Quality Score</span>
+              </div>
+              <p className="text-2xl font-bold text-gray-400">--</p>
+            </div>
+            <div className="rounded-lg border border-gray-200 p-4 bg-gray-50">
+              <div className="flex items-center gap-3 mb-2">
+                <BarChart3 className="h-5 w-5 text-gray-400" />
+                <span className="text-sm font-medium text-gray-500">Revenue Analysis</span>
+              </div>
+              <p className="text-2xl font-bold text-gray-400">--</p>
+            </div>
           </div>
-          <div>
-            <p className="text-2xl font-bold text-gray-900">
-              {summary?.availableAgents || 0}
-            </p>
-            <p className="text-sm text-gray-500">
-              {t('dashboard.availableOf')} {summary?.totalAgents || 0}
-            </p>
-          </div>
-        </Card>
-        <Card className="flex items-center gap-4">
-          <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-yellow-100">
-            <Clock className="h-6 w-6 text-yellow-600" />
-          </div>
-          <div>
-            <p className="text-2xl font-bold text-gray-900">
-              {summary?.pendingInterventions || 0}
-            </p>
-            <p className="text-sm text-gray-500">{t('dashboard.pendingInterventionsLabel')}</p>
-          </div>
-        </Card>
-        <Card className="flex items-center gap-4">
-          <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-green-100">
-            <CheckCircle className="h-6 w-6 text-green-600" />
-          </div>
-          <div>
-            <p className="text-2xl font-bold text-gray-900">
-              {summary?.completedInterventions || 0}
-            </p>
-            <p className="text-sm text-gray-500">{t('dashboard.completedThisMonth')}</p>
-          </div>
-        </Card>
-        <Card className="flex items-center gap-4">
-          <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-red-100">
-            <AlertCircle className="h-6 w-6 text-red-600" />
-          </div>
-          <div>
-            <p className="text-2xl font-bold text-gray-900">0</p>
-            <p className="text-sm text-gray-500">{t('dashboard.issuesReported')}</p>
-          </div>
-        </Card>
-      </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }
@@ -197,42 +217,30 @@ export default function DashboardPage() {
 // SUB-COMPONENTS
 // ============================================
 
-interface StatCardProps {
+interface QuickNavCardProps {
   title: string;
-  value: string | number;
-  subtitle: string;
+  count: string;
   icon: React.ReactNode;
   iconBg: string;
   iconColor: string;
-  isLoading?: boolean;
+  href: string;
 }
 
-function StatCard({
-  title,
-  value,
-  subtitle,
-  icon,
-  iconBg,
-  iconColor,
-  isLoading,
-}: StatCardProps) {
+function QuickNavCard({ title, count, icon, iconBg, iconColor, href }: QuickNavCardProps) {
   return (
-    <Card>
-      <div className="flex items-center gap-4">
-        <div className={`flex h-12 w-12 items-center justify-center rounded-lg ${iconBg} ${iconColor}`}>
-          {icon}
+    <Link to={href}>
+      <Card className="hover:shadow-md transition-shadow cursor-pointer">
+        <div className="flex items-center justify-between">
+          <div>
+            <p className="text-sm text-gray-500 mb-1">{title}</p>
+            <p className="text-lg font-semibold text-gray-900">{count}</p>
+          </div>
+          <div className={`flex h-12 w-12 items-center justify-center rounded-lg ${iconBg} ${iconColor}`}>
+            {icon}
+          </div>
         </div>
-        <div>
-          {isLoading ? (
-            <div className="h-8 w-16 animate-pulse rounded bg-gray-200" />
-          ) : (
-            <p className="text-2xl font-bold text-gray-900">{value}</p>
-          )}
-          <p className="text-sm text-gray-500">{title}</p>
-          <p className="text-xs text-gray-400">{subtitle}</p>
-        </div>
-      </div>
-    </Card>
+      </Card>
+    </Link>
   );
 }
 
@@ -243,6 +251,7 @@ interface InterventionItemProps {
     scheduledEndTime: string;
     status: string;
     zone?: { name: string; site?: { name: string } };
+    site?: { name: string };
     agent?: { firstName: string; lastName: string };
   };
   t: (key: string) => string;
@@ -265,10 +274,10 @@ function InterventionItem({ intervention, t }: InterventionItemProps) {
         </div>
         <div>
           <p className="text-sm font-medium text-gray-900">
-            {intervention.zone?.name || t('dashboard.unknownZone')}
+            {intervention.site?.name || intervention.zone?.site?.name || t('dashboard.unknownSite')}
           </p>
           <p className="text-xs text-gray-500">
-            {intervention.zone?.site?.name || t('dashboard.unknownSite')}
+            {intervention.agent?.firstName} {intervention.agent?.lastName}
           </p>
         </div>
       </div>
@@ -277,47 +286,10 @@ function InterventionItem({ intervention, t }: InterventionItemProps) {
           <p className="text-sm text-gray-600">
             {intervention.scheduledStartTime} - {intervention.scheduledEndTime}
           </p>
-          <p className="text-xs text-gray-400">
-            {intervention.agent?.firstName} {intervention.agent?.lastName}
-          </p>
         </div>
         <Badge className={statusColors[intervention.status] || 'bg-gray-100 text-gray-800'}>
           {intervention.status.replace('_', ' ')}
         </Badge>
-      </div>
-    </div>
-  );
-}
-
-interface ActivityItemProps {
-  activity: {
-    id: string;
-    type: string;
-    action: string;
-    description: string;
-    timestamp: string;
-    userName?: string;
-  };
-}
-
-function ActivityItem({ activity }: ActivityItemProps) {
-  const typeIcons: Record<string, React.ReactNode> = {
-    intervention: <CheckCircle className="h-4 w-4 text-green-600" />,
-    absence: <Clock className="h-4 w-4 text-yellow-600" />,
-    checklist: <FileText className="h-4 w-4 text-blue-600" />,
-  };
-
-  return (
-    <div className="flex items-start gap-3">
-      <div className="mt-0.5 flex h-8 w-8 items-center justify-center rounded-full bg-gray-100">
-        {typeIcons[activity.type] || <AlertCircle className="h-4 w-4 text-gray-600" />}
-      </div>
-      <div className="flex-1 min-w-0">
-        <p className="text-sm text-gray-900">{activity.description}</p>
-        <p className="text-xs text-gray-500">
-          {activity.userName && `${activity.userName} · `}
-          {formatDistanceToNow(new Date(activity.timestamp), { addSuffix: true })}
-        </p>
       </div>
     </div>
   );

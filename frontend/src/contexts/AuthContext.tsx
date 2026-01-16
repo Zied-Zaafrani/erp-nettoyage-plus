@@ -95,16 +95,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
       const roleArray = Array.isArray(roles) ? roles : [roles];
       
-      // Role hierarchy based on backend USER_ROLES
+      // Role hierarchy based on backend USER_ROLES - PHASE 1
       const roleHierarchy: Record<UserRole, number> = {
         SUPER_ADMIN: 10,
-        DIRECTOR: 9,
-        ASSISTANT: 8,
-        SECTOR_CHIEF: 7,
-        ZONE_CHIEF: 6,
-        TEAM_CHIEF: 5,
-        QUALITY_CONTROLLER: 4,
-        ACCOUNTANT: 3,
+        SUPERVISOR: 5,
         AGENT: 2,
         CLIENT: 1,
       };
@@ -160,45 +154,27 @@ export function useAuth(): AuthContextType {
 }
 
 // ============================================
-// ROLE CONSTANTS
+// ROLE CONSTANTS - PHASE 1
 // ============================================
 
 export const ROLES = {
   SUPER_ADMIN: 'SUPER_ADMIN' as UserRole,
-  DIRECTOR: 'DIRECTOR' as UserRole,
-  ASSISTANT: 'ASSISTANT' as UserRole,
-  SECTOR_CHIEF: 'SECTOR_CHIEF' as UserRole,
-  ZONE_CHIEF: 'ZONE_CHIEF' as UserRole,
-  TEAM_CHIEF: 'TEAM_CHIEF' as UserRole,
+  SUPERVISOR: 'SUPERVISOR' as UserRole,
   AGENT: 'AGENT' as UserRole,
-  QUALITY_CONTROLLER: 'QUALITY_CONTROLLER' as UserRole,
-  ACCOUNTANT: 'ACCOUNTANT' as UserRole,
   CLIENT: 'CLIENT' as UserRole,
 };
 
 // Translation keys for user roles
 export const ROLE_KEYS: Record<UserRole, string> = {
   SUPER_ADMIN: 'users.roles.SUPER_ADMIN',
-  DIRECTOR: 'users.roles.DIRECTOR',
-  ASSISTANT: 'users.roles.ASSISTANT',
-  SECTOR_CHIEF: 'users.roles.SECTOR_CHIEF',
-  ZONE_CHIEF: 'users.roles.ZONE_CHIEF',
-  TEAM_CHIEF: 'users.roles.TEAM_CHIEF',
+  SUPERVISOR: 'users.roles.SUPERVISOR',
   AGENT: 'users.roles.AGENT',
-  QUALITY_CONTROLLER: 'users.roles.QUALITY_CONTROLLER',
-  ACCOUNTANT: 'users.roles.ACCOUNTANT',
   CLIENT: 'users.roles.CLIENT',
 };
 
 export const ROLE_COLORS: Record<UserRole, string> = {
   SUPER_ADMIN: 'bg-purple-100 text-purple-800',
-  DIRECTOR: 'bg-indigo-100 text-indigo-800',
-  ASSISTANT: 'bg-pink-100 text-pink-800',
-  SECTOR_CHIEF: 'bg-blue-100 text-blue-800',
-  ZONE_CHIEF: 'bg-cyan-100 text-cyan-800',
-  TEAM_CHIEF: 'bg-teal-100 text-teal-800',
+  SUPERVISOR: 'bg-blue-100 text-blue-800',
   AGENT: 'bg-green-100 text-green-800',
-  QUALITY_CONTROLLER: 'bg-amber-100 text-amber-800',
-  ACCOUNTANT: 'bg-orange-100 text-orange-800',
   CLIENT: 'bg-gray-100 text-gray-800',
 };
