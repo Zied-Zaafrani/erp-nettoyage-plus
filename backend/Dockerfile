@@ -1,37 +1,25 @@
-# Multi-stage build for production deployment
-FROM node:18-alpine AS builder
+# Production deployment
+FROM node:18-alpine
 
 # Set working directory
 WORKDIR /app
 
 # Copy package files
 COPY package*.json ./
-COPY tsconfig.json ./
 
-# Install dependencies
+# Install all dependencies (needed for build)
 RUN npm ci
 
-# Copy source code
+# Copy rest of the application
 COPY . .
 
 # Build the application
-RUN npm run build
+RUN npm run build && ls -la dist/
 
-# Production stage
-FROM node:18-alpine
+# Remove dev dependencies
+RUN npm prune --production
 
-WORKDIR /app
-
-# Copy package files
-COPY package*.json ./
-
-# Install only production dependencies
-RUN npm ci --only=production
-
-# Copy built application from builder stage
-COPY --from=builder /app/dist ./dist
-
-# Expose port (Railway will override with PORT env variable)
+# Expose port
 EXPOSE 3000
 
 # Start the application
