@@ -3,17 +3,22 @@ FROM node:18-alpine
 
 WORKDIR /app
 
-# Copy everything
-COPY . .
+# Copy package files from backend directory
+COPY backend/package*.json ./
 
-# Install dependencies and build
-RUN npm ci && npm run build
+# Install dependencies
+RUN npm ci
+
+# Copy source code from backend directory
+COPY backend/tsconfig.json ./
+COPY backend/nest-cli.json ./
+COPY backend/src ./src
+
+# Build the application
+RUN npm run build
 
 # Verify build output exists
 RUN test -f dist/main.js || (echo "ERROR: dist/main.js not found!" && exit 1)
-
-# List what's in dist for debugging
-RUN ls -la dist/
 
 # Expose port
 EXPOSE 3000
