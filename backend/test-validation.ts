@@ -43,7 +43,7 @@ async function runValidationTests() {
     // Valid user
     const validUser = plainToClass(CreateUserDto, {
       email: 'test@example.com',
-      password: 'Test@12345',
+      password: 'Test@12345Test@12345',
       firstName: 'John',
       lastName: 'Doe',
       phone: '12345678',
@@ -159,16 +159,19 @@ async function runValidationTests() {
   try {
     // Valid site
     const validSite = plainToClass(CreateSiteDto, {
-      clientId: '123e4567-e89b-12d3-a456-426614174000',
+      clientId: 'a1b2c3d4-e5f6-4789-a012-3456789abcde',
       name: 'Test Site',
       size: 'MEDIUM',
+      address: '123 Test Street',
+      city: 'Nouakchott',
       status: 'ACTIVE',
     });
 
     const validSiteErrors = await validate(validSite);
     logResult('Valid Site DTO',
       validSiteErrors.length === 0 ? 'PASS' : 'FAIL',
-      validSiteErrors.length === 0 ? 'Valid site passes validation' : 'Valid site failed validation'
+      validSiteErrors.length === 0 ? 'Valid site passes validation' : 'Valid site failed validation',
+      validSiteErrors.length > 0 ? validSiteErrors : undefined
     );
 
     // Invalid UUID
@@ -262,18 +265,20 @@ async function runValidationTests() {
   try {
     // Valid intervention
     const validIntervention = plainToClass(CreateInterventionDto, {
-      contractId: '123e4567-e89b-12d3-a456-426614174000',
-      siteId: '123e4567-e89b-12d3-a456-426614174001',
+      contractId: '550e8400-e29b-41d4-a716-446655440000',
+      siteId: '550e8400-e29b-41d4-a716-446655440001',
       scheduledDate: '2026-01-20',
       scheduledStartTime: '08:00',
       scheduledEndTime: '12:00',
+      assignedAgentIds: ['550e8400-e29b-41d4-a716-446655440002'],
       status: 'SCHEDULED',
     });
 
     const validInterventionErrors = await validate(validIntervention);
     logResult('Valid Intervention DTO',
       validInterventionErrors.length === 0 ? 'PASS' : 'FAIL',
-      validInterventionErrors.length === 0 ? 'Valid intervention passes validation' : 'Valid intervention failed validation'
+      validInterventionErrors.length === 0 ? 'Valid intervention passes validation' : 'Valid intervention failed validation',
+      validInterventionErrors.length > 0 ? validInterventionErrors : undefined
     );
 
     // Invalid time format

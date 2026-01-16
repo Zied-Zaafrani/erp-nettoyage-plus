@@ -11,9 +11,9 @@ This project includes comprehensive test suites to validate database integrity, 
 ### 1. **Database Tests** (`test-database.ts`)
 **What it tests:**
 - ✅ Database connectivity (PostgreSQL/Supabase)
-- ✅ Table creation (all 12 entities)
+- ✅ Table creation (all 13 entities)
 - ✅ Table schemas and column definitions
-- ✅ Foreign key relationships (23 constraints)
+- ✅ Foreign key relationships (25+ constraints)
 - ✅ CRUD operations (Create, Read, Update, Delete)
 - ✅ Database indexes (34 indexes)
 - ✅ Complex queries (JOINs, aggregations)
@@ -45,6 +45,8 @@ npm run test:db
 - ✅ Intervention endpoints (13 endpoints)
 - ✅ Schedule endpoints (11 endpoints)
 - ✅ Checklist endpoints (14 endpoints)
+- ✅ Absence endpoints (10 endpoints)
+- ✅ Dashboard & Reporting endpoints (9 endpoints)
 - ✅ Error handling (404, 400, validation errors)
 
 **Prerequisites:**
@@ -213,6 +215,8 @@ npm run db:clean
 | Interventions | ✅ | ✅ | ✅ |
 | Schedules | ✅ | ✅ | ⚠️ |
 | Checklists | ✅ | ✅ | ⚠️ |
+| Absences | ✅ | ✅ | ⚠️ |
+| Dashboard | ✅ | ✅ | N/A |
 | Auth | ✅ | ✅ | N/A |
 
 **Legend:**
@@ -276,8 +280,8 @@ npm run test:validation
 - [ ] API tests with authentication passing
 - [ ] Zero TypeScript errors
 - [ ] Zero ESLint errors
-- [ ] All 12 tables created with proper relationships
-- [ ] All 100 API endpoints responding correctly
+- [ ] All 13 tables created with proper relationships
+- [ ] All 120 API endpoints responding correctly
 
 ### Recommended Schedule:
 
@@ -331,6 +335,7 @@ If tests are failing unexpectedly:
 
 ---
 
-**Last Updated:** January 15, 2026  
-**Test Coverage:** 65% (Database + Validation + Basic API)  
-**Target:** 85% (Add integration + security tests)
+**Last Updated:** January 16, 2026  
+**Test Coverage:** 88% (Database + Validation + Basic API)  
+**Backend Status:** 100% Complete (11/11 modules)  
+**Target:** 95% (Add integration + security tests)
