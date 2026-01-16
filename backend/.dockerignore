@@ -2,9 +2,6 @@
 node_modules
 npm-debug.log
 
-# Build output
-dist
-
 # Environment files
 .env
 .env.*
@@ -15,7 +12,6 @@ test-*.ts
 *.spec.ts
 
 # Documentation
-*.md
 docs/
 
 # Git
