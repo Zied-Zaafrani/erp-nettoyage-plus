@@ -14,10 +14,12 @@ async function bootstrap() {
     }),
   );
 
-  // CORS configuration
+  // CORS configuration - allow all origins for now
   app.enableCors({
-    origin: true, // Allow all origins in development
-    credentials: true,
+    origin: '*',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    credentials: false,
+    allowedHeaders: 'Content-Type, Accept, Authorization',
   });
 
   // Global prefix for all routes
