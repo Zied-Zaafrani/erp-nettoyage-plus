@@ -17,7 +17,8 @@
     "test:api": "ts-node test-api-endpoints.ts",
     "test:validation": "ts-node test-validation.ts",
     "test:all": "npm run test:db && npm run test:validation",
-    "db:clean": "ts-node clean-database.ts"
+    "db:clean": "ts-node clean-database.ts",
+    "db:seed": "ts-node seed-admin.ts"
   },
   "dependencies": {
     "@nestjs/common": "^10.3.0",
