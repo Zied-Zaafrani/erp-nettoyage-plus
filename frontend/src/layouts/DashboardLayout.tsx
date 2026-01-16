@@ -20,7 +20,7 @@ import {
   Moon,
   CheckCircle,
 } from 'lucide-react';
-import { useAuth, ROLE_LABELS } from '@/contexts/AuthContext';
+import { useAuth, ROLE_KEYS } from '@/contexts/AuthContext';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
 import clsx from 'clsx';
 
@@ -154,7 +154,7 @@ export default function DashboardLayout() {
                 <p className="truncate text-sm font-medium text-gray-900">
                   {user?.firstName} {user?.lastName}
                 </p>
-                <p className="text-xs text-gray-500">{ROLE_LABELS[user?.role || 'AGENT']}</p>
+                <p className="text-xs text-gray-500">{t(ROLE_KEYS[user?.role || 'AGENT'])}</p>
               </div>
             )}
           </div>

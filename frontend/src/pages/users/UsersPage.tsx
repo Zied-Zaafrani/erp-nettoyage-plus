@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { Plus, Search, Edit, Trash2, UserCheck } from 'lucide-react';
+import { Plus, Search, Edit, Trash2, UserCheck, RefreshCw } from 'lucide-react';
 import toast from 'react-hot-toast';
 import {
   Button,
@@ -20,7 +20,7 @@ import {
 } from '@/components/ui';
 import { usersService } from '@/services';
 import { User } from '@/types';
-import { useAuth, ROLE_LABELS, ROLE_COLORS } from '@/contexts/AuthContext';
+import { useAuth, ROLE_KEYS, ROLE_COLORS } from '@/contexts/AuthContext';
 import UserFormModal from './components/UserFormModal';
 
 // ============================================
@@ -35,6 +35,7 @@ export default function UsersPage() {
   // State
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState('');
+  const [debouncedSearch, setDebouncedSearch] = useState('');
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
@@ -42,10 +43,20 @@ export default function UsersPage() {
 
   const limit = 10;
 
+  // Debounce search input
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearch(search);
+      setPage(1);
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, [search]);
+
   // Fetch users
-  const { data, isLoading, error } = useQuery({
-    queryKey: ['users', { page, limit, search }],
-    queryFn: () => usersService.getAll({ page, limit, search: search || undefined }),
+  const { data, isLoading, error, refetch } = useQuery({
+    queryKey: ['users', { page, limit, search: debouncedSearch }],
+    queryFn: () => usersService.getAll({ page, limit, search: debouncedSearch || undefined }),
   });
 
   // Delete mutation
@@ -65,7 +76,6 @@ export default function UsersPage() {
   // Handlers
   const handleSearch = (value: string) => {
     setSearch(value);
-    setPage(1);
   };
 
   const handleCreate = () => {
@@ -148,11 +158,13 @@ export default function UsersPage() {
           <div className="p-6">
             <EmptyState
               title={t('common.error')}
-              description={t('common.loading') + '...'}
+              description={error instanceof Error ? error.message : t('errors.generic')}
               action={
                 <Button
                   variant="outline"
-                  onClick={() => queryClient.invalidateQueries({ queryKey: ['users'] })}
+                  leftIcon={<RefreshCw size={18} />}
+                  onClick={() => refetch()}
+                  isLoading={isLoading}
                 >
                   {t('common.refresh')}
                 </Button>
@@ -195,7 +207,7 @@ export default function UsersPage() {
                           ROLE_COLORS[user.role]
                         }`}
                       >
-                        {ROLE_LABELS[user.role]}
+                        {t(ROLE_KEYS[user.role])}
                       </span>
                     </TableCell>
                     <TableCell>

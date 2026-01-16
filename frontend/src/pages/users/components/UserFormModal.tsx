@@ -7,7 +7,7 @@ import toast from 'react-hot-toast';
 import { Modal, Button, Input } from '@/components/ui';
 import { usersService } from '@/services';
 import { User, UserRole, CreateUserDto, UpdateUserDto } from '@/types';
-import { ROLE_LABELS } from '@/contexts/AuthContext';
+import { ROLE_KEYS } from '@/contexts/AuthContext';
 
 // ============================================
 // VALIDATION SCHEMAS
@@ -15,7 +15,7 @@ import { ROLE_LABELS } from '@/contexts/AuthContext';
 
 const createUserSchema = z.object({
   email: z.string().email('Please enter a valid email'),
-  password: z.string().min(6, 'Password must be at least 6 characters'),
+  password: z.string().min(8, 'Password must be at least 8 characters'),
   firstName: z.string().min(1, 'First name is required'),
   lastName: z.string().min(1, 'Last name is required'),
   phone: z.string().optional(),
@@ -199,9 +199,9 @@ export default function UserFormModal({
             className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-gray-900 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/20"
             {...register('role')}
           >
-            {Object.entries(ROLE_LABELS).map(([value, label]) => (
+            {Object.entries(ROLE_KEYS).map(([value, translationKey]) => (
               <option key={value} value={value}>
-                {label}
+                {t(translationKey)}
               </option>
             ))}
           </select>

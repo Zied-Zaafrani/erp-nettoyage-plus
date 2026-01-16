@@ -157,21 +157,36 @@ export class UsersService {
       firstName,
       lastName,
       email,
+      search,
     } = searchDto;
 
     const skip = (page - 1) * limit;
 
     // Build where conditions
-    const where: FindOptionsWhere<User> = {};
+    const where: FindOptionsWhere<User> | FindOptionsWhere<User>[] = [];
 
-    if (role) where.role = role;
-    if (status) where.status = status;
-    if (firstName) where.firstName = ILike(`%${firstName}%`);
-    if (lastName) where.lastName = ILike(`%${lastName}%`);
-    if (email) where.email = ILike(`%${email}%`);
+    // Handle generic search with OR conditions
+    if (search) {
+      const searchPattern = `%${search}%`;
+      where.push(
+        { email: ILike(searchPattern), ...(role && { role }), ...(status && { status }) },
+        { firstName: ILike(searchPattern), ...(role && { role }), ...(status && { status }) },
+        { lastName: ILike(searchPattern), ...(role && { role }), ...(status && { status }) },
+        { phone: ILike(searchPattern), ...(role && { role }), ...(status && { status }) },
+      );
+    } else {
+      // Handle specific field filters with AND conditions
+      const andWhere: FindOptionsWhere<User> = {};
+      if (role) andWhere.role = role;
+      if (status) andWhere.status = status;
+      if (firstName) andWhere.firstName = ILike(`%${firstName}%`);
+      if (lastName) andWhere.lastName = ILike(`%${lastName}%`);
+      if (email) andWhere.email = ILike(`%${email}%`);
+      where.push(andWhere);
+    }
 
     const [users, total] = await this.userRepository.findAndCount({
-      where,
+      where: where.length > 0 ? where : {},
       order: { [sortBy]: sortOrder },
       skip,
       take: limit,

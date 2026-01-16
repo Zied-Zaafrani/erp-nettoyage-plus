@@ -176,17 +176,18 @@ export const ROLES = {
   CLIENT: 'CLIENT' as UserRole,
 };
 
-export const ROLE_LABELS: Record<UserRole, string> = {
-  SUPER_ADMIN: 'Super Admin',
-  DIRECTOR: 'Directeur',
-  ASSISTANT: 'Assistant(e)',
-  SECTOR_CHIEF: 'Chef de Secteur',
-  ZONE_CHIEF: 'Chef de Zone',
-  TEAM_CHIEF: 'Chef d\'Équipe',
-  AGENT: 'Agent',
-  QUALITY_CONTROLLER: 'Contrôleur Qualité',
-  ACCOUNTANT: 'Comptable',
-  CLIENT: 'Client',
+// Translation keys for user roles
+export const ROLE_KEYS: Record<UserRole, string> = {
+  SUPER_ADMIN: 'users.roles.SUPER_ADMIN',
+  DIRECTOR: 'users.roles.DIRECTOR',
+  ASSISTANT: 'users.roles.ASSISTANT',
+  SECTOR_CHIEF: 'users.roles.SECTOR_CHIEF',
+  ZONE_CHIEF: 'users.roles.ZONE_CHIEF',
+  TEAM_CHIEF: 'users.roles.TEAM_CHIEF',
+  AGENT: 'users.roles.AGENT',
+  QUALITY_CONTROLLER: 'users.roles.QUALITY_CONTROLLER',
+  ACCOUNTANT: 'users.roles.ACCOUNTANT',
+  CLIENT: 'users.roles.CLIENT',
 };
 
 export const ROLE_COLORS: Record<UserRole, string> = {

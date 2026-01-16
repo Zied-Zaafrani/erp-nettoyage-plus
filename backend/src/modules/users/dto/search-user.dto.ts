@@ -33,6 +33,11 @@ export class SearchUserDto {
   @IsString()
   lastName?: string;
 
+  // Generic search - searches across email, firstName, lastName, phone
+  @IsOptional()
+  @IsString()
+  search?: string;
+
   // Filter options
   @IsOptional()
   @IsEnum(UserRole)
