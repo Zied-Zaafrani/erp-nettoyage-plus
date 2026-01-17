@@ -128,14 +128,8 @@
     "neverLoggedIn": "لم يسجل الدخول",
     "roles": {
       "SUPER_ADMIN": "المدير العام",
-      "DIRECTOR": "مدير",
-      "ASSISTANT": "مساعد",
-      "SECTOR_CHIEF": "رئيس قطاع",
-      "ZONE_CHIEF": "رئيس منطقة",
-      "TEAM_CHIEF": "رئيس فريق",
+      "SUPERVISOR": "المشرف",
       "AGENT": "عامل",
-      "QUALITY_CONTROLLER": "مراقب الجودة",
-      "ACCOUNTANT": "محاسب",
       "CLIENT": "عميل"
     },
     "createSuccess": "تم إنشاء المستخدم بنجاح",

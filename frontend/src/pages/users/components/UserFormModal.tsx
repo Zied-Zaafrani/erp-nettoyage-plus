@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -63,12 +64,12 @@ export default function UserFormModal({
     resolver: zodResolver(isEditing ? updateUserSchema : createUserSchema),
     defaultValues: isEditing
       ? {
-          email: user.email,
-          firstName: user.firstName,
-          lastName: user.lastName,
-          phone: user.phone || '',
-          role: user.role,
-          status: user.status,
+          email: user?.email,
+          firstName: user?.firstName,
+          lastName: user?.lastName,
+          phone: user?.phone || '',
+          role: user?.role,
+          status: user?.status,
         }
       : {
           email: '',
@@ -79,6 +80,29 @@ export default function UserFormModal({
           role: 'AGENT' as UserRole,
         },
   });
+
+  // Reset form when user changes or modal opens for editing
+  useEffect(() => {
+    if (isOpen && isEditing && user) {
+      reset({
+        email: user.email,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        phone: user.phone || '',
+        role: user.role,
+        status: user.status,
+      });
+    } else if (isOpen && !isEditing) {
+      reset({
+        email: '',
+        password: '',
+        firstName: '',
+        lastName: '',
+        phone: '',
+        role: 'AGENT' as UserRole,
+      });
+    }
+  }, [isOpen, isEditing, user, reset]);
 
   // Create mutation
   const createMutation = useMutation({

@@ -130,14 +130,8 @@
     "neverLoggedIn": "Never",
     "roles": {
       "SUPER_ADMIN": "Super Admin",
-      "DIRECTOR": "Director",
-      "ASSISTANT": "Assistant",
-      "SECTOR_CHIEF": "Sector Chief",
-      "ZONE_CHIEF": "Zone Chief",
-      "TEAM_CHIEF": "Team Chief",
+      "SUPERVISOR": "Supervisor",
       "AGENT": "Agent",
-      "QUALITY_CONTROLLER": "Quality Controller",
-      "ACCOUNTANT": "Accountant",
       "CLIENT": "Client"
     },
     "createSuccess": "User created successfully",
