@@ -123,6 +123,10 @@
     "deactivate": "Désactiver",
     "deactivateConfirm": "Êtes-vous sûr de vouloir désactiver",
     "deactivateSuccess": "Utilisateur désactivé avec succès",
+    "suspend": "Suspendre",
+    "suspendUser": "Suspendre l'utilisateur",
+    "suspendConfirm": "Êtes-vous sûr de vouloir suspendre",
+    "suspendSuccess": "Utilisateur suspendu avec succès",
     "restore": "Restaurer",
     "restoreSuccess": "Utilisateur restauré avec succès",
     "firstName": "Prénom",
@@ -139,6 +143,11 @@
       "active": "Utilisateurs actifs",
       "suspended": "Utilisateurs suspendus",
       "archived": "Utilisateurs inactifs"
+    },
+    "roleFilter": {
+      "all": "Tous les rôles",
+      "admins": "Administrateurs",
+      "employees": "Employés"
     },
     "roles": {
       "SUPER_ADMIN": "Super Admin",

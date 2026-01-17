@@ -1,22 +1,16 @@
 /**
- * User roles in the system
+ * User roles in the system - PHASE 1 MVP
  * Dynamic permissions will be controlled via admin panel
  * Backend provides ALL capabilities, frontend/admin controls access
  *
- * Hierarchy (from USER_ROLES.md):
- * SUPER_ADMIN → DIRECTOR → SECTOR_CHIEF → ZONE_CHIEF → TEAM_CHIEF → AGENT
- * Plus: ASSISTANT, QUALITY_CONTROLLER, ACCOUNTANT, CLIENT
+ * Phase 1 Hierarchy:
+ * SUPER_ADMIN → SUPERVISOR → AGENT
+ * Plus: CLIENT
  */
 export enum UserRole {
   SUPER_ADMIN = 'SUPER_ADMIN',
-  DIRECTOR = 'DIRECTOR',
-  ASSISTANT = 'ASSISTANT',
-  SECTOR_CHIEF = 'SECTOR_CHIEF',
-  ZONE_CHIEF = 'ZONE_CHIEF',
-  TEAM_CHIEF = 'TEAM_CHIEF',
+  SUPERVISOR = 'SUPERVISOR',
   AGENT = 'AGENT',
-  QUALITY_CONTROLLER = 'QUALITY_CONTROLLER',
-  ACCOUNTANT = 'ACCOUNTANT',
   CLIENT = 'CLIENT',
 }
 

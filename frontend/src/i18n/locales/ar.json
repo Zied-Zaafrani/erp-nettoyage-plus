@@ -123,6 +123,10 @@
     "deactivate": "إلغاء التنشيط",
     "deactivateConfirm": "هل أنت متأكد من إلغاء تنشيط",
     "deactivateSuccess": "تم إلغاء تنشيط المستخدم بنجاح",
+    "suspend": "تعليق",
+    "suspendUser": "تعليق المستخدم",
+    "suspendConfirm": "هل أنت متأكد من تعليق",
+    "suspendSuccess": "تم تعليق المستخدم بنجاح",
     "restore": "استعادة",
     "restoreSuccess": "تم استعادة المستخدم بنجاح",
     "firstName": "الاسم الأول",
@@ -139,6 +143,11 @@
       "active": "المستخدمون النشطون",
       "suspended": "المستخدمون المعلقون",
       "archived": "المستخدمون غير النشطين"
+    },
+    "roleFilter": {
+      "all": "جميع الأدوار",
+      "admins": "المسؤولون",
+      "employees": "الموظفون"
     },
     "roles": {
       "SUPER_ADMIN": "المدير العام",

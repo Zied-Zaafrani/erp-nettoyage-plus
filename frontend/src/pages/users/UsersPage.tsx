@@ -19,7 +19,7 @@ import {
   ConfirmModal,
 } from '@/components/ui';
 import { usersService } from '@/services';
-import { User, UserStatus } from '@/types';
+import { User, UserStatus, UserRole, UpdateUserDto } from '@/types';
 import { useAuth, ROLE_KEYS, ROLE_COLORS } from '@/contexts/AuthContext';
 import UserFormModal from './components/UserFormModal';
 
@@ -37,10 +37,13 @@ export default function UsersPage() {
   const [search, setSearch] = useState('');
   const [debouncedSearch, setDebouncedSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState<'ALL' | UserStatus>('ALL');
+  const [roleFilter, setRoleFilter] = useState<'ALL' | UserRole>('ALL');
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [isDeactivateOpen, setIsDeactivateOpen] = useState(false);
   const [userToDeactivate, setUserToDeactivate] = useState<User | null>(null);
+  const [isSuspendOpen, setIsSuspendOpen] = useState(false);
+  const [userToSuspend, setUserToSuspend] = useState<User | null>(null);
 
   const limit = 10;
 
@@ -56,13 +59,14 @@ export default function UsersPage() {
 
   // Fetch users
   const { data, isLoading, error, refetch } = useQuery({
-    queryKey: ['users', { page, limit, search: debouncedSearch, status: statusFilter }],
+    queryKey: ['users', { page, limit, search: debouncedSearch, status: statusFilter, role: roleFilter }],
     queryFn: () => usersService.getAll({ 
       page, 
       limit, 
       search: debouncedSearch || undefined,
       status: statusFilter === 'ALL' ? undefined : statusFilter,
-      includeDeleted: statusFilter === 'ARCHIVED'
+      role: roleFilter === 'ALL' ? undefined : roleFilter,
+      includeDeleted: statusFilter === 'ALL' || statusFilter === 'ARCHIVED'
     }),
   });
 
@@ -86,6 +90,21 @@ export default function UsersPage() {
     onSuccess: () => {
       toast.success(t('users.restoreSuccess'));
       queryClient.invalidateQueries({ queryKey: ['users'] });
+    },
+    onError: (error: { message: string }) => {
+      toast.error(error.message || t('common.error'));
+    },
+  });
+
+  // Suspend mutation
+  const suspendMutation = useMutation({
+    mutationFn: ({ id, data }: { id: string; data: UpdateUserDto }) => 
+      usersService.update(id, data),
+    onSuccess: () => {
+      toast.success(t('users.suspendSuccess'));
+      queryClient.invalidateQueries({ queryKey: ['users'] });
+      setIsSuspendOpen(false);
+      setUserToSuspend(null);
     },
     onError: (error: { message: string }) => {
       toast.error(error.message || t('common.error'));
@@ -116,9 +135,23 @@ export default function UsersPage() {
     restoreMutation.mutate(user.id);
   };
 
+  const handleSuspend = (user: User) => {
+    setUserToSuspend(user);
+    setIsSuspendOpen(true);
+  };
+
   const confirmDeactivate = () => {
     if (userToDeactivate) {
       deactivateMutation.mutate(userToDeactivate.id);
+    }
+  };
+
+  const confirmSuspend = () => {
+    if (userToSuspend) {
+      suspendMutation.mutate({ 
+        id: userToSuspend.id, 
+        data: { status: 'SUSPENDED' } 
+      });
     }
   };
 
@@ -137,6 +170,7 @@ export default function UsersPage() {
   const canEdit = hasRole(['SUPER_ADMIN', 'SUPERVISOR']);
   const canDeactivate = hasRole('SUPER_ADMIN');
   const canRestore = hasRole('SUPER_ADMIN');
+  const canSuspend = hasRole(['SUPER_ADMIN', 'SUPERVISOR']);
 
   return (
     <div className="space-y-6">
@@ -179,6 +213,20 @@ export default function UsersPage() {
               <option value="ACTIVE">{t('users.statusFilter.active')}</option>
               <option value="SUSPENDED">{t('users.statusFilter.suspended')}</option>
               <option value="ARCHIVED">{t('users.statusFilter.archived')}</option>
+            </select>
+            <select
+              value={roleFilter}
+              onChange={(e) => {
+                setRoleFilter(e.target.value as 'ALL' | UserRole);
+                setPage(1);
+              }}
+              className="rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-gray-900 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/20"
+            >
+              <option value="ALL">{t('users.roleFilter.all')}</option>
+              <option value="SUPER_ADMIN">{t('users.roles.SUPER_ADMIN')}</option>
+              <option value="SUPERVISOR">{t('users.roles.SUPERVISOR')}</option>
+              <option value="AGENT">{t('users.roles.AGENT')}</option>
+              <option value="CLIENT">{t('users.roles.CLIENT')}</option>
             </select>
           </div>
           <div className="flex items-center gap-2">
@@ -263,6 +311,15 @@ export default function UsersPage() {
                             <Edit size={16} />
                           </button>
                         )}
+                        {canSuspend && user.role !== 'CLIENT' && user.status === 'ACTIVE' && (
+                          <button
+                            onClick={() => handleSuspend(user)}
+                            className="rounded bg-red-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-red-700 transition-colors"
+                            title={t('users.suspend')}
+                          >
+                            {t('users.suspend')}
+                          </button>
+                        )}
                         {canDeactivate && user.status !== 'ARCHIVED' && (
                           <button
                             onClick={() => handleDeactivate(user)}
@@ -335,6 +392,17 @@ export default function UsersPage() {
         message={`${t('users.deactivateConfirm')} ${userToDeactivate?.firstName} ${userToDeactivate?.lastName}?`}
         confirmText={t('users.deactivate')}
         isLoading={deactivateMutation.isPending}
+      />
+
+      {/* Suspend confirmation modal */}
+      <ConfirmModal
+        isOpen={isSuspendOpen}
+        onClose={() => setIsSuspendOpen(false)}
+        onConfirm={confirmSuspend}
+        title={t('users.suspendUser')}
+        message={`${t('users.suspendConfirm')} ${userToSuspend?.firstName} ${userToSuspend?.lastName}?`}
+        confirmText={t('users.suspend')}
+        isLoading={suspendMutation.isPending}
       />
     </div>
   );

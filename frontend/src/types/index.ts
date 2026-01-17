@@ -39,6 +39,7 @@ export interface UpdateUserDto {
   lastName?: string;
   phone?: string;
   role?: UserRole;
+  status?: UserStatus;
   isActive?: boolean;
 }
 

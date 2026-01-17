@@ -340,7 +340,12 @@ export class UsersService {
       throw new ConflictException(`User ${id} is not deleted`);
     }
 
+    // Restore the user (removes deletedAt)
     await this.userRepository.restore(id);
+    
+    // Update status back to ACTIVE
+    await this.userRepository.update(id, { status: UserStatus.ACTIVE });
+    
     this.logger.log(`User restored: ${user.email} (ID: ${id})`);
 
     // Fetch fresh user

@@ -50,7 +50,7 @@ export default function DashboardPage() {
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           <QuickNavCard
             title={t('nav.clients')}
-            count="View All"
+            count={t('common.viewAll')}
             icon={<Building2 className="h-6 w-6" />}
             iconBg="bg-blue-100"
             iconColor="text-blue-600"
@@ -58,7 +58,7 @@ export default function DashboardPage() {
           />
           <QuickNavCard
             title={t('nav.sites')}
-            count="View All"
+            count={t('common.viewAll')}
             icon={<FileText className="h-6 w-6" />}
             iconBg="bg-green-100"
             iconColor="text-green-600"
@@ -66,7 +66,7 @@ export default function DashboardPage() {
           />
           <QuickNavCard
             title={t('nav.contracts')}
-            count="View All"
+            count={t('common.viewAll')}
             icon={<FileText className="h-6 w-6" />}
             iconBg="bg-purple-100"
             iconColor="text-purple-600"
@@ -74,7 +74,7 @@ export default function DashboardPage() {
           />
           <QuickNavCard
             title={t('nav.interventions')}
-            count="View All"
+            count={t('common.viewAll')}
             icon={<CheckCircle className="h-6 w-6" />}
             iconBg="bg-orange-100"
             iconColor="text-orange-600"

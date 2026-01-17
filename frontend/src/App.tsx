@@ -1,5 +1,6 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { useAuth } from './contexts/AuthContext';
+import { UserRole } from './types';
 
 // Layouts
 import DashboardLayout from './layouts/DashboardLayout';
@@ -39,6 +40,23 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
   return <>{children}</>;
 }
 
+// Role-based Protected Route
+function RoleProtectedRoute({ 
+  children, 
+  allowedRoles 
+}: { 
+  children: React.ReactNode;
+  allowedRoles: UserRole[];
+}) {
+  const { hasRole } = useAuth();
+
+  if (!hasRole(allowedRoles)) {
+    return <Navigate to="/dashboard" replace />;
+  }
+
+  return <>{children}</>;
+}
+
 function App() {
   return (
     <Routes>
@@ -58,11 +76,39 @@ function App() {
         <Route path="/" element={<Navigate to="/dashboard" replace />} />
         <Route path="/dashboard" element={<DashboardPage />} />
         
-        {/* Management Routes */}
-        <Route path="/users" element={<UsersPage />} />
-        <Route path="/clients" element={<ClientsPage />} />
-        <Route path="/sites" element={<SitesPage />} />
-        <Route path="/contracts" element={<ContractsPage />} />
+        {/* Management Routes - Role Protected */}
+        <Route 
+          path="/users" 
+          element={
+            <RoleProtectedRoute allowedRoles={['SUPER_ADMIN', 'SUPERVISOR']}>
+              <UsersPage />
+            </RoleProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/clients" 
+          element={
+            <RoleProtectedRoute allowedRoles={['SUPER_ADMIN', 'SUPERVISOR']}>
+              <ClientsPage />
+            </RoleProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/sites" 
+          element={
+            <RoleProtectedRoute allowedRoles={['SUPER_ADMIN', 'SUPERVISOR']}>
+              <SitesPage />
+            </RoleProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/contracts" 
+          element={
+            <RoleProtectedRoute allowedRoles={['SUPER_ADMIN', 'SUPERVISOR']}>
+              <ContractsPage />
+            </RoleProtectedRoute>
+          } 
+        />
         <Route path="/schedules" element={<SchedulesPage />} />
         <Route path="/interventions" element={<InterventionsPage />} />
         <Route path="/absences" element={<AbsencesPage />} />
