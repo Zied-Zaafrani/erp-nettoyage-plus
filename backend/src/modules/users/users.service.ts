@@ -340,13 +340,13 @@ export class UsersService {
       throw new ConflictException(`User ${id} is not deleted`);
     }
 
-    // Restore the user (removes deletedAt)
+    // Restore the user (removes deletedAt) and set status to SUSPENDED
     await this.userRepository.restore(id);
     
-    // Update status back to ACTIVE
-    await this.userRepository.update(id, { status: UserStatus.ACTIVE });
+    // Update status to SUSPENDED after restore
+    await this.userRepository.update(id, { status: UserStatus.SUSPENDED });
     
-    this.logger.log(`User restored: ${user.email} (ID: ${id})`);
+    this.logger.log(`User restored to suspended: ${user.email} (ID: ${id})`);
 
     // Fetch fresh user
     return this.findById(id);

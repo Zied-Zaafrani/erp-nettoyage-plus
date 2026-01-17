@@ -111,6 +111,19 @@ export default function UsersPage() {
     },
   });
 
+  // Activate mutation
+  const activateMutation = useMutation({
+    mutationFn: ({ id, data }: { id: string; data: UpdateUserDto }) => 
+      usersService.update(id, data),
+    onSuccess: () => {
+      toast.success(t('users.activateSuccess'));
+      queryClient.invalidateQueries({ queryKey: ['users'] });
+    },
+    onError: (error: { message: string }) => {
+      toast.error(error.message || t('common.error'));
+    },
+  });
+
   // Handlers
   const handleSearch = (value: string) => {
     setSearch(value);
@@ -155,6 +168,13 @@ export default function UsersPage() {
     }
   };
 
+  const handleActivate = (user: User) => {
+    activateMutation.mutate({
+      id: user.id,
+      data: { status: 'ACTIVE' },
+    });
+  };
+
   const handleFormClose = () => {
     setIsFormOpen(false);
     setSelectedUser(null);
@@ -171,6 +191,7 @@ export default function UsersPage() {
   const canDeactivate = hasRole('SUPER_ADMIN');
   const canRestore = hasRole('SUPER_ADMIN');
   const canSuspend = hasRole(['SUPER_ADMIN', 'SUPERVISOR']);
+  const canManage = hasRole(['SUPER_ADMIN', 'SUPERVISOR']);
 
   return (
     <div className="space-y-6">
@@ -318,6 +339,15 @@ export default function UsersPage() {
                             title={t('users.suspend')}
                           >
                             {t('users.suspend')}
+                          </button>
+                        )}
+                        {canManage && user.status === 'SUSPENDED' && (
+                          <button
+                            onClick={() => handleActivate(user)}
+                            className="rounded bg-green-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-green-700 transition-colors"
+                            title={t('users.activate')}
+                          >
+                            {t('users.activate')}
                           </button>
                         )}
                         {canDeactivate && user.status !== 'ARCHIVED' && (

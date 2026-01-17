@@ -127,6 +127,8 @@
     "suspendUser": "Suspend User",
     "suspendConfirm": "Are you sure you want to suspend",
     "suspendSuccess": "User suspended successfully",
+    "activate": "Activate",
+    "activateSuccess": "User activated successfully",
     "restore": "Restore",
     "restoreSuccess": "User restored successfully",
     "firstName": "First Name",
