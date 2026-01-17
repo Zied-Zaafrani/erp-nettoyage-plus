@@ -34,10 +34,7 @@ export class InterventionsController {
   @Post()
   @Roles(
     UserRole.SUPER_ADMIN,
-    UserRole.DIRECTOR,
-    UserRole.SECTOR_CHIEF,
-    UserRole.ZONE_CHIEF,
-    UserRole.TEAM_CHIEF,
+    UserRole.SUPERVISOR,
   )
   create(@Body() createInterventionDto: CreateInterventionDto) {
     return this.interventionsService.create(createInterventionDto);
@@ -98,10 +95,7 @@ export class InterventionsController {
   @Patch(':id')
   @Roles(
     UserRole.SUPER_ADMIN,
-    UserRole.DIRECTOR,
-    UserRole.SECTOR_CHIEF,
-    UserRole.ZONE_CHIEF,
-    UserRole.TEAM_CHIEF,
+    UserRole.SUPERVISOR,
   )
   update(
     @Param('id') id: string,
@@ -115,7 +109,7 @@ export class InterventionsController {
    * Access: SUPER_ADMIN, DIRECTOR, SECTOR_CHIEF
    */
   @Delete(':id')
-  @Roles(UserRole.SUPER_ADMIN, UserRole.DIRECTOR, UserRole.SECTOR_CHIEF)
+  @Roles(UserRole.SUPER_ADMIN, UserRole.SUPERVISOR)
   remove(@Param('id') id: string) {
     return this.interventionsService.remove(id);
   }
@@ -125,7 +119,7 @@ export class InterventionsController {
    * Access: ZONE_CHIEF, TEAM_CHIEF, AGENT
    */
   @Post(':id/start')
-  @Roles(UserRole.ZONE_CHIEF, UserRole.TEAM_CHIEF, UserRole.AGENT)
+  @Roles(UserRole.SUPERVISOR, UserRole.AGENT)
   start(@Param('id') id: string) {
     return this.interventionsService.start(id);
   }
@@ -135,7 +129,7 @@ export class InterventionsController {
    * Access: ZONE_CHIEF, TEAM_CHIEF, AGENT
    */
   @Post(':id/complete')
-  @Roles(UserRole.ZONE_CHIEF, UserRole.TEAM_CHIEF, UserRole.AGENT)
+  @Roles(UserRole.SUPERVISOR, UserRole.AGENT)
   complete(@Param('id') id: string) {
     return this.interventionsService.complete(id);
   }
@@ -147,10 +141,7 @@ export class InterventionsController {
   @Post(':id/cancel')
   @Roles(
     UserRole.SUPER_ADMIN,
-    UserRole.DIRECTOR,
-    UserRole.SECTOR_CHIEF,
-    UserRole.ZONE_CHIEF,
-    UserRole.TEAM_CHIEF,
+    UserRole.SUPERVISOR,
   )
   cancel(@Param('id') id: string) {
     return this.interventionsService.cancel(id);
@@ -163,10 +154,7 @@ export class InterventionsController {
   @Post(':id/reschedule')
   @Roles(
     UserRole.SUPER_ADMIN,
-    UserRole.DIRECTOR,
-    UserRole.SECTOR_CHIEF,
-    UserRole.ZONE_CHIEF,
-    UserRole.TEAM_CHIEF,
+    UserRole.SUPERVISOR,
   )
   reschedule(
     @Param('id') id: string,
@@ -180,7 +168,7 @@ export class InterventionsController {
    * Access: ZONE_CHIEF, TEAM_CHIEF, AGENT
    */
   @Post(':id/checkin')
-  @Roles(UserRole.ZONE_CHIEF, UserRole.TEAM_CHIEF, UserRole.AGENT)
+  @Roles(UserRole.SUPERVISOR, UserRole.AGENT)
   checkIn(@Param('id') id: string, @Body() gpsDto: GpsCheckInDto) {
     return this.interventionsService.checkIn(id, gpsDto);
   }
@@ -190,7 +178,7 @@ export class InterventionsController {
    * Access: ZONE_CHIEF, TEAM_CHIEF, AGENT
    */
   @Post(':id/checkout')
-  @Roles(UserRole.ZONE_CHIEF, UserRole.TEAM_CHIEF, UserRole.AGENT)
+  @Roles(UserRole.SUPERVISOR, UserRole.AGENT)
   checkOut(@Param('id') id: string, @Body() gpsDto: GpsCheckOutDto) {
     return this.interventionsService.checkOut(id, gpsDto);
   }
@@ -200,7 +188,7 @@ export class InterventionsController {
    * Access: ZONE_CHIEF, TEAM_CHIEF, AGENT
    */
   @Post(':id/photos')
-  @Roles(UserRole.ZONE_CHIEF, UserRole.TEAM_CHIEF, UserRole.AGENT)
+  @Roles(UserRole.SUPERVISOR, UserRole.AGENT)
   addPhoto(@Param('id') id: string, @Body('photoUrl') photoUrl: string) {
     return this.interventionsService.addPhoto(id, photoUrl);
   }

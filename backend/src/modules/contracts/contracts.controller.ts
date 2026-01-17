@@ -40,9 +40,7 @@ export class ContractsController {
   @Post()
   @Roles(
     UserRole.SUPER_ADMIN,
-    UserRole.DIRECTOR,
-    UserRole.ASSISTANT,
-    UserRole.SECTOR_CHIEF,
+    UserRole.SUPERVISOR,
   )
   create(@Body() createContractDto: CreateContractDto) {
     return this.contractsService.create(createContractDto);
@@ -55,9 +53,7 @@ export class ContractsController {
   @Post('batch')
   @Roles(
     UserRole.SUPER_ADMIN,
-    UserRole.DIRECTOR,
-    UserRole.ASSISTANT,
-    UserRole.SECTOR_CHIEF,
+    UserRole.SUPERVISOR,
   )
   createBatch(@Body() batchDto: BatchCreateContractsDto) {
     return this.contractsService.createBatch(batchDto);
@@ -70,11 +66,7 @@ export class ContractsController {
   @Get()
   @Roles(
     UserRole.SUPER_ADMIN,
-    UserRole.DIRECTOR,
-    UserRole.ASSISTANT,
-    UserRole.SECTOR_CHIEF,
-    UserRole.ZONE_CHIEF,
-    UserRole.ACCOUNTANT,
+    UserRole.SUPERVISOR,
   )
   findAll(
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
@@ -104,11 +96,7 @@ export class ContractsController {
   @Get('search')
   @Roles(
     UserRole.SUPER_ADMIN,
-    UserRole.DIRECTOR,
-    UserRole.ASSISTANT,
-    UserRole.SECTOR_CHIEF,
-    UserRole.ZONE_CHIEF,
-    UserRole.ACCOUNTANT,
+    UserRole.SUPERVISOR,
   )
   search(@Query() searchDto: SearchContractDto) {
     return this.contractsService.search(searchDto);
@@ -121,12 +109,7 @@ export class ContractsController {
   @Get(':id')
   @Roles(
     UserRole.SUPER_ADMIN,
-    UserRole.DIRECTOR,
-    UserRole.ASSISTANT,
-    UserRole.SECTOR_CHIEF,
-    UserRole.ZONE_CHIEF,
-    UserRole.TEAM_CHIEF,
-    UserRole.ACCOUNTANT,
+    UserRole.SUPERVISOR,
   )
   findOne(@Param('id', ParseUUIDPipe) id: string) {
     return this.contractsService.findOne(id);
@@ -139,9 +122,7 @@ export class ContractsController {
   @Patch(':id')
   @Roles(
     UserRole.SUPER_ADMIN,
-    UserRole.DIRECTOR,
-    UserRole.ASSISTANT,
-    UserRole.SECTOR_CHIEF,
+    UserRole.SUPERVISOR,
   )
   update(
     @Param('id', ParseUUIDPipe) id: string,
@@ -157,9 +138,7 @@ export class ContractsController {
   @Patch('batch/update')
   @Roles(
     UserRole.SUPER_ADMIN,
-    UserRole.DIRECTOR,
-    UserRole.ASSISTANT,
-    UserRole.SECTOR_CHIEF,
+    UserRole.SUPERVISOR,
   )
   updateBatch(@Body() batchDto: BatchUpdateContractsDto) {
     return this.contractsService.updateBatch(batchDto);
@@ -170,7 +149,7 @@ export class ContractsController {
    * DELETE /api/contracts/:id
    */
   @Delete(':id')
-  @Roles(UserRole.SUPER_ADMIN, UserRole.DIRECTOR, UserRole.SECTOR_CHIEF)
+  @Roles(UserRole.SUPER_ADMIN, UserRole.SUPERVISOR)
   remove(@Param('id', ParseUUIDPipe) id: string) {
     return this.contractsService.remove(id);
   }
@@ -180,7 +159,7 @@ export class ContractsController {
    * POST /api/contracts/batch/delete
    */
   @Post('batch/delete')
-  @Roles(UserRole.SUPER_ADMIN, UserRole.DIRECTOR, UserRole.SECTOR_CHIEF)
+  @Roles(UserRole.SUPER_ADMIN, UserRole.SUPERVISOR)
   removeBatch(@Body() batchDto: BatchDeleteContractsDto) {
     return this.contractsService.removeBatch(batchDto);
   }
@@ -190,7 +169,7 @@ export class ContractsController {
    * POST /api/contracts/:id/restore
    */
   @Post(':id/restore')
-  @Roles(UserRole.SUPER_ADMIN, UserRole.DIRECTOR, UserRole.SECTOR_CHIEF)
+  @Roles(UserRole.SUPER_ADMIN, UserRole.SUPERVISOR)
   restore(@Param('id', ParseUUIDPipe) id: string) {
     return this.contractsService.restore(id);
   }
@@ -200,7 +179,7 @@ export class ContractsController {
    * POST /api/contracts/batch/restore
    */
   @Post('batch/restore')
-  @Roles(UserRole.SUPER_ADMIN, UserRole.DIRECTOR, UserRole.SECTOR_CHIEF)
+  @Roles(UserRole.SUPER_ADMIN, UserRole.SUPERVISOR)
   restoreBatch(@Body() batchDto: BatchRestoreContractsDto) {
     return this.contractsService.restoreBatch(batchDto);
   }
@@ -210,7 +189,7 @@ export class ContractsController {
    * POST /api/contracts/:id/suspend
    */
   @Post(':id/suspend')
-  @Roles(UserRole.SUPER_ADMIN, UserRole.DIRECTOR, UserRole.SECTOR_CHIEF)
+  @Roles(UserRole.SUPER_ADMIN, UserRole.SUPERVISOR)
   suspend(@Param('id', ParseUUIDPipe) id: string) {
     return this.contractsService.suspend(id);
   }
@@ -220,7 +199,7 @@ export class ContractsController {
    * POST /api/contracts/:id/terminate
    */
   @Post(':id/terminate')
-  @Roles(UserRole.SUPER_ADMIN, UserRole.DIRECTOR, UserRole.SECTOR_CHIEF)
+  @Roles(UserRole.SUPER_ADMIN, UserRole.SUPERVISOR)
   terminate(@Param('id', ParseUUIDPipe) id: string) {
     return this.contractsService.terminate(id);
   }
@@ -231,7 +210,7 @@ export class ContractsController {
    * Body: { startDate: "2026-01-01", endDate: "2027-01-01" }
    */
   @Post(':id/renew')
-  @Roles(UserRole.SUPER_ADMIN, UserRole.DIRECTOR, UserRole.SECTOR_CHIEF)
+  @Roles(UserRole.SUPER_ADMIN, UserRole.SUPERVISOR)
   renew(
     @Param('id', ParseUUIDPipe) id: string,
     @Body('startDate') startDate: string,

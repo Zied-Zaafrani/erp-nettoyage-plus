@@ -64,9 +64,9 @@ export class AbsencesService {
     }
 
     // Verify agent role
-    if (agent.role !== UserRole.AGENT && agent.role !== UserRole.TEAM_CHIEF) {
+    if (agent.role !== UserRole.AGENT && agent.role !== UserRole.SUPERVISOR) {
       throw new BadRequestException(
-        'Only agents and team chiefs can request absences',
+        'Only agents and supervisors can request absences',
       );
     }
 
@@ -268,12 +268,10 @@ export class AbsencesService {
       throw new NotFoundException(`Reviewer with ID ${reviewerId} not found`);
     }
 
-    // Only Zone Chiefs and above can review
+    // Only Supervisors and above can review
     const allowedRoles = [
       UserRole.SUPER_ADMIN,
-      UserRole.DIRECTOR,
-      UserRole.SECTOR_CHIEF,
-      UserRole.ZONE_CHIEF,
+      UserRole.SUPERVISOR,
     ];
 
     if (!allowedRoles.includes(reviewer.role)) {

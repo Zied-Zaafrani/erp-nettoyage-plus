@@ -54,9 +54,7 @@ export class DashboardController {
    */
   @Get('zone-performance/:zoneId')
   @Roles(
-    UserRole.ZONE_CHIEF,
-    UserRole.SECTOR_CHIEF,
-    UserRole.DIRECTOR,
+    UserRole.SUPERVISOR,
     UserRole.SUPER_ADMIN,
   )
   async getZonePerformance(
@@ -87,9 +85,7 @@ export class DashboardController {
    */
   @Get('reports/daily/:date')
   @Roles(
-    UserRole.ZONE_CHIEF,
-    UserRole.SECTOR_CHIEF,
-    UserRole.DIRECTOR,
+    UserRole.SUPERVISOR,
     UserRole.SUPER_ADMIN,
   )
   async getDailyReport(
@@ -109,9 +105,7 @@ export class DashboardController {
    */
   @Get('reports/weekly/:startDate')
   @Roles(
-    UserRole.ZONE_CHIEF,
-    UserRole.SECTOR_CHIEF,
-    UserRole.DIRECTOR,
+    UserRole.SUPERVISOR,
     UserRole.SUPER_ADMIN,
   )
   async getWeeklyReport(
@@ -129,7 +123,7 @@ export class DashboardController {
    * Example: /api/reports/monthly/2026/1
    */
   @Get('reports/monthly/:year/:month')
-  @Roles(UserRole.DIRECTOR, UserRole.SUPER_ADMIN)
+  @Roles(UserRole.SUPERVISOR, UserRole.SUPER_ADMIN)
   async getMonthlyReport(
     @Param('year', ParseIntPipe) year: number,
     @Param('month', ParseIntPipe) month: number,
@@ -146,13 +140,11 @@ export class DashboardController {
    */
   @Get('reports/kpi/:roleType')
   @Roles(
-    UserRole.ZONE_CHIEF,
-    UserRole.SECTOR_CHIEF,
-    UserRole.DIRECTOR,
+    UserRole.SUPERVISOR,
     UserRole.SUPER_ADMIN,
   )
   async getKPIMetrics(
-    @Param('roleType') roleType: 'ZONE_CHIEF' | 'TEAM_CHIEF' | 'AGENT' | 'OVERALL',
+    @Param('roleType') roleType: 'SUPERVISOR' | 'AGENT' | 'OVERALL',
     @Query('startDate') startDateStr?: string,
     @Query('endDate') endDateStr?: string,
   ): Promise<KPIMetrics> {

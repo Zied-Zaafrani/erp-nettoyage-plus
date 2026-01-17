@@ -30,7 +30,7 @@ export class ZonesController {
    * POST /api/zones
    */
   @Post()
-  @Roles(UserRole.SUPER_ADMIN, UserRole.DIRECTOR, UserRole.SECTOR_CHIEF)
+  @Roles(UserRole.SUPER_ADMIN, UserRole.SUPERVISOR)
   create(@Body() createZoneDto: CreateZoneDto) {
     return this.zonesService.create(createZoneDto);
   }
@@ -42,10 +42,7 @@ export class ZonesController {
   @Get()
   @Roles(
     UserRole.SUPER_ADMIN,
-    UserRole.DIRECTOR,
-    UserRole.ASSISTANT,
-    UserRole.SECTOR_CHIEF,
-    UserRole.ZONE_CHIEF,
+    UserRole.SUPERVISOR,
   )
   findAll(
     @Query('includeDeleted', new DefaultValuePipe(false), ParseBoolPipe)
@@ -61,11 +58,7 @@ export class ZonesController {
   @Get(':id')
   @Roles(
     UserRole.SUPER_ADMIN,
-    UserRole.DIRECTOR,
-    UserRole.ASSISTANT,
-    UserRole.SECTOR_CHIEF,
-    UserRole.ZONE_CHIEF,
-    UserRole.TEAM_CHIEF,
+    UserRole.SUPERVISOR,
   )
   findOne(@Param('id', ParseUUIDPipe) id: string) {
     return this.zonesService.findOne(id);
@@ -76,7 +69,7 @@ export class ZonesController {
    * PATCH /api/zones/:id
    */
   @Patch(':id')
-  @Roles(UserRole.SUPER_ADMIN, UserRole.DIRECTOR, UserRole.SECTOR_CHIEF)
+  @Roles(UserRole.SUPER_ADMIN, UserRole.SUPERVISOR)
   update(
     @Param('id', ParseUUIDPipe) id: string,
     @Body() updateZoneDto: UpdateZoneDto,
@@ -89,7 +82,7 @@ export class ZonesController {
    * DELETE /api/zones/:id
    */
   @Delete(':id')
-  @Roles(UserRole.SUPER_ADMIN, UserRole.DIRECTOR)
+  @Roles(UserRole.SUPER_ADMIN, UserRole.SUPERVISOR)
   remove(@Param('id', ParseUUIDPipe) id: string) {
     return this.zonesService.remove(id);
   }
@@ -99,7 +92,7 @@ export class ZonesController {
    * POST /api/zones/:id/assign-site
    */
   @Post(':id/assign-site')
-  @Roles(UserRole.SUPER_ADMIN, UserRole.DIRECTOR, UserRole.SECTOR_CHIEF)
+  @Roles(UserRole.SUPER_ADMIN, UserRole.SUPERVISOR)
   assignSite(
     @Param('id', ParseUUIDPipe) id: string,
     @Body() assignDto: AssignSiteDto,
@@ -114,9 +107,7 @@ export class ZonesController {
   @Post(':id/assign-agent')
   @Roles(
     UserRole.SUPER_ADMIN,
-    UserRole.DIRECTOR,
-    UserRole.SECTOR_CHIEF,
-    UserRole.ZONE_CHIEF,
+    UserRole.SUPERVISOR,
   )
   assignAgent(
     @Param('id', ParseUUIDPipe) id: string,
@@ -132,11 +123,7 @@ export class ZonesController {
   @Get(':id/sites')
   @Roles(
     UserRole.SUPER_ADMIN,
-    UserRole.DIRECTOR,
-    UserRole.ASSISTANT,
-    UserRole.SECTOR_CHIEF,
-    UserRole.ZONE_CHIEF,
-    UserRole.TEAM_CHIEF,
+    UserRole.SUPERVISOR,
   )
   getZoneSites(@Param('id', ParseUUIDPipe) id: string) {
     return this.zonesService.getZoneSites(id);
@@ -149,11 +136,7 @@ export class ZonesController {
   @Get(':id/agents')
   @Roles(
     UserRole.SUPER_ADMIN,
-    UserRole.DIRECTOR,
-    UserRole.ASSISTANT,
-    UserRole.SECTOR_CHIEF,
-    UserRole.ZONE_CHIEF,
-    UserRole.TEAM_CHIEF,
+    UserRole.SUPERVISOR,
   )
   getZoneAgents(@Param('id', ParseUUIDPipe) id: string) {
     return this.zonesService.getZoneAgents(id);
@@ -166,9 +149,7 @@ export class ZonesController {
   @Get(':id/performance')
   @Roles(
     UserRole.SUPER_ADMIN,
-    UserRole.DIRECTOR,
-    UserRole.SECTOR_CHIEF,
-    UserRole.ZONE_CHIEF,
+    UserRole.SUPERVISOR,
   )
   getZonePerformance(@Param('id', ParseUUIDPipe) id: string) {
     return this.zonesService.getZonePerformance(id);
@@ -179,7 +160,7 @@ export class ZonesController {
    * DELETE /api/zones/assignments/site/:assignmentId
    */
   @Delete('assignments/site/:assignmentId')
-  @Roles(UserRole.SUPER_ADMIN, UserRole.DIRECTOR, UserRole.SECTOR_CHIEF)
+  @Roles(UserRole.SUPER_ADMIN, UserRole.SUPERVISOR)
   unassignSite(@Param('assignmentId', ParseUUIDPipe) assignmentId: string) {
     return this.zonesService.unassignSite(assignmentId);
   }
@@ -191,9 +172,7 @@ export class ZonesController {
   @Delete('assignments/agent/:assignmentId')
   @Roles(
     UserRole.SUPER_ADMIN,
-    UserRole.DIRECTOR,
-    UserRole.SECTOR_CHIEF,
-    UserRole.ZONE_CHIEF,
+    UserRole.SUPERVISOR,
   )
   unassignAgent(@Param('assignmentId', ParseUUIDPipe) assignmentId: string) {
     return this.zonesService.unassignAgent(assignmentId);
