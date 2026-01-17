@@ -27,7 +27,7 @@ export class SchedulesController {
    * Access: SUPER_ADMIN, DIRECTOR, SECTOR_CHIEF
    */
   @Post()
-  @Roles(UserRole.SUPER_ADMIN, UserRole.DIRECTOR, UserRole.SECTOR_CHIEF)
+  @Roles(UserRole.SUPER_ADMIN, UserRole.SUPERVISOR)
   create(@Body() createScheduleDto: CreateScheduleDto) {
     return this.schedulesService.create(createScheduleDto);
   }
@@ -69,7 +69,7 @@ export class SchedulesController {
    * Access: SUPER_ADMIN, DIRECTOR, SECTOR_CHIEF
    */
   @Post('generate-all')
-  @Roles(UserRole.SUPER_ADMIN, UserRole.DIRECTOR, UserRole.SECTOR_CHIEF)
+  @Roles(UserRole.SUPER_ADMIN, UserRole.SUPERVISOR)
   generateAllInterventions(@Body() dto: GenerateInterventionsDto) {
     return this.schedulesService.generateAllInterventions(dto);
   }
@@ -88,7 +88,7 @@ export class SchedulesController {
    * Access: SUPER_ADMIN, DIRECTOR, SECTOR_CHIEF
    */
   @Patch(':id')
-  @Roles(UserRole.SUPER_ADMIN, UserRole.DIRECTOR, UserRole.SECTOR_CHIEF)
+  @Roles(UserRole.SUPER_ADMIN, UserRole.SUPERVISOR)
   update(@Param('id') id: string, @Body() updateScheduleDto: UpdateScheduleDto) {
     return this.schedulesService.update(id, updateScheduleDto);
   }
@@ -98,7 +98,7 @@ export class SchedulesController {
    * Access: SUPER_ADMIN, DIRECTOR, SECTOR_CHIEF
    */
   @Delete(':id')
-  @Roles(UserRole.SUPER_ADMIN, UserRole.DIRECTOR, UserRole.SECTOR_CHIEF)
+  @Roles(UserRole.SUPER_ADMIN, UserRole.SUPERVISOR)
   remove(@Param('id') id: string) {
     return this.schedulesService.remove(id);
   }
@@ -108,7 +108,7 @@ export class SchedulesController {
    * Access: SUPER_ADMIN, DIRECTOR, SECTOR_CHIEF
    */
   @Post(':id/generate')
-  @Roles(UserRole.SUPER_ADMIN, UserRole.DIRECTOR, UserRole.SECTOR_CHIEF)
+  @Roles(UserRole.SUPER_ADMIN, UserRole.SUPERVISOR)
   generateInterventions(
     @Param('id') id: string,
     @Body() dto: GenerateInterventionsDto,
@@ -121,7 +121,7 @@ export class SchedulesController {
    * Access: SUPER_ADMIN, DIRECTOR, SECTOR_CHIEF
    */
   @Post(':id/pause')
-  @Roles(UserRole.SUPER_ADMIN, UserRole.DIRECTOR, UserRole.SECTOR_CHIEF)
+  @Roles(UserRole.SUPER_ADMIN, UserRole.SUPERVISOR)
   pause(@Param('id') id: string) {
     return this.schedulesService.pause(id);
   }
@@ -131,7 +131,7 @@ export class SchedulesController {
    * Access: SUPER_ADMIN, DIRECTOR, SECTOR_CHIEF
    */
   @Post(':id/resume')
-  @Roles(UserRole.SUPER_ADMIN, UserRole.DIRECTOR, UserRole.SECTOR_CHIEF)
+  @Roles(UserRole.SUPER_ADMIN, UserRole.SUPERVISOR)
   resume(@Param('id') id: string) {
     return this.schedulesService.resume(id);
   }

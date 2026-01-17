@@ -149,9 +149,9 @@ export class InterventionsService {
         );
       }
 
-      if (zoneChief.role !== UserRole.ZONE_CHIEF) {
+      if (zoneChief.role !== UserRole.SUPERVISOR) {
         throw new BadRequestException(
-          `User ${zoneChiefId} must have ZONE_CHIEF role`,
+          `User ${zoneChiefId} must have SUPERVISOR role`,
         );
       }
     }
@@ -168,9 +168,9 @@ export class InterventionsService {
         );
       }
 
-      if (teamChief.role !== UserRole.TEAM_CHIEF) {
+      if (teamChief.role !== UserRole.SUPERVISOR) {
         throw new BadRequestException(
-          `User ${teamChiefId} must have TEAM_CHIEF role`,
+          `User ${teamChiefId} must have SUPERVISOR role`,
         );
       }
     }

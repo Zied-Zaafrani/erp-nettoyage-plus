@@ -28,7 +28,7 @@ export class AbsencesController {
    * Access: AGENT, TEAM_CHIEF (for themselves)
    */
   @Post()
-  @Roles(UserRole.AGENT, UserRole.TEAM_CHIEF, UserRole.ZONE_CHIEF, UserRole.SECTOR_CHIEF)
+  @Roles(UserRole.AGENT, UserRole.SUPERVISOR)
   create(@Body() createAbsenceDto: CreateAbsenceDto) {
     return this.absencesService.create(createAbsenceDto);
   }
@@ -63,9 +63,7 @@ export class AbsencesController {
   @Get('pending')
   @Roles(
     UserRole.SUPER_ADMIN,
-    UserRole.DIRECTOR,
-    UserRole.SECTOR_CHIEF,
-    UserRole.ZONE_CHIEF,
+    UserRole.SUPERVISOR,
   )
   findPending() {
     return this.absencesService.findPending();
@@ -120,7 +118,7 @@ export class AbsencesController {
    * Access: Agent who requested it
    */
   @Patch(':id')
-  @Roles(UserRole.AGENT, UserRole.TEAM_CHIEF)
+  @Roles(UserRole.AGENT, UserRole.SUPERVISOR)
   update(
     @Param('id') id: string,
     @Body() updateAbsenceDto: UpdateAbsenceDto,
@@ -136,9 +134,7 @@ export class AbsencesController {
   @Post(':id/review')
   @Roles(
     UserRole.SUPER_ADMIN,
-    UserRole.DIRECTOR,
-    UserRole.SECTOR_CHIEF,
-    UserRole.ZONE_CHIEF,
+    UserRole.SUPERVISOR,
   )
   review(
     @Param('id') id: string,
@@ -153,7 +149,7 @@ export class AbsencesController {
    * Access: Agent who requested it
    */
   @Post(':id/cancel')
-  @Roles(UserRole.AGENT, UserRole.TEAM_CHIEF)
+  @Roles(UserRole.AGENT, UserRole.SUPERVISOR)
   cancel(@Param('id') id: string, @CurrentUser() user: any) {
     return this.absencesService.cancel(id, user.id);
   }
@@ -163,7 +159,7 @@ export class AbsencesController {
    * Access: SUPER_ADMIN, DIRECTOR only
    */
   @Delete(':id')
-  @Roles(UserRole.SUPER_ADMIN, UserRole.DIRECTOR)
+  @Roles(UserRole.SUPER_ADMIN, UserRole.SUPERVISOR)
   remove(@Param('id') id: string) {
     return this.absencesService.remove(id);
   }

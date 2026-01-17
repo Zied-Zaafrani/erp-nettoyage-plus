@@ -62,20 +62,20 @@ async function bootstrap() {
     // Create additional demo users
     const demoUsers = [
       {
-        email: 'director@nettoyageplus.com',
-        password: 'Director123!',
+        email: 'supervisor@nettoyageplus.com',
+        password: 'Supervisor123!',
         firstName: 'Mohamed',
-        lastName: 'Directeur',
-        role: UserRole.DIRECTOR,
+        lastName: 'Superviseur',
+        role: UserRole.SUPERVISOR,
         phone: '+22231633163',
         isActive: true,
       },
       {
-        email: 'sectorchief@nettoyageplus.com',
-        password: 'Sector123!',
+        email: 'supervisor2@nettoyageplus.com',
+        password: 'Supervisor123!',
         firstName: 'Ahmed',
-        lastName: 'ChefSecteur',
-        role: UserRole.SECTOR_CHIEF,
+        lastName: 'Superviseur2',
+        role: UserRole.SUPERVISOR,
         phone: '+22220000001',
         isActive: true,
       },

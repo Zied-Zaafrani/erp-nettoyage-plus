@@ -564,7 +564,7 @@ export class DashboardService {
    * Get KPI metrics by role type
    */
   async getKPIMetrics(
-    roleType: 'ZONE_CHIEF' | 'TEAM_CHIEF' | 'AGENT' | 'OVERALL',
+    roleType: 'SUPERVISOR' | 'AGENT' | 'OVERALL',
     startDate?: Date,
     endDate?: Date,
   ): Promise<KPIMetrics> {

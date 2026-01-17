@@ -37,9 +37,7 @@ export class ChecklistsController {
   @Post('templates')
   @Roles(
     UserRole.SUPER_ADMIN,
-    UserRole.DIRECTOR,
-    UserRole.SECTOR_CHIEF,
-    UserRole.QUALITY_CONTROLLER,
+    UserRole.SUPERVISOR,
   )
   createTemplate(@Body() dto: CreateTemplateDto) {
     return this.checklistsService.createTemplate(dto);
@@ -76,9 +74,7 @@ export class ChecklistsController {
   @Patch('templates/:id')
   @Roles(
     UserRole.SUPER_ADMIN,
-    UserRole.DIRECTOR,
-    UserRole.SECTOR_CHIEF,
-    UserRole.QUALITY_CONTROLLER,
+    UserRole.SUPERVISOR,
   )
   updateTemplate(@Param('id') id: string, @Body() dto: UpdateTemplateDto) {
     return this.checklistsService.updateTemplate(id, dto);
@@ -89,7 +85,7 @@ export class ChecklistsController {
    * Access: SUPER_ADMIN, DIRECTOR, SECTOR_CHIEF
    */
   @Delete('templates/:id')
-  @Roles(UserRole.SUPER_ADMIN, UserRole.DIRECTOR, UserRole.SECTOR_CHIEF)
+  @Roles(UserRole.SUPER_ADMIN, UserRole.SUPERVISOR)
   removeTemplate(@Param('id') id: string) {
     return this.checklistsService.removeTemplate(id);
   }
@@ -103,10 +99,7 @@ export class ChecklistsController {
   @Post('instances')
   @Roles(
     UserRole.SUPER_ADMIN,
-    UserRole.DIRECTOR,
-    UserRole.SECTOR_CHIEF,
-    UserRole.ZONE_CHIEF,
-    UserRole.TEAM_CHIEF,
+    UserRole.SUPERVISOR,
   )
   createInstance(@Body() dto: CreateInstanceDto) {
     return this.checklistsService.createInstance(dto);
@@ -157,10 +150,7 @@ export class ChecklistsController {
    */
   @Post('instances/:id/review')
   @Roles(
-    UserRole.ZONE_CHIEF,
-    UserRole.QUALITY_CONTROLLER,
-    UserRole.SECTOR_CHIEF,
-    UserRole.DIRECTOR,
+    UserRole.SUPERVISOR,
     UserRole.SUPER_ADMIN,
   )
   reviewInstance(@Param('id') id: string, @Body() dto: ReviewInstanceDto) {
@@ -174,7 +164,7 @@ export class ChecklistsController {
    * Access: ZONE_CHIEF, TEAM_CHIEF, AGENT
    */
   @Post('items/:id/complete')
-  @Roles(UserRole.ZONE_CHIEF, UserRole.TEAM_CHIEF, UserRole.AGENT)
+  @Roles(UserRole.SUPERVISOR, UserRole.AGENT)
   completeItem(@Param('id') id: string, @Body() dto: CompleteItemDto) {
     return this.checklistsService.completeItem(id, dto);
   }
@@ -184,7 +174,7 @@ export class ChecklistsController {
    * Access: ZONE_CHIEF, TEAM_CHIEF
    */
   @Post('items/:id/uncomplete')
-  @Roles(UserRole.ZONE_CHIEF, UserRole.TEAM_CHIEF)
+  @Roles(UserRole.SUPERVISOR)
   uncompleteItem(@Param('id') id: string) {
     return this.checklistsService.uncompleteItem(id);
   }
@@ -194,7 +184,7 @@ export class ChecklistsController {
    * Access: ZONE_CHIEF, TEAM_CHIEF, AGENT
    */
   @Post('items/:id/photos')
-  @Roles(UserRole.ZONE_CHIEF, UserRole.TEAM_CHIEF, UserRole.AGENT)
+  @Roles(UserRole.SUPERVISOR, UserRole.AGENT)
   addPhotoToItem(@Param('id') id: string, @Body('photoUrl') photoUrl: string) {
     return this.checklistsService.addPhotoToItem(id, photoUrl);
   }

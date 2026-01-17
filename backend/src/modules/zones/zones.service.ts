@@ -46,9 +46,9 @@ export class ZonesService {
       throw new NotFoundException(`User with ID ${userId} not found`);
     }
 
-    if (user.role !== UserRole.ZONE_CHIEF) {
+    if (user.role !== UserRole.SUPERVISOR) {
       throw new BadRequestException(
-        `User ${userId} must have ZONE_CHIEF role`,
+        `User ${userId} must have SUPERVISOR role`,
       );
     }
   }
@@ -65,9 +65,9 @@ export class ZonesService {
       throw new NotFoundException(`User with ID ${userId} not found`);
     }
 
-    if (user.role !== UserRole.TEAM_CHIEF) {
+    if (user.role !== UserRole.SUPERVISOR) {
       throw new BadRequestException(
-        `User ${userId} must have TEAM_CHIEF role`,
+        `User ${userId} must have SUPERVISOR role`,
       );
     }
   }

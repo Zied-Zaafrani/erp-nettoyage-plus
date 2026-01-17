@@ -129,7 +129,7 @@ export interface MonthlyReport {
 }
 
 export interface KPIMetrics {
-  roleType: 'ZONE_CHIEF' | 'TEAM_CHIEF' | 'AGENT' | 'OVERALL';
+  roleType: 'SUPERVISOR' | 'AGENT' | 'OVERALL';
   interventionCompletionRate: number;
   checklistCompletionRate: number;
   averageQualityScore: number;
