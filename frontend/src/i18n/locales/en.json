@@ -119,6 +119,12 @@
     "editUser": "Edit User",
     "deleteUser": "Delete User",
     "deleteConfirm": "Are you sure you want to delete this user?",
+    "deactivateUser": "Deactivate User",
+    "deactivate": "Deactivate",
+    "deactivateConfirm": "Are you sure you want to deactivate",
+    "deactivateSuccess": "User deactivated successfully",
+    "restore": "Restore",
+    "restoreSuccess": "User restored successfully",
     "firstName": "First Name",
     "lastName": "Last Name",
     "email": "Email",
@@ -128,6 +134,12 @@
     "createdAt": "Created",
     "lastLogin": "Last Login",
     "neverLoggedIn": "Never",
+    "statusFilter": {
+      "all": "All Users",
+      "active": "Active Users",
+      "suspended": "Suspended Users",
+      "archived": "Inactive Users"
+    },
     "roles": {
       "SUPER_ADMIN": "Super Admin",
       "SUPERVISOR": "Supervisor",

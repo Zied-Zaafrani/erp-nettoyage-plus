@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import { Card, CardHeader, CardContent, Badge } from '@/components/ui';
 import { dashboardService } from '@/services';
+import { useAuth } from '@/contexts/AuthContext';
 
 // ============================================
 // DASHBOARD PAGE - PHASE 1 MVP
@@ -21,6 +22,10 @@ import { dashboardService } from '@/services';
 
 export default function DashboardPage() {
   const { t } = useTranslation();
+  const { hasRole } = useAuth();
+  
+  // Check if user can access management features
+  const canManage = hasRole(['SUPER_ADMIN', 'SUPERVISOR']);
   
   // Fetch today's interventions
   const { data: todayInterventions, isLoading: interventionsLoading } = useQuery({
@@ -40,41 +45,43 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      {/* Quick Navigation Cards - Phase 1 */}
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <QuickNavCard
-          title={t('nav.clients')}
-          count="View All"
-          icon={<Building2 className="h-6 w-6" />}
-          iconBg="bg-blue-100"
-          iconColor="text-blue-600"
-          href="/clients"
-        />
-        <QuickNavCard
-          title={t('nav.sites')}
-          count="View All"
-          icon={<FileText className="h-6 w-6" />}
-          iconBg="bg-green-100"
-          iconColor="text-green-600"
-          href="/sites"
-        />
-        <QuickNavCard
-          title={t('nav.contracts')}
-          count="View All"
-          icon={<FileText className="h-6 w-6" />}
-          iconBg="bg-purple-100"
-          iconColor="text-purple-600"
-          href="/contracts"
-        />
-        <QuickNavCard
-          title={t('nav.interventions')}
-          count="View All"
-          icon={<CheckCircle className="h-6 w-6" />}
-          iconBg="bg-orange-100"
-          iconColor="text-orange-600"
-          href="/interventions"
-        />
-      </div>
+      {/* Quick Navigation Cards - Phase 1 (Admin/Supervisor Only) */}
+      {canManage && (
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <QuickNavCard
+            title={t('nav.clients')}
+            count="View All"
+            icon={<Building2 className="h-6 w-6" />}
+            iconBg="bg-blue-100"
+            iconColor="text-blue-600"
+            href="/clients"
+          />
+          <QuickNavCard
+            title={t('nav.sites')}
+            count="View All"
+            icon={<FileText className="h-6 w-6" />}
+            iconBg="bg-green-100"
+            iconColor="text-green-600"
+            href="/sites"
+          />
+          <QuickNavCard
+            title={t('nav.contracts')}
+            count="View All"
+            icon={<FileText className="h-6 w-6" />}
+            iconBg="bg-purple-100"
+            iconColor="text-purple-600"
+            href="/contracts"
+          />
+          <QuickNavCard
+            title={t('nav.interventions')}
+            count="View All"
+            icon={<CheckCircle className="h-6 w-6" />}
+            iconBg="bg-orange-100"
+            iconColor="text-orange-600"
+            href="/interventions"
+          />
+        </div>
+      )}
 
       {/* Main content grid */}
       <div className="grid gap-6 lg:grid-cols-2">

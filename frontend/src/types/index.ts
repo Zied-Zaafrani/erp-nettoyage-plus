@@ -389,7 +389,9 @@ export interface SearchParams extends PaginationParams {
 
 export interface UserFilters extends SearchParams {
   role?: UserRole;
+  status?: UserStatus;
   isActive?: boolean;
+  includeDeleted?: boolean;
 }
 
 export interface ClientFilters extends SearchParams {

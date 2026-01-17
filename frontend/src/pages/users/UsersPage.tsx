@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { Plus, Search, Edit, Trash2, UserCheck, RefreshCw } from 'lucide-react';
+import { Plus, Search, Edit, UserX, UserCheck, RefreshCw, RotateCcw } from 'lucide-react';
 import toast from 'react-hot-toast';
 import {
   Button,
@@ -19,7 +19,7 @@ import {
   ConfirmModal,
 } from '@/components/ui';
 import { usersService } from '@/services';
-import { User } from '@/types';
+import { User, UserStatus } from '@/types';
 import { useAuth, ROLE_KEYS, ROLE_COLORS } from '@/contexts/AuthContext';
 import UserFormModal from './components/UserFormModal';
 
@@ -36,10 +36,11 @@ export default function UsersPage() {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState('');
   const [debouncedSearch, setDebouncedSearch] = useState('');
+  const [statusFilter, setStatusFilter] = useState<'ALL' | UserStatus>('ALL');
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [isFormOpen, setIsFormOpen] = useState(false);
-  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
-  const [userToDelete, setUserToDelete] = useState<User | null>(null);
+  const [isDeactivateOpen, setIsDeactivateOpen] = useState(false);
+  const [userToDeactivate, setUserToDeactivate] = useState<User | null>(null);
 
   const limit = 10;
 
@@ -55,18 +56,36 @@ export default function UsersPage() {
 
   // Fetch users
   const { data, isLoading, error, refetch } = useQuery({
-    queryKey: ['users', { page, limit, search: debouncedSearch }],
-    queryFn: () => usersService.getAll({ page, limit, search: debouncedSearch || undefined }),
+    queryKey: ['users', { page, limit, search: debouncedSearch, status: statusFilter }],
+    queryFn: () => usersService.getAll({ 
+      page, 
+      limit, 
+      search: debouncedSearch || undefined,
+      status: statusFilter === 'ALL' ? undefined : statusFilter,
+      includeDeleted: statusFilter === 'ARCHIVED'
+    }),
   });
 
-  // Delete mutation
-  const deleteMutation = useMutation({
+  // Deactivate mutation
+  const deactivateMutation = useMutation({
     mutationFn: (id: string) => usersService.delete(id),
     onSuccess: () => {
-      toast.success(t('users.deleteSuccess'));
+      toast.success(t('users.deactivateSuccess'));
       queryClient.invalidateQueries({ queryKey: ['users'] });
-      setIsDeleteOpen(false);
-      setUserToDelete(null);
+      setIsDeactivateOpen(false);
+      setUserToDeactivate(null);
+    },
+    onError: (error: { message: string }) => {
+      toast.error(error.message || t('common.error'));
+    },
+  });
+
+  // Restore mutation
+  const restoreMutation = useMutation({
+    mutationFn: (id: string) => usersService.restore(id),
+    onSuccess: () => {
+      toast.success(t('users.restoreSuccess'));
+      queryClient.invalidateQueries({ queryKey: ['users'] });
     },
     onError: (error: { message: string }) => {
       toast.error(error.message || t('common.error'));
@@ -88,14 +107,18 @@ export default function UsersPage() {
     setIsFormOpen(true);
   };
 
-  const handleDelete = (user: User) => {
-    setUserToDelete(user);
-    setIsDeleteOpen(true);
+  const handleDeactivate = (user: User) => {
+    setUserToDeactivate(user);
+    setIsDeactivateOpen(true);
   };
 
-  const confirmDelete = () => {
-    if (userToDelete) {
-      deleteMutation.mutate(userToDelete.id);
+  const handleRestore = (user: User) => {
+    restoreMutation.mutate(user.id);
+  };
+
+  const confirmDeactivate = () => {
+    if (userToDeactivate) {
+      deactivateMutation.mutate(userToDeactivate.id);
     }
   };
 
@@ -112,7 +135,8 @@ export default function UsersPage() {
   // Check permissions
   const canCreate = hasRole(['SUPER_ADMIN', 'SUPERVISOR']);
   const canEdit = hasRole(['SUPER_ADMIN', 'SUPERVISOR']);
-  const canDelete = hasRole('SUPER_ADMIN');
+  const canDeactivate = hasRole('SUPER_ADMIN');
+  const canRestore = hasRole('SUPER_ADMIN');
 
   return (
     <div className="space-y-6">
@@ -134,13 +158,28 @@ export default function UsersPage() {
       {/* Filters */}
       <Card padding="sm">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <div className="w-full sm:max-w-xs">
-            <Input
-              placeholder={t('common.search')}
-              value={search}
-              onChange={(e) => handleSearch(e.target.value)}
-              leftIcon={<Search size={18} />}
-            />
+          <div className="flex flex-col sm:flex-row gap-3 flex-1">
+            <div className="w-full sm:max-w-xs">
+              <Input
+                placeholder={t('common.search')}
+                value={search}
+                onChange={(e) => handleSearch(e.target.value)}
+                leftIcon={<Search size={18} />}
+              />
+            </div>
+            <select
+              value={statusFilter}
+              onChange={(e) => {
+                setStatusFilter(e.target.value as 'ALL' | UserStatus);
+                setPage(1);
+              }}
+              className="rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-gray-900 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/20"
+            >
+              <option value="ALL">{t('users.statusFilter.all')}</option>
+              <option value="ACTIVE">{t('users.statusFilter.active')}</option>
+              <option value="SUSPENDED">{t('users.statusFilter.suspended')}</option>
+              <option value="ARCHIVED">{t('users.statusFilter.archived')}</option>
+            </select>
           </div>
           <div className="flex items-center gap-2">
             <span className="text-sm text-gray-500">
@@ -215,20 +254,32 @@ export default function UsersPage() {
                     </TableCell>
                     <TableCell>
                       <div className="flex items-center gap-1">
-                        {canEdit && (
+                        {canEdit && user.status !== 'ARCHIVED' && (
                           <button
                             onClick={() => handleEdit(user)}
                             className="rounded p-1.5 text-gray-400 hover:bg-gray-100 hover:text-gray-600"
+                            title={t('common.edit')}
                           >
                             <Edit size={16} />
                           </button>
                         )}
-                        {canDelete && (
+                        {canDeactivate && user.status !== 'ARCHIVED' && (
                           <button
-                            onClick={() => handleDelete(user)}
+                            onClick={() => handleDeactivate(user)}
                             className="rounded p-1.5 text-gray-400 hover:bg-red-50 hover:text-red-600"
+                            title={t('users.deactivate')}
                           >
-                            <Trash2 size={16} />
+                            <UserX size={16} />
+                          </button>
+                        )}
+                        {canRestore && user.status === 'ARCHIVED' && (
+                          <button
+                            onClick={() => handleRestore(user)}
+                            className="rounded p-1.5 text-gray-400 hover:bg-green-50 hover:text-green-600"
+                            title={t('users.restore')}
+                            disabled={restoreMutation.isPending}
+                          >
+                            <RotateCcw size={16} />
                           </button>
                         )}
                       </div>
@@ -275,15 +326,15 @@ export default function UsersPage() {
         user={selectedUser}
       />
 
-      {/* Delete confirmation modal */}
+      {/* Deactivate confirmation modal */}
       <ConfirmModal
-        isOpen={isDeleteOpen}
-        onClose={() => setIsDeleteOpen(false)}
-        onConfirm={confirmDelete}
-        title={t('users.deleteUser')}
-        message={`${t('users.deleteConfirm')} ${userToDelete?.firstName} ${userToDelete?.lastName}?`}
-        confirmText={t('common.delete')}
-        isLoading={deleteMutation.isPending}
+        isOpen={isDeactivateOpen}
+        onClose={() => setIsDeactivateOpen(false)}
+        onConfirm={confirmDeactivate}
+        title={t('users.deactivateUser')}
+        message={`${t('users.deactivateConfirm')} ${userToDeactivate?.firstName} ${userToDeactivate?.lastName}?`}
+        confirmText={t('users.deactivate')}
+        isLoading={deactivateMutation.isPending}
       />
     </div>
   );

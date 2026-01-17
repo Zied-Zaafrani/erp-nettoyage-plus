@@ -86,6 +86,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const logout = useCallback(() => {
     authService.logout();
     setUser(null);
+    // Reset language to default on logout
+    localStorage.removeItem('i18nextLng');
   }, []);
 
   // Check if user has required role(s)

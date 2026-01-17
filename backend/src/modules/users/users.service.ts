@@ -7,6 +7,7 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, FindOptionsWhere, ILike } from 'typeorm';
 import { User } from './entities/user.entity';
+import { UserStatus } from '../../shared/types/user.types';
 import {
   CreateUserDto,
   UpdateUserDto,
@@ -282,10 +283,13 @@ export class UsersService {
       throw new NotFoundException(`User with ID ${id} not found`);
     }
 
+    // Update status to ARCHIVED before soft deleting
+    await this.userRepository.update(id, { status: UserStatus.ARCHIVED });
+    
     await this.userRepository.softDelete(id);
     this.logger.log(`User soft deleted: ${user.email} (ID: ${id})`);
 
-    return { message: `User ${user.email} has been deleted` };
+    return { message: `User ${user.email} has been deactivated` };
   }
 
   /**

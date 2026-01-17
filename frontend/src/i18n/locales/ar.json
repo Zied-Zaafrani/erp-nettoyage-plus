@@ -42,7 +42,9 @@
     "thisWeek": "هذا الأسبوع",
     "thisMonth": "هذا الشهر",
     "details": "التفاصيل",
-    "view": "عرض",    "viewAll": "عرض الكل",    "export": "تصدير",
+    "view": "عرض",
+    "viewAll": "عرض الكل",
+    "export": "تصدير",
     "import": "استيراد",
     "refresh": "تحديث",
     "close": "إغلاق"
@@ -117,6 +119,12 @@
     "editUser": "تعديل المستخدم",
     "deleteUser": "حذف المستخدم",
     "deleteConfirm": "هل أنت متأكد من حذف هذا المستخدم؟",
+    "deactivateUser": "إلغاء تنشيط المستخدم",
+    "deactivate": "إلغاء التنشيط",
+    "deactivateConfirm": "هل أنت متأكد من إلغاء تنشيط",
+    "deactivateSuccess": "تم إلغاء تنشيط المستخدم بنجاح",
+    "restore": "استعادة",
+    "restoreSuccess": "تم استعادة المستخدم بنجاح",
     "firstName": "الاسم الأول",
     "lastName": "اسم العائلة",
     "email": "البريد الإلكتروني",
@@ -126,6 +134,12 @@
     "createdAt": "تاريخ الإنشاء",
     "lastLogin": "آخر دخول",
     "neverLoggedIn": "لم يسجل الدخول",
+    "statusFilter": {
+      "all": "جميع المستخدمين",
+      "active": "المستخدمون النشطون",
+      "suspended": "المستخدمون المعلقون",
+      "archived": "المستخدمون غير النشطين"
+    },
     "roles": {
       "SUPER_ADMIN": "المدير العام",
       "SUPERVISOR": "المشرف",
