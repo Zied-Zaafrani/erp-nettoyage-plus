@@ -1,28 +1,18 @@
 import { useState } from 'react';
-import { Plus, Search, Filter, ChevronRight, Calendar, MapPin, Clock } from 'lucide-react';
+import { Plus, Search, Filter, ChevronRight, Calendar, MapPin } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { Card, Button, Input, Badge } from '@/components/ui';
 import { useQuery } from '@tanstack/react-query';
 import { interventionsService } from '@/services';
-
-interface Intervention {
-  id: string;
-  interventionCode: string;
-  contract: { reference: string; client: { name: string } };
-  site: { name: string };
-  scheduledDate: string;
-  status: 'scheduled' | 'in_progress' | 'completed' | 'cancelled';
-  notes?: string;
-  createdAt: string;
-}
+import { Intervention, InterventionStatus } from '@/types';
 
 export default function InterventionsPage() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState('');
-  const [selectedStatus, setSelectedStatus] = useState<string>('');
+  const [selectedStatus, setSelectedStatus] = useState<InterventionStatus | ''>('');
   const [showFilters, setShowFilters] = useState(false);
 
   const { data: interventionsData, isLoading, error } = useQuery({
@@ -114,7 +104,7 @@ export default function InterventionsPage() {
               <select
                 value={selectedStatus}
                 onChange={(e) => {
-                  setSelectedStatus(e.target.value);
+                  setSelectedStatus(e.target.value as InterventionStatus | '');
                   setPage(1);
                 }}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm"
@@ -173,8 +163,8 @@ export default function InterventionsPage() {
                         </div>
                         <div className="space-y-1">
                           <p className="text-sm text-gray-600">
-                            {intervention.contract?.client?.name} -{' '}
-                            {intervention.contract?.reference}
+                              {intervention.contract?.client?.name} -{' '}
+                              {(intervention.contract as any)?.reference || (intervention.contract as any)?.contractCode}
                           </p>
                           <div className="flex items-center gap-4 text-sm text-gray-500">
                             <div className="flex items-center gap-1">

@@ -69,8 +69,8 @@ export interface RegisterDto {
 // CLIENT TYPES
 // ============================================
 
-export type ClientType = 'individual' | 'company' | 'multi_site';
-export type ClientStatus = 'active' | 'suspended' | 'terminated';
+export type ClientType = 'INDIVIDUAL' | 'COMPANY' | 'MULTISITE';
+export type ClientStatus = 'PROSPECT' | 'ACTIVE' | 'SUSPENDED' | 'ARCHIVED';
 
 export interface Client {
   id: string;
@@ -83,7 +83,10 @@ export interface Client {
   postalCode?: string;
   country?: string;
   clientType: ClientType;
+  type?: ClientType; // Alias for compatibility
   status: ClientStatus;
+  contactPerson?: string;
+  contactPhone?: string;
   notes?: string;
   createdAt: string;
   updatedAt: string;
@@ -93,16 +96,17 @@ export interface Client {
 }
 
 export interface CreateClientDto {
-  clientCode: string;
+  clientCode?: string;
   name: string;
-  email: string;
-  phone?: string;
-  address?: string;
-  city?: string;
-  postalCode?: string;
-  country?: string;
-  clientType: ClientType;
-  notes?: string;
+  email: string | null;
+  phone?: string | null;
+  address?: string | null;
+  city?: string | null;
+  postalCode?: string | null;
+  country?: string | null;
+  type?: ClientType; // frontend uses `type`
+  clientType?: ClientType; // legacy
+  notes?: string | null;
 }
 
 export interface UpdateClientDto extends Partial<CreateClientDto> {
@@ -113,7 +117,7 @@ export interface UpdateClientDto extends Partial<CreateClientDto> {
 // SITE TYPES
 // ============================================
 
-export type SiteStatus = 'active' | 'inactive' | 'under_maintenance';
+export type SiteStatus = 'ACTIVE' | 'INACTIVE' | 'UNDER_MAINTENANCE';
 
 export interface Site {
   id: string;
@@ -159,23 +163,28 @@ export interface UpdateSiteDto extends Partial<CreateSiteDto> {
 // CONTRACT TYPES
 // ============================================
 
-export type ContractType = 'permanent' | 'one_time';
-export type ContractStatus = 'draft' | 'active' | 'suspended' | 'terminated' | 'completed';
+export type ContractType = 'PERMANENT' | 'ONE_TIME';
+export type ContractStatus = 'DRAFT' | 'ACTIVE' | 'SUSPENDED' | 'TERMINATED' | 'COMPLETED';
 export type ContractFrequency = 'DAILY' | 'WEEKLY' | 'BIWEEKLY' | 'MONTHLY' | 'QUARTERLY' | 'CUSTOM';
 
 export interface Contract {
   id: string;
   contractCode: string;
   contractType: ContractType;
+  type?: ContractType; // Alias for compatibility
   status: ContractStatus;
   startDate: string;
-  endDate?: string;
+  endDate?: string | null;
   monthlyValue?: number;
   totalValue?: number;
   currency: string;
   paymentTerms?: string;
   description?: string;
   terms?: string;
+  frequency?: ContractFrequency; // For contract details
+  pricing?: Record<string, any>; // Contract pricing details
+  serviceScope?: Record<string, any>; // Service zones, tasks, areas
+  notes?: string; // Contract notes/comments
   clientId: string;
   siteId: string;
   client?: Client;
@@ -247,6 +256,7 @@ export type InterventionStatus = 'scheduled' | 'in_progress' | 'completed' | 'ca
 
 export interface Intervention {
   id: string;
+  interventionCode: string; // Unique code for intervention
   scheduledDate: string;
   scheduledStartTime: string;
   scheduledEndTime: string;
@@ -259,9 +269,11 @@ export interface Intervention {
   endLatitude?: number;
   endLongitude?: number;
   photoUrls?: string[];
+  contractId?: string; // Contract reference
   scheduleId?: string;
   siteId: string;
   agentId: string;
+  contract?: Contract; // Full contract data
   schedule?: Schedule;
   site?: Site;
   agent?: User;
@@ -365,7 +377,12 @@ export interface PaginationMeta {
 
 export interface PaginatedResponse<T> {
   data: T[];
-  meta: PaginationMeta;
+  meta?: PaginationMeta;
+  pagination?: PaginationMeta; // Alternative structure for compatibility
+  total?: number;
+  page?: number;
+  limit?: number;
+  totalPages?: number;
 }
 
 export interface ApiError {
@@ -414,6 +431,7 @@ export interface ContractFilters extends SearchParams {
 }
 
 export interface InterventionFilters extends SearchParams {
+  clientId?: string;
   agentId?: string;
   siteId?: string;
   status?: InterventionStatus;

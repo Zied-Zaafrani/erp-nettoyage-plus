@@ -5,24 +5,14 @@ import { useNavigate } from 'react-router-dom';
 import { Card, Button, Input, Badge } from '@/components/ui';
 import { useQuery } from '@tanstack/react-query';
 import { contractsService } from '@/services';
-
-interface Contract {
-  id: string;
-  contractCode: string;
-  client: { name: string };
-  site: { name: string };
-  type: 'PERMANENT' | 'ONE_TIME';
-  status: 'DRAFT' | 'ACTIVE' | 'SUSPENDED' | 'COMPLETED' | 'TERMINATED';
-  startDate: string;
-  endDate: string | null;
-}
+import { Contract, ContractStatus } from '@/types';
 
 export default function ContractsPage() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState('');
-  const [selectedStatus, setSelectedStatus] = useState<string>('');
+  const [selectedStatus, setSelectedStatus] = useState<ContractStatus | ''>('');
   const [showFilters, setShowFilters] = useState(false);
 
   const { data: contractsData, isLoading, error } = useQuery({
@@ -104,7 +94,7 @@ export default function ContractsPage() {
             <select
               value={selectedStatus}
               onChange={(e) => {
-                setSelectedStatus(e.target.value);
+                setSelectedStatus(e.target.value as ContractStatus | '');
                 setPage(1);
               }}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"

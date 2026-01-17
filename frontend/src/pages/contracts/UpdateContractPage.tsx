@@ -9,7 +9,6 @@ import { contractsService, clientsService, sitesService } from '@/services';
 import { Button, Card, Input, Select } from '@/components/ui';
 import { toast } from 'sonner';
 import { ArrowLeft, AlertCircle } from 'lucide-react';
-import { ContractType, ContractFrequency } from '@/types';
 
 const schema = yup.object().shape({
   clientId: yup.string().required('Client is required'),
@@ -17,8 +16,8 @@ const schema = yup.object().shape({
   type: yup.string().oneOf(['PERMANENT', 'ONE_TIME']).required('Contract type is required'),
   frequency: yup.string().when('type', {
     is: 'PERMANENT',
-    then: yup.string().oneOf(['DAILY', 'WEEKLY', 'BIWEEKLY', 'MONTHLY', 'QUARTERLY', 'CUSTOM']).required('Frequency is required'),
-    otherwise: yup.string().optional(),
+    then: (baseSchema) => baseSchema.oneOf(['DAILY', 'WEEKLY', 'BIWEEKLY', 'MONTHLY', 'QUARTERLY', 'CUSTOM']).required('Frequency is required'),
+    otherwise: (baseSchema) => baseSchema.optional(),
   }),
   startDate: yup.date().required('Start date is required'),
   endDate: yup.date().optional().nullable(),
@@ -89,7 +88,7 @@ export default function UpdateContractPage() {
   });
 
   const updateContractMutation = useMutation({
-    mutationFn: (data: UpdateContractForm) => contractsService.update(id!, data),
+    mutationFn: (data: UpdateContractForm) => contractsService.update(id!, data as any),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['contracts'] });
       queryClient.invalidateQueries({ queryKey: ['contract', id] });
@@ -185,7 +184,7 @@ export default function UpdateContractPage() {
                   <Select
                     {...field}
                     options={clientOptions}
-                    isDisabled={true}
+                    disabled={true}
                   />
                 )}
               />
@@ -202,7 +201,7 @@ export default function UpdateContractPage() {
                   <Select
                     {...field}
                     options={siteOptions}
-                    isDisabled={!selectedClientId}
+                    disabled={!selectedClientId}
                   />
                 )}
               />
@@ -307,10 +306,13 @@ export default function UpdateContractPage() {
               control={control}
               render={({ field }) => (
                 <textarea
-                  {...field}
                   placeholder={t('common.notesPlaceholder')}
                   rows={4}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  value={field.value ?? ''}
+                  onChange={(e) => field.onChange(e.target.value)}
+                  onBlur={field.onBlur}
+                  name={field.name}
                 />
               )}
             />

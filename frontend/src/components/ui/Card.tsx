@@ -9,9 +9,10 @@ interface CardProps {
   children: ReactNode;
   className?: string;
   padding?: 'none' | 'sm' | 'md' | 'lg';
+  onClick?: () => void;
 }
 
-export function Card({ children, className, padding = 'md' }: CardProps) {
+export function Card({ children, className, padding = 'md', onClick }: CardProps) {
   const paddingStyles = {
     none: '',
     sm: 'p-4',
@@ -21,9 +22,12 @@ export function Card({ children, className, padding = 'md' }: CardProps) {
 
   return (
     <div
+      role={onClick ? 'button' : undefined}
+      onClick={onClick}
       className={clsx(
         'rounded-xl border border-gray-200 bg-white shadow-soft',
         paddingStyles[padding],
+        onClick && 'cursor-pointer',
         className
       )}
     >

@@ -1,31 +1,20 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Building2, Plus, Search, Filter, ChevronRight, Mail, Phone, MapPin, Tag } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { Card, Button, Input, Badge } from '@/components/ui';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { clientsService } from '@/services';
-
-interface Client {
-  id: string;
-  clientCode: string;
-  name: string;
-  type: 'INDIVIDUAL' | 'COMPANY' | 'MULTISITE';
-  email: string | null;
-  phone: string | null;
-  city: string | null;
-  status: 'PROSPECT' | 'ACTIVE' | 'SUSPENDED' | 'ARCHIVED';
-  contactPerson: string | null;
-  createdAt: string;
-}
+import { Client, ClientStatus } from '@/types';
 
 export default function ClientsPage() {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const queryClient = useQueryClient();
+  // queryClient available if needed later
+  // const queryClient = useQueryClient();
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState('');
-  const [selectedStatus, setSelectedStatus] = useState<string>('');
+  const [selectedStatus, setSelectedStatus] = useState<ClientStatus | ''>('');
   const [showFilters, setShowFilters] = useState(false);
 
   // Fetch clients
@@ -116,7 +105,7 @@ export default function ClientsPage() {
               <select
                 value={selectedStatus}
                 onChange={(e) => {
-                  setSelectedStatus(e.target.value);
+                  setSelectedStatus(e.target.value as ClientStatus | '');
                   setPage(1);
                 }}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -157,61 +146,63 @@ export default function ClientsPage() {
         <>
           <div className="space-y-2">
             {clientsData?.data?.map((client: Client) => (
-              <Card
+              <div
                 key={client.id}
-                className="p-4 hover:bg-gray-50 cursor-pointer transition"
                 onClick={() => navigate(`/clients/${client.id}`)}
+                className="cursor-pointer"
               >
-                <div className="flex items-center justify-between">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-3">
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2">
-                          <h3 className="text-lg font-semibold text-gray-900">{client.name}</h3>
-                          <Badge className={getStatusColor(client.status)}>
-                            {statusOptions.find((s) => s.value === client.status)?.label}
-                          </Badge>
-                          <Tag className="h-3 w-3 text-gray-400" />
-                          <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
-                            {typeOptions[client.type as keyof typeof typeOptions]}
-                          </span>
-                        </div>
-                        <div className="mt-2 flex flex-wrap gap-4 text-sm text-gray-600">
-                          {client.email && (
-                            <div className="flex items-center gap-1">
-                              <Mail className="h-3 w-3" />
-                              {client.email}
-                            </div>
-                          )}
-                          {client.phone && (
-                            <div className="flex items-center gap-1">
-                              <Phone className="h-3 w-3" />
-                              {client.phone}
-                            </div>
-                          )}
-                          {client.city && (
-                            <div className="flex items-center gap-1">
-                              <MapPin className="h-3 w-3" />
-                              {client.city}
-                            </div>
-                          )}
+                <Card className="p-4 hover:bg-gray-50 transition">
+                  <div className="flex items-center justify-between">
+                    <div className="flex-1">
+                      <div className="flex items-center gap-3">
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2">
+                            <h3 className="text-lg font-semibold text-gray-900">{client.name}</h3>
+                            <Badge className={getStatusColor(client.status)}>
+                              {statusOptions.find((s) => s.value === client.status)?.label}
+                            </Badge>
+                            <Tag className="h-3 w-3 text-gray-400" />
+                            <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
+                              {typeOptions[client.type as keyof typeof typeOptions]}
+                            </span>
+                          </div>
+                          <div className="mt-2 flex flex-wrap gap-4 text-sm text-gray-600">
+                            {client.email && (
+                              <div className="flex items-center gap-1">
+                                <Mail className="h-3 w-3" />
+                                {client.email}
+                              </div>
+                            )}
+                            {client.phone && (
+                              <div className="flex items-center gap-1">
+                                <Phone className="h-3 w-3" />
+                                {client.phone}
+                              </div>
+                            )}
+                            {client.city && (
+                              <div className="flex items-center gap-1">
+                                <MapPin className="h-3 w-3" />
+                                {client.city}
+                              </div>
+                            )}
+                          </div>
                         </div>
                       </div>
                     </div>
+                    <ChevronRight className="h-5 w-5 text-gray-400" />
                   </div>
-                  <ChevronRight className="h-5 w-5 text-gray-400" />
-                </div>
-              </Card>
+                </Card>
+              </div>
             ))}
           </div>
 
           {/* Pagination */}
-          {clientsData?.pagination && (
+          {(clientsData?.pagination || clientsData?.meta) && (
             <div className="flex items-center justify-between">
               <div className="text-sm text-gray-600">
                 {t('common.showing')} {(page - 1) * 10 + 1}-
-                {Math.min(page * 10, clientsData.pagination.total)} {t('common.of')}{' '}
-                {clientsData.pagination.total}
+                {Math.min(page * 10, (clientsData?.pagination || clientsData?.meta)?.total || 0)} {t('common.of')}{' '}
+                {(clientsData?.pagination || clientsData?.meta)?.total}
               </div>
               <div className="flex gap-2">
                 <Button
@@ -223,7 +214,7 @@ export default function ClientsPage() {
                 </Button>
                 <Button
                   variant="outline"
-                  disabled={page >= clientsData.pagination.totalPages}
+                  disabled={page >= (clientsData?.pagination?.totalPages || 1)}
                   onClick={() => setPage(page + 1)}
                 >
                   {t('common.next')}

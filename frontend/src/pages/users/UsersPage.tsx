@@ -376,9 +376,9 @@ export default function UsersPage() {
               </TableBody>
             </Table>
             <Pagination
-              currentPage={data.meta.page}
-              totalPages={data.meta.totalPages}
-              totalItems={data.meta.total}
+              currentPage={data?.meta?.page ?? 1}
+              totalPages={data?.meta?.totalPages ?? 1}
+              totalItems={data?.meta?.total ?? 0}
               itemsPerPage={limit}
               onPageChange={setPage}
             />

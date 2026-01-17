@@ -10,6 +10,9 @@ import { Button, Card, Input, Select } from '@/components/ui';
 import { toast } from 'sonner';
 import { ArrowLeft, AlertCircle } from 'lucide-react';
 
+// Helper function to handle null/undefined values in input fields
+const nullSafeValue = (value: any) => value ?? '';
+
 const schema = yup.object().shape({
   name: yup.string().required('Client name is required').max(200),
   email: yup.string().email('Invalid email').optional().nullable(),
@@ -204,7 +207,14 @@ export default function UpdateClientPage() {
                 name="email"
                 control={control}
                 render={({ field }) => (
-                  <Input {...field} type="email" placeholder={t('clients.form.emailPlaceholder')} />
+                  <Input 
+                    type="email" 
+                    placeholder={t('clients.form.emailPlaceholder')}
+                    value={nullSafeValue(field.value)}
+                    onChange={field.onChange}
+                    onBlur={field.onBlur}
+                    name={field.name}
+                  />
                 )}
               />
               {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>}
@@ -217,7 +227,13 @@ export default function UpdateClientPage() {
                 name="phone"
                 control={control}
                 render={({ field }) => (
-                  <Input {...field} placeholder={t('clients.form.phonePlaceholder')} />
+                  <Input 
+                    placeholder={t('clients.form.phonePlaceholder')}
+                    value={nullSafeValue(field.value)}
+                    onChange={field.onChange}
+                    onBlur={field.onBlur}
+                    name={field.name}
+                  />
                 )}
               />
             </div>
@@ -229,7 +245,13 @@ export default function UpdateClientPage() {
                 name="contactPerson"
                 control={control}
                 render={({ field }) => (
-                  <Input {...field} placeholder={t('clients.form.contactPersonPlaceholder')} />
+                  <Input 
+                    placeholder={t('clients.form.contactPersonPlaceholder')}
+                    value={nullSafeValue(field.value)}
+                    onChange={field.onChange}
+                    onBlur={field.onBlur}
+                    name={field.name}
+                  />
                 )}
               />
             </div>
@@ -241,7 +263,13 @@ export default function UpdateClientPage() {
                 name="contactPhone"
                 control={control}
                 render={({ field }) => (
-                  <Input {...field} placeholder={t('clients.form.contactPhonePlaceholder')} />
+                  <Input 
+                    placeholder={t('clients.form.contactPhonePlaceholder')}
+                    value={nullSafeValue(field.value)}
+                    onChange={field.onChange}
+                    onBlur={field.onBlur}
+                    name={field.name}
+                  />
                 )}
               />
             </div>
@@ -254,7 +282,13 @@ export default function UpdateClientPage() {
               name="address"
               control={control}
               render={({ field }) => (
-                <Input {...field} placeholder={t('clients.form.addressPlaceholder')} />
+                <Input 
+                  placeholder={t('clients.form.addressPlaceholder')}
+                  value={nullSafeValue(field.value)}
+                  onChange={field.onChange}
+                  onBlur={field.onBlur}
+                  name={field.name}
+                />
               )}
             />
           </div>
@@ -267,7 +301,13 @@ export default function UpdateClientPage() {
                 name="city"
                 control={control}
                 render={({ field }) => (
-                  <Input {...field} placeholder={t('clients.form.cityPlaceholder')} />
+                  <Input 
+                    placeholder={t('clients.form.cityPlaceholder')}
+                    value={nullSafeValue(field.value)}
+                    onChange={field.onChange}
+                    onBlur={field.onBlur}
+                    name={field.name}
+                  />
                 )}
               />
             </div>
@@ -279,7 +319,13 @@ export default function UpdateClientPage() {
                 name="postalCode"
                 control={control}
                 render={({ field }) => (
-                  <Input {...field} placeholder={t('clients.form.postalCodePlaceholder')} />
+                  <Input 
+                    placeholder={t('clients.form.postalCodePlaceholder')}
+                    value={nullSafeValue(field.value)}
+                    onChange={field.onChange}
+                    onBlur={field.onBlur}
+                    name={field.name}
+                  />
                 )}
               />
             </div>
@@ -291,7 +337,13 @@ export default function UpdateClientPage() {
                 name="country"
                 control={control}
                 render={({ field }) => (
-                  <Input {...field} placeholder={t('clients.form.countryPlaceholder')} />
+                  <Input 
+                    placeholder={t('clients.form.countryPlaceholder')}
+                    value={nullSafeValue(field.value)}
+                    onChange={field.onChange}
+                    onBlur={field.onBlur}
+                    name={field.name}
+                  />
                 )}
               />
             </div>
@@ -305,11 +357,15 @@ export default function UpdateClientPage() {
               control={control}
               render={({ field }) => (
                 <textarea
-                  {...field}
-                  placeholder={t('common.notesPlaceholder')}
+                  placeholder={t('clients.form.notesPlaceholder')}
                   rows={4}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  value={nullSafeValue(field.value)}
+                  onChange={field.onChange}
+                  onBlur={field.onBlur}
+                  name={field.name}
                 />
+                
               )}
             />
           </div>

@@ -7,7 +7,6 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { contractsService, clientsService, sitesService } from '@/services';
 import { Button, Card, Input, Select } from '@/components/ui';
 import { toast } from 'sonner';
-import { ContractType, ContractFrequency } from '@/types';
 
 const schema = yup.object().shape({
   clientId: yup.string().required('Client is required'),
@@ -15,11 +14,11 @@ const schema = yup.object().shape({
   type: yup.string().oneOf(['PERMANENT', 'ONE_TIME']).required('Contract type is required'),
   frequency: yup.string().when('type', {
     is: 'PERMANENT',
-    then: yup.string().oneOf(['DAILY', 'WEEKLY', 'BIWEEKLY', 'MONTHLY', 'QUARTERLY', 'CUSTOM']).required('Frequency is required'),
-    otherwise: yup.string().optional(),
+    then: (baseSchema) => baseSchema.oneOf(['DAILY', 'WEEKLY', 'BIWEEKLY', 'MONTHLY', 'QUARTERLY', 'CUSTOM']).required('Frequency is required'),
+    otherwise: (baseSchema) => baseSchema.optional(),
   }),
   startDate: yup.date().required('Start date is required'),
-  endDate: yup.date().optional(),
+  endDate: yup.date().optional().nullable(),
   notes: yup.string().optional(),
 });
 
@@ -34,7 +33,7 @@ export default function CreateContractPage() {
     control,
     handleSubmit,
     watch,
-    formState: { errors, isSubmitting },
+    formState: { isSubmitting },
   } = useForm<CreateContractForm>({
     resolver: yupResolver(schema),
     defaultValues: {
@@ -145,14 +144,26 @@ export default function CreateContractPage() {
               name="startDate"
               control={control}
               render={({ field }) => (
-                <Input type="date" {...field} label={t('contracts.form.startDate')} />
+                <Input 
+                  type="date" 
+                  label={t('contracts.form.startDate')}
+                  value={field.value instanceof Date ? field.value.toISOString().split('T')[0] : (field.value || '')}
+                  onChange={(e) => field.onChange(new Date(e.target.value))}
+                  onBlur={field.onBlur}
+                />
               )}
             />
             <Controller
               name="endDate"
               control={control}
               render={({ field }) => (
-                <Input type="date" {...field} label={t('contracts.form.endDate')} />
+                <Input 
+                  type="date" 
+                  label={t('contracts.form.endDate')}
+                  value={field.value instanceof Date ? field.value.toISOString().split('T')[0] : (field.value || '')}
+                  onChange={(e) => field.onChange(e.target.value ? new Date(e.target.value) : null)}
+                  onBlur={field.onBlur}
+                />
               )}
             />
           </div>

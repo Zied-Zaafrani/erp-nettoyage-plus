@@ -19,6 +19,7 @@ const schema = yup.object().shape({
   type: yup
     .string()
     .oneOf(['INDIVIDUAL', 'COMPANY', 'MULTI_SITE'])
+      .oneOf(['INDIVIDUAL', 'COMPANY', 'MULTISITE'] as any)
     .required('Client type is required'),
 });
 
@@ -41,7 +42,7 @@ export default function CreateClientPage() {
   });
 
   const createClientMutation = useMutation({
-    mutationFn: (data: CreateClientForm) => clientsService.create(data),
+    mutationFn: (data: CreateClientForm) => clientsService.create(data as any),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['clients'] });
       toast.success(t('clients.createSuccess'));
@@ -59,7 +60,7 @@ export default function CreateClientPage() {
   const clientTypeOptions = [
     { value: 'INDIVIDUAL', label: t('clients.type.individual') },
     { value: 'COMPANY', label: t('clients.type.company') },
-    { value: 'MULTI_SITE', label: t('clients.type.multisite') },
+    { value: 'MULTISITE', label: t('clients.type.multisite') },
   ];
 
   return (

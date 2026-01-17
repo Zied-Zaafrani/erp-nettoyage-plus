@@ -7,36 +7,6 @@ import { Card, Button, Badge } from '@/components/ui';
 import { ArrowLeft, Edit, Trash2, FileText, AlertCircle } from 'lucide-react';
 import { toast } from 'sonner';
 
-interface ContractDetail {
-  id: string;
-  contractCode: string;
-  clientId: string;
-  siteId: string;
-  type: 'PERMANENT' | 'ONE_TIME';
-  frequency?: string;
-  startDate: string;
-  endDate: string | null;
-  status: 'DRAFT' | 'ACTIVE' | 'SUSPENDED' | 'COMPLETED' | 'TERMINATED';
-  pricing?: {
-    hourlyRate?: number;
-    monthlyFee?: number;
-    perInterventionFee?: number;
-    currency: string;
-    billingCycle?: string;
-    paymentTerms?: string;
-  };
-  serviceScope?: {
-    zones: string[];
-    tasks: string[];
-    schedules?: any[];
-    specialInstructions?: string;
-    excludedAreas?: string[];
-  };
-  notes?: string;
-  createdAt: string;
-  updatedAt: string;
-  deletedAt: string | null;
-}
 
 export default function ContractDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -135,9 +105,9 @@ export default function ContractDetailPage() {
             {t('common.edit')}
           </Button>
           <Button
-            variant="destructive"
+            variant="outline"
             onClick={() => setShowDeleteConfirm(true)}
-            className="flex items-center gap-2"
+            className="flex items-center gap-2 text-red-600 hover:text-red-700"
           >
             <Trash2 className="h-4 w-4" />
             {t('common.delete')}
@@ -152,9 +122,10 @@ export default function ContractDetailPage() {
           <p className="text-red-800 text-sm mb-4">{t('common.cannotUndo')}</p>
           <div className="flex gap-2">
             <Button
-              variant="destructive"
+              variant="outline"
               onClick={() => deleteContractMutation.mutate()}
               disabled={deleteContractMutation.isPending}
+              className="text-red-600 hover:text-red-700"
             >
               {deleteContractMutation.isPending ? t('common.deleting') : t('common.confirm')}
             </Button>
@@ -185,7 +156,7 @@ export default function ContractDetailPage() {
 
             <div>
               <label className="text-sm text-gray-600">{t('contracts.form.type')}</label>
-              <p className="mt-1 font-medium">{t(`contracts.type.${contract.type.toLowerCase()}`)}</p>
+              <p className="mt-1 font-medium">{contract.type ? t(`contracts.type.${contract.type.toLowerCase()}`) : ''}</p>
             </div>
 
             {contract.frequency && (
@@ -286,7 +257,7 @@ export default function ContractDetailPage() {
               <div>
                 <label className="text-sm font-medium text-gray-700 mb-2 block">{t('contracts.form.zones')}</label>
                 <div className="flex flex-wrap gap-2">
-                  {contract.serviceScope.zones.map((zone, idx) => (
+                  {contract.serviceScope.zones.map((zone: string, idx: number) => (
                     <Badge key={idx} className="bg-blue-100 text-blue-800">
                       {zone}
                     </Badge>
@@ -299,7 +270,7 @@ export default function ContractDetailPage() {
               <div>
                 <label className="text-sm font-medium text-gray-700 mb-2 block">{t('contracts.form.tasks')}</label>
                 <div className="flex flex-wrap gap-2">
-                  {contract.serviceScope.tasks.map((task, idx) => (
+                  {contract.serviceScope.tasks.map((task: string, idx: number) => (
                     <Badge key={idx} className="bg-green-100 text-green-800">
                       {task}
                     </Badge>
@@ -319,7 +290,7 @@ export default function ContractDetailPage() {
               <div>
                 <label className="text-sm font-medium text-gray-700 mb-2 block">{t('contracts.form.excludedAreas')}</label>
                 <div className="flex flex-wrap gap-2">
-                  {contract.serviceScope.excludedAreas.map((area, idx) => (
+                  {contract.serviceScope.excludedAreas.map((area: string, idx: number) => (
                     <Badge key={idx} className="bg-red-100 text-red-800">
                       {area}
                     </Badge>
