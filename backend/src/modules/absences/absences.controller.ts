@@ -18,7 +18,7 @@ import { CurrentUser } from '../../common/decorators/current-user.decorator';
 import { UserRole } from '../../shared/types/user.types';
 import { AbsenceType, AbsenceStatus } from '../../shared/types/absence.types';
 
-@Controller('api/absences')
+@Controller('absences')
 @UseGuards(JwtAuthGuard, RolesGuard)
 export class AbsencesController {
   constructor(private readonly absencesService: AbsencesService) {}

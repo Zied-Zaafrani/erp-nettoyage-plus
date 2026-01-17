@@ -15,8 +15,14 @@ import DashboardPage from './pages/dashboard/DashboardPage';
 // Management Pages
 import UsersPage from './pages/users/UsersPage';
 import ClientsPage from './pages/clients/ClientsPage';
+import ClientDetailPage from './pages/clients/ClientDetailPage';
+import CreateClientPage from './pages/clients/CreateClientPage';
+import UpdateClientPage from './pages/clients/UpdateClientPage';
 import SitesPage from './pages/sites/SitesPage';
 import ContractsPage from './pages/contracts/ContractsPage';
+import CreateContractPage from './pages/contracts/CreateContractPage';
+import ContractDetailPage from './pages/contracts/ContractDetailPage';
+import UpdateContractPage from './pages/contracts/UpdateContractPage';
 import SchedulesPage from './pages/schedules/SchedulesPage';
 import InterventionsPage from './pages/interventions/InterventionsPage';
 import AbsencesPage from './pages/absences/AbsencesPage';
@@ -94,6 +100,30 @@ function App() {
           } 
         />
         <Route 
+          path="/clients/create" 
+          element={
+            <RoleProtectedRoute allowedRoles={['SUPER_ADMIN', 'SUPERVISOR']}>
+              <CreateClientPage />
+            </RoleProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/clients/:id" 
+          element={
+            <RoleProtectedRoute allowedRoles={['SUPER_ADMIN', 'SUPERVISOR']}>
+              <ClientDetailPage />
+            </RoleProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/clients/:id/edit" 
+          element={
+            <RoleProtectedRoute allowedRoles={['SUPER_ADMIN', 'SUPERVISOR']}>
+              <UpdateClientPage />
+            </RoleProtectedRoute>
+          } 
+        />
+        <Route 
           path="/sites" 
           element={
             <RoleProtectedRoute allowedRoles={['SUPER_ADMIN', 'SUPERVISOR']}>
@@ -106,6 +136,30 @@ function App() {
           element={
             <RoleProtectedRoute allowedRoles={['SUPER_ADMIN', 'SUPERVISOR']}>
               <ContractsPage />
+            </RoleProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/contracts/create" 
+          element={
+            <RoleProtectedRoute allowedRoles={['SUPER_ADMIN', 'SUPERVISOR']}>
+              <CreateContractPage />
+            </RoleProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/contracts/:id" 
+          element={
+            <RoleProtectedRoute allowedRoles={['SUPER_ADMIN', 'SUPERVISOR']}>
+              <ContractDetailPage />
+            </RoleProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/contracts/:id/edit" 
+          element={
+            <RoleProtectedRoute allowedRoles={['SUPER_ADMIN', 'SUPERVISOR']}>
+              <UpdateContractPage />
             </RoleProtectedRoute>
           } 
         />

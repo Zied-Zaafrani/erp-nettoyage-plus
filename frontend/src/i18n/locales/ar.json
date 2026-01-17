@@ -5,6 +5,7 @@
     "error": "خطأ",
     "success": "نجاح",
     "save": "حفظ",
+    "saving": "جاري الحفظ...",
     "cancel": "إلغاء",
     "delete": "حذف",
     "edit": "تعديل",
@@ -47,7 +48,12 @@
     "export": "تصدير",
     "import": "استيراد",
     "refresh": "تحديث",
-    "close": "إغلاق"
+    "close": "إغلاق",
+    "filters": "المرشحات",
+    "noFilters": "لا توجد مرشحات",
+    "applyFilters": "تطبيق المرشحات",
+    "clearFilters": "مسح المرشحات",
+    "filterBy": "تصفية حسب"
   },
   "auth": {
     "login": "تسجيل الدخول",
@@ -165,14 +171,53 @@
     "addClient": "إضافة عميل",
     "editClient": "تعديل العميل",
     "deleteClient": "حذف العميل",
+    "create": "إنشاء عميل",
+    "createSubtitle": "إنشاء عميل جديد في محفظتك",
+    "search": "البحث عن عميل",
     "name": "اسم العميل",
     "contactPerson": "جهة الاتصال",
     "email": "البريد الإلكتروني",
     "phone": "الهاتف",
     "address": "العنوان",
+    "city": "المدينة",
+    "type": "النوع",
+    "from": "من",
     "sitesCount": "المواقع",
     "contractsCount": "العقود",
+    "status": {
+      "prospect": "عميل محتمل",
+      "active": "نشط",
+      "suspended": "معلق",
+      "archived": "مؤرشف"
+    },
+    "type": {
+      "individual": "فرد",
+      "company": "شركة",
+      "multisite": "متعدد المواقع"
+    },
+    "form": {
+      "name": "اسم العميل",
+      "namePlaceholder": "مثال: شركة ABC",
+      "type": "نوع العميل",
+      "email": "البريد الإلكتروني",
+      "emailPlaceholder": "email@example.com",
+      "phone": "الهاتف",
+      "phonePlaceholder": "+966 1 23 45 67 89",
+      "address": "العنوان",
+      "addressPlaceholder": "123 شارع السلام",
+      "city": "المدينة",
+      "cityPlaceholder": "الرياض",
+      "postalCode": "الرمز البريدي",
+      "postalCodePlaceholder": "12345",
+      "country": "الدولة",
+      "countryPlaceholder": "السعودية",
+      "contactPerson": "جهة الاتصال",
+      "contactPersonPlaceholder": "محمد عبدالله",
+      "notes": "ملاحظات",
+      "notesPlaceholder": "معلومات إضافية..."
+    },
     "createSuccess": "تم إنشاء العميل بنجاح",
+    "createError": "خطأ في إنشاء العميل",
     "updateSuccess": "تم تحديث العميل بنجاح",
     "deleteSuccess": "تم حذف العميل بنجاح"
   },
@@ -198,9 +243,13 @@
     "addContract": "إضافة عقد",
     "editContract": "تعديل العقد",
     "deleteContract": "حذف العقد",
+    "create": "إنشاء عقد",
+    "createSubtitle": "إنشاء عقد خدمة جديد",
+    "search": "البحث عن عقد",
     "reference": "المرجع",
     "client": "العميل",
     "site": "الموقع",
+    "from": "من",
     "startDate": "تاريخ البداية",
     "endDate": "تاريخ النهاية",
     "value": "قيمة العقد",
@@ -211,7 +260,34 @@
       "expired": "منتهي",
       "cancelled": "ملغي"
     },
+    "type": {
+      "permanent": "دائم",
+      "one_time": "لمرة واحدة"
+    },
+    "frequency": {
+      "daily": "يومي",
+      "weekly": "أسبوعي",
+      "biweekly": "نصف شهري",
+      "monthly": "شهري",
+      "quarterly": "ربع سنوي",
+      "custom": "مخصص"
+    },
+    "form": {
+      "type": "نوع العقد",
+      "frequency": "التكرار",
+      "startDate": "تاريخ البداية",
+      "endDate": "تاريخ النهاية",
+      "value": "قيمة العقد",
+      "valuePlaceholder": "0.00",
+      "reference": "مرجع العقد",
+      "referencePlaceholder": "CONT-2026-001",
+      "client": "العميل",
+      "site": "الموقع",
+      "notes": "ملاحظات",
+      "notesPlaceholder": "تفاصيل عقد إضافية..."
+    },
     "createSuccess": "تم إنشاء العقد بنجاح",
+    "createError": "خطأ في إنشاء العقد",
     "updateSuccess": "تم تحديث العقد بنجاح",
     "deleteSuccess": "تم حذف العقد بنجاح"
   },
@@ -274,6 +350,12 @@
   "interventions": {
     "title": "إدارة التدخلات",
     "subtitle": "تتبع وإدارة تدخلات التنظيف",
+    "create": "إنشاء تدخل",
+    "createSubtitle": "جدولة تدخل جديد",
+    "search": "البحث عن تدخل",
+    "createError": "خطأ في إنشاء التدخل",
+    "updateError": "خطأ في تحديث التدخل",
+    "deleteError": "خطأ في حذف التدخل",
     "addIntervention": "إضافة تدخل",
     "editIntervention": "تعديل التدخل",
     "deleteIntervention": "حذف التدخل",
@@ -287,12 +369,17 @@
     "duration": "المدة",
     "status": "الحالة",
     "notes": "ملاحظات",
-    "statuses": {
+    "status": {
       "scheduled": "مجدولة",
       "in_progress": "قيد التنفيذ",
       "completed": "مكتملة",
       "cancelled": "ملغاة",
       "missed": "فائتة"
+    },
+    "form": {
+      "scheduledDate": "تاريخ التدخل",
+      "notes": "ملاحظات",
+      "notesPlaceholder": "ملاحظات إضافية..."
     },
     "createSuccess": "تم إنشاء التدخل بنجاح",
     "updateSuccess": "تم تحديث التدخل بنجاح",

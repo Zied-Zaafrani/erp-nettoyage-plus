@@ -161,6 +161,7 @@ export interface UpdateSiteDto extends Partial<CreateSiteDto> {
 
 export type ContractType = 'permanent' | 'one_time';
 export type ContractStatus = 'draft' | 'active' | 'suspended' | 'terminated' | 'completed';
+export type ContractFrequency = 'DAILY' | 'WEEKLY' | 'BIWEEKLY' | 'MONTHLY' | 'QUARTERLY' | 'CUSTOM';
 
 export interface Contract {
   id: string;

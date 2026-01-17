@@ -17,7 +17,7 @@ import { Roles } from '../../common/decorators/roles.decorator';
 import { UserRole } from '../../shared/types/user.types';
 import { ScheduleStatus } from '../../shared/types/schedule.types';
 
-@Controller('api/schedules')
+@Controller('schedules')
 @UseGuards(JwtAuthGuard, RolesGuard)
 export class SchedulesController {
   constructor(private readonly schedulesService: SchedulesService) {}

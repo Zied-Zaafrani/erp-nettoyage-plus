@@ -22,7 +22,7 @@ import { RolesGuard } from '../../common/guards/roles.guard';
 import { Roles } from '../../common/decorators/roles.decorator';
 import { UserRole } from '../../shared/types/user.types';
 
-@Controller('api/interventions')
+@Controller('interventions')
 @UseGuards(JwtAuthGuard, RolesGuard)
 export class InterventionsController {
   constructor(private readonly interventionsService: InterventionsService) {}
@@ -56,6 +56,7 @@ export class InterventionsController {
     @Query('status') status?: string,
     @Query('startDate') startDate?: string,
     @Query('endDate') endDate?: string,
+    @Query('clientId') clientId?: string,
   ) {
     return this.interventionsService.findAll(
       page ? parseInt(page) : 1,
@@ -65,6 +66,7 @@ export class InterventionsController {
       status as any,
       startDate,
       endDate,
+      clientId,
     );
   }
 

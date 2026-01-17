@@ -241,28 +241,42 @@ export class InterventionsService {
     status?: InterventionStatus,
     startDate?: string,
     endDate?: string,
+    clientId?: string,
   ): Promise<{ data: Intervention[]; total: number; page: number; limit: number }> {
-    const where: any = {};
+    const queryBuilder = this.interventionRepository.createQueryBuilder('intervention');
+    queryBuilder
+      .leftJoinAndSelect('intervention.contract', 'contract')
+      .leftJoinAndSelect('intervention.site', 'site')
+      .leftJoinAndSelect('intervention.zoneChief', 'zoneChief')
+      .leftJoinAndSelect('intervention.teamChief', 'teamChief');
 
-    if (contractId) where.contractId = contractId;
-    if (siteId) where.siteId = siteId;
-    if (status) where.status = status;
-
-    if (startDate && endDate) {
-      where.scheduledDate = Between(new Date(startDate), new Date(endDate));
-    } else if (startDate) {
-      where.scheduledDate = MoreThanOrEqual(new Date(startDate));
-    } else if (endDate) {
-      where.scheduledDate = LessThanOrEqual(new Date(endDate));
+    if (clientId) {
+      queryBuilder.where('contract.clientId = :clientId', { clientId });
     }
+    if (contractId) {
+      queryBuilder.andWhere('intervention.contractId = :contractId', { contractId });
+    }
+    if (siteId) {
+      queryBuilder.andWhere('intervention.siteId = :siteId', { siteId });
+    }
+    if (status) {
+      queryBuilder.andWhere('intervention.status = :status', { status });
+    }
+    if (startDate && endDate) {
+      queryBuilder.andWhere('intervention.scheduledDate BETWEEN :startDate AND :endDate', { startDate, endDate });
+    } else if (startDate) {
+      queryBuilder.andWhere('intervention.scheduledDate >= :startDate', { startDate });
+    } else if (endDate) {
+      queryBuilder.andWhere('intervention.scheduledDate <= :endDate', { endDate });
+    }
+    
+    queryBuilder
+      .orderBy('intervention.scheduledDate', 'DESC')
+      .addOrderBy('intervention.scheduledStartTime', 'DESC')
+      .skip((page - 1) * limit)
+      .take(limit);
 
-    const [data, total] = await this.interventionRepository.findAndCount({
-      where,
-      relations: ['contract', 'site', 'zoneChief', 'teamChief'],
-      skip: (page - 1) * limit,
-      take: limit,
-      order: { scheduledDate: 'DESC', scheduledStartTime: 'DESC' },
-    });
+    const [data, total] = await queryBuilder.getManyAndCount();
 
     return { data, total, page, limit };
   }

@@ -23,7 +23,7 @@ import { Roles } from '../../common/decorators/roles.decorator';
 import { UserRole } from '../../shared/types/user.types';
 import { ChecklistFrequency, ChecklistStatus } from '../../shared/types/checklist.types';
 
-@Controller('api/checklists')
+@Controller('checklists')
 @UseGuards(JwtAuthGuard, RolesGuard)
 export class ChecklistsController {
   constructor(private readonly checklistsService: ChecklistsService) {}
