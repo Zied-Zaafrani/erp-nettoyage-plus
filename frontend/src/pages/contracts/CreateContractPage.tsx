@@ -4,6 +4,7 @@ import * as yup from 'yup';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useEffect } from 'react';
 import { contractsService, clientsService, sitesService } from '@/services';
 import { Button, Card, Input, Select } from '@/components/ui';
 import { toast } from 'sonner';
@@ -44,7 +45,7 @@ export default function CreateContractPage() {
   const selectedClientId = watch('clientId');
   const selectedType = watch('type');
 
-  const { data: clientsData } = useQuery({
+  const { data: clientsData, isLoading: isClientsLoading, error: clientsError } = useQuery({
     queryKey: ['clients'],
     queryFn: () => clientsService.getAll({ limit: 1000 }), // Fetch all clients
   });
@@ -54,6 +55,16 @@ export default function CreateContractPage() {
     queryFn: () => sitesService.getAll({ clientId: selectedClientId, limit: 1000 }),
     enabled: !!selectedClientId,
   });
+
+  // Debug: Log clients data
+  useEffect(() => {
+    if (clientsData) {
+      console.log('Clients loaded:', clientsData);
+    }
+    if (clientsError) {
+      console.error('Clients error:', clientsError);
+    }
+  }, [clientsData, clientsError]);
 
   const createContractMutation = useMutation({
     mutationFn: (data: any) => contractsService.create(data),
@@ -68,11 +79,24 @@ export default function CreateContractPage() {
   });
 
   const onSubmit = (data: CreateContractForm) => {
-    createContractMutation.mutate(data);
+    // Convert dates to ISO strings for API
+    const submitData = {
+      ...data,
+      startDate: data.startDate instanceof Date ? data.startDate.toISOString().split('T')[0] : data.startDate,
+      endDate: data.endDate instanceof Date ? data.endDate.toISOString().split('T')[0] : data.endDate || null,
+    };
+    createContractMutation.mutate(submitData);
   };
   
-  const clientOptions = clientsData?.data.map(client => ({ value: client.id, label: client.name })) || [];
-  const siteOptions = sitesData?.data.map(site => ({ value: site.id, label: site.name })) || [];
+  const clientOptions = (clientsData?.data || []).map(client => ({ 
+    value: client.id, 
+    label: client.name 
+  }));
+  
+  const siteOptions = (sitesData?.data || []).map(site => ({ 
+    value: site.id, 
+    label: site.name 
+  }));
   const contractTypeOptions = [
     { value: 'PERMANENT', label: t('contracts.type.permanent') },
     { value: 'ONE_TIME', label: t('contracts.type.one_time') },
@@ -100,7 +124,13 @@ export default function CreateContractPage() {
               name="clientId"
               control={control}
               render={({ field }) => (
-                <Select {...field} label={t('clients.title')} options={clientOptions} />
+                <Select 
+                  {...field} 
+                  label={t('clients.title')} 
+                  options={clientOptions}
+                  disabled={isClientsLoading}
+                  helperText={isClientsLoading ? 'Loading clients...' : undefined}
+                />
               )}
             />
             <Controller

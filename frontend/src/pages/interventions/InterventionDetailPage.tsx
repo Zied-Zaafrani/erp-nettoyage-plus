@@ -5,21 +5,7 @@ import { useEffect } from 'react';
 import { interventionsService, contractsService, sitesService, usersService } from '@/services';
 import { Card, Button, Input, Select } from '@/components/ui';
 import { useForm, Controller } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from 'yup';
 import { toast } from 'sonner';
-
-const schema = yup.object().shape({
-  contractId: yup.string().required('Contract is required'),
-  siteId: yup.string().required('Site is required'),
-  scheduledDate: yup.string().required('Scheduled date is required'),
-  scheduledStartTime: yup.string().required('Start time is required'),
-  scheduledEndTime: yup.string().required('End time is required'),
-  assignedAgentIds: yup.array().of(yup.string()).min(1, 'At least one agent required'),
-  assignedZoneChiefId: yup.string().optional().nullable(),
-  assignedTeamChiefId: yup.string().optional().nullable(),
-  notes: yup.string().optional().nullable(),
-});
 
 type InterventionForm = {
   contractId: string;
