@@ -78,12 +78,12 @@ export default function UpdateContractPage() {
 
   const { data: clientsData } = useQuery({
     queryKey: ['clients'],
-    queryFn: () => clientsService.getAll({ limit: 1000 }),
+    queryFn: () => clientsService.getAll({ limit: 100 }),
   });
 
   const { data: sitesData } = useQuery({
     queryKey: ['sites', selectedClientId],
-    queryFn: () => sitesService.getAll({ clientId: selectedClientId, limit: 1000 }),
+    queryFn: () => sitesService.getAll({ clientId: selectedClientId, limit: 100 }),
     enabled: !!selectedClientId,
   });
 

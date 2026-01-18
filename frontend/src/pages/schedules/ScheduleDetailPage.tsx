@@ -38,7 +38,7 @@ export default function ScheduleDetailPage() {
 
   const { data: contractsData } = useQuery({
     queryKey: ['contracts'],
-    queryFn: () => contractsService.getAll({ limit: 1000 }),
+    queryFn: () => contractsService.getAll({ limit: 100 }),
   });
 
   const { control, handleSubmit, formState: { isSubmitting }, reset } = useForm<UpdateScheduleForm>({

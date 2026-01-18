@@ -47,12 +47,12 @@ export default function CreateContractPage() {
 
   const { data: clientsData, isLoading: isClientsLoading, error: clientsError } = useQuery({
     queryKey: ['clients'],
-    queryFn: () => clientsService.getAll({ limit: 1000 }), // Fetch all clients
+    queryFn: () => clientsService.getAll({ limit: 100 }), // Fetch all clients
   });
 
   const { data: sitesData } = useQuery({
     queryKey: ['sites', selectedClientId],
-    queryFn: () => sitesService.getAll({ clientId: selectedClientId, limit: 1000 }),
+    queryFn: () => sitesService.getAll({ clientId: selectedClientId, limit: 100 }),
     enabled: !!selectedClientId,
   });
 

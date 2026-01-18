@@ -48,7 +48,7 @@ export default function CreateAbsencePage() {
 
   const { data: agentsData } = useQuery({
     queryKey: ['users', 'agents'],
-    queryFn: () => usersService.getAll({ role: 'AGENT', limit: 1000 }),
+    queryFn: () => usersService.getAll({ role: 'AGENT', limit: 100 }),
   });
 
   const createAbsenceMutation = useMutation({

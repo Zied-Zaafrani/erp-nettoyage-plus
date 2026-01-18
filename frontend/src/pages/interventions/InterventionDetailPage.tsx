@@ -33,27 +33,27 @@ export default function InterventionDetailPage() {
 
   const { data: contractsData } = useQuery({
     queryKey: ['contracts'],
-    queryFn: () => contractsService.getAll({ limit: 1000 }),
+    queryFn: () => contractsService.getAll({ limit: 100 }),
   });
 
   const { data: sitesData } = useQuery({
     queryKey: ['sites'],
-    queryFn: () => sitesService.getAll({ limit: 1000 }),
+    queryFn: () => sitesService.getAll({ limit: 100 }),
   });
 
   const { data: agentsData } = useQuery({
     queryKey: ['users', 'agents'],
-    queryFn: () => usersService.getAll({ role: 'AGENT', limit: 1000 }),
+    queryFn: () => usersService.getAll({ role: 'AGENT', limit: 100 }),
   });
 
   const { data: zoneChiefsData } = useQuery({
     queryKey: ['users', 'zone-chiefs'],
-    queryFn: () => usersService.getAll({ role: 'ZONE_CHIEF' as any, limit: 1000 }),
+    queryFn: () => usersService.getAll({ role: 'ZONE_CHIEF' as any, limit: 100 }),
   });
 
   const { data: teamChiefsData } = useQuery({
     queryKey: ['users', 'team-chiefs'],
-    queryFn: () => usersService.getAll({ role: 'TEAM_CHIEF' as any, limit: 1000 }),
+    queryFn: () => usersService.getAll({ role: 'TEAM_CHIEF' as any, limit: 100 }),
   });
 
   const updateInterventionMutation = useMutation({

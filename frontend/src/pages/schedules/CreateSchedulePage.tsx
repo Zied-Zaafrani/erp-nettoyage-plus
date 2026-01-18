@@ -49,7 +49,7 @@ export default function CreateSchedulePage() {
 
   const { data: contractsData } = useQuery({
     queryKey: ['contracts'],
-    queryFn: () => contractsService.getAll({ limit: 1000 }),
+    queryFn: () => contractsService.getAll({ limit: 100 }),
   });
 
   const { data: sitesData } = useQuery({
