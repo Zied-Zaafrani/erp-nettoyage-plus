@@ -62,12 +62,12 @@ export default function InterventionDetailPage() {
 
   const { data: zoneChiefsData } = useQuery({
     queryKey: ['users', 'zone-chiefs'],
-    queryFn: () => usersService.getAll({ role: 'ZONE_CHIEF', limit: 1000 }),
+    queryFn: () => usersService.getAll({ role: 'ZONE_CHIEF' as any, limit: 1000 }),
   });
 
   const { data: teamChiefsData } = useQuery({
     queryKey: ['users', 'team-chiefs'],
-    queryFn: () => usersService.getAll({ role: 'TEAM_CHIEF', limit: 1000 }),
+    queryFn: () => usersService.getAll({ role: 'TEAM_CHIEF' as any, limit: 1000 }),
   });
 
   const updateInterventionMutation = useMutation({
@@ -101,7 +101,16 @@ export default function InterventionDetailPage() {
     reset,
     watch,
   } = useForm<InterventionForm>({
-    resolver: yupResolver(schema),
+    mode: 'onChange',
+    defaultValues: {
+      contractId: '',
+      siteId: '',
+      scheduledDate: '',
+      scheduledStartTime: '09:00',
+      scheduledEndTime: '17:00',
+      assignedAgentIds: [],
+      notes: '',
+    },
   });
 
   const selectedContractId = watch('contractId');

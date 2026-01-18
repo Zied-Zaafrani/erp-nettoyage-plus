@@ -79,12 +79,12 @@ export default function CreateInterventionPage() {
 
   const { data: zoneChiefsData } = useQuery({
     queryKey: ['users', 'zone-chiefs'],
-    queryFn: () => usersService.getAll({ role: 'ZONE_CHIEF', limit: 1000 }),
+    queryFn: () => usersService.getAll({ role: 'ZONE_CHIEF' as any, limit: 1000 }),
   });
 
   const { data: teamChiefsData } = useQuery({
     queryKey: ['users', 'team-chiefs'],
-    queryFn: () => usersService.getAll({ role: 'TEAM_CHIEF', limit: 1000 }),
+    queryFn: () => usersService.getAll({ role: 'TEAM_CHIEF' as any, limit: 1000 }),
   });
 
   const createInterventionMutation = useMutation({
