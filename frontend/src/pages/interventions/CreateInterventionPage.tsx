@@ -9,7 +9,8 @@ import { toast } from 'sonner';
 import { 
   interventionsService, 
   contractsService, 
-  sitesService 
+  sitesService,
+  usersService 
 } from '@/services';
 
 const schema = yup.object().shape({
@@ -63,6 +64,11 @@ export default function CreateInterventionPage() {
     enabled: !!selectedContractId,
   });
 
+  const { data: usersData } = useQuery({
+    queryKey: ['users'],
+    queryFn: () => usersService.getAll({ limit: 1000 }),
+  });
+
   const createInterventionMutation = useMutation({
     mutationFn: (data: any) => interventionsService.create(data),
     onSuccess: () => {
@@ -99,17 +105,29 @@ export default function CreateInterventionPage() {
       label: site.name,
     })) || [];
 
-  const agentOptions = [
-    { value: '', label: t('common.select') },
-  ];
+  const agentOptions =
+    usersData?.data
+      ?.filter((user) => user.role === 'AGENT')
+      .map((user) => ({
+        value: user.id,
+        label: `${user.firstName} ${user.lastName}`,
+      })) || [];
 
-  const zoneChiefOptions = [
-    { value: '', label: t('common.select') },
-  ];
+  const zoneChiefOptions =
+    usersData?.data
+      ?.filter((user) => user.role === 'ZONE_CHIEF')
+      .map((user) => ({
+        value: user.id,
+        label: `${user.firstName} ${user.lastName}`,
+      })) || [];
 
-  const teamChiefOptions = [
-    { value: '', label: t('common.select') },
-  ];
+  const teamChiefOptions =
+    usersData?.data
+      ?.filter((user) => user.role === 'TEAM_CHIEF')
+      .map((user) => ({
+        value: user.id,
+        label: `${user.firstName} ${user.lastName}`,
+      })) || [];
 
   return (
     <div className="space-y-6">
