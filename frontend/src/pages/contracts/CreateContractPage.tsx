@@ -56,6 +56,17 @@ export default function CreateContractPage() {
     enabled: !!selectedClientId,
   });
 
+  // Compute options before useEffect
+  const clientOptions = (clientsData?.data || []).map(client => ({ 
+    value: client.id, 
+    label: client.name 
+  }));
+  
+  const siteOptions = (sitesData?.data || []).map(site => ({ 
+    value: site.id, 
+    label: site.name 
+  }));
+
   // Debug: Log clients data
   useEffect(() => {
     console.log('CreateContractPage - clientsData:', clientsData);
@@ -86,15 +97,6 @@ export default function CreateContractPage() {
     createContractMutation.mutate(submitData);
   };
   
-  const clientOptions = (clientsData?.data || []).map(client => ({ 
-    value: client.id, 
-    label: client.name 
-  }));
-  
-  const siteOptions = (sitesData?.data || []).map(site => ({ 
-    value: site.id, 
-    label: site.name 
-  }));
   const contractTypeOptions = [
     { value: 'PERMANENT', label: t('contracts.type.permanent') },
     { value: 'ONE_TIME', label: t('contracts.type.one_time') },
