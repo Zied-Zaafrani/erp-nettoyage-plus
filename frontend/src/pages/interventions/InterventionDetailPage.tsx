@@ -1,0 +1,357 @@
+import { useParams, useNavigate } from 'react-router-dom';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useTranslation } from 'react-i18next';
+import { useEffect } from 'react';
+import { interventionsService, contractsService, sitesService, usersService } from '@/services';
+import { Card, Button, Input, Select } from '@/components/ui';
+import { useForm, Controller } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
+import { toast } from 'sonner';
+
+const schema = yup.object().shape({
+  contractId: yup.string().required('Contract is required'),
+  siteId: yup.string().required('Site is required'),
+  scheduledDate: yup.string().required('Scheduled date is required'),
+  scheduledStartTime: yup.string().required('Start time is required'),
+  scheduledEndTime: yup.string().required('End time is required'),
+  assignedAgentIds: yup.array().of(yup.string()).min(1, 'At least one agent required'),
+  assignedZoneChiefId: yup.string().optional().nullable(),
+  assignedTeamChiefId: yup.string().optional().nullable(),
+  notes: yup.string().optional().nullable(),
+});
+
+type InterventionForm = {
+  contractId: string;
+  siteId: string;
+  scheduledDate: string;
+  scheduledStartTime: string;
+  scheduledEndTime: string;
+  assignedAgentIds: string[];
+  assignedZoneChiefId?: string | null;
+  assignedTeamChiefId?: string | null;
+  notes?: string | null;
+};
+
+export default function InterventionDetailPage() {
+  const { id } = useParams();
+  const { t } = useTranslation();
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+
+  const { data: interventionData, isLoading, isError } = useQuery({
+    queryKey: ['interventions', id],
+    queryFn: () => interventionsService.getById(id!),
+    enabled: !!id,
+  });
+
+  const { data: contractsData } = useQuery({
+    queryKey: ['contracts'],
+    queryFn: () => contractsService.getAll({ limit: 1000 }),
+  });
+
+  const { data: sitesData } = useQuery({
+    queryKey: ['sites'],
+    queryFn: () => sitesService.getAll({ limit: 1000 }),
+  });
+
+  const { data: agentsData } = useQuery({
+    queryKey: ['users', 'agents'],
+    queryFn: () => usersService.getAll({ role: 'AGENT', limit: 1000 }),
+  });
+
+  const { data: zoneChiefsData } = useQuery({
+    queryKey: ['users', 'zone-chiefs'],
+    queryFn: () => usersService.getAll({ role: 'ZONE_CHIEF', limit: 1000 }),
+  });
+
+  const { data: teamChiefsData } = useQuery({
+    queryKey: ['users', 'team-chiefs'],
+    queryFn: () => usersService.getAll({ role: 'TEAM_CHIEF', limit: 1000 }),
+  });
+
+  const updateInterventionMutation = useMutation({
+    mutationFn: (data: any) => interventionsService.update(id!, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['interventions'] });
+      toast.success(t('interventions.updateSuccess'));
+      navigate('/interventions');
+    },
+    onError: (error: any) => {
+      toast.error(error.message || t('interventions.updateError'));
+    },
+  });
+
+  const deleteInterventionMutation = useMutation({
+    mutationFn: () => interventionsService.delete(id!),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['interventions'] });
+      toast.success(t('interventions.deleteSuccess'));
+      navigate('/interventions');
+    },
+    onError: (error: any) => {
+      toast.error(error.message || t('interventions.deleteError'));
+    },
+  });
+
+  const {
+    control,
+    handleSubmit,
+    formState: { isSubmitting, errors },
+    reset,
+    watch,
+  } = useForm<InterventionForm>({
+    resolver: yupResolver(schema),
+  });
+
+  const selectedContractId = watch('contractId');
+
+  // Reset form when data is loaded
+  useEffect(() => {
+    if (interventionData) {
+      reset({
+        contractId: interventionData.contractId || '',
+        siteId: interventionData.siteId || '',
+        scheduledDate: interventionData.scheduledDate || '',
+        scheduledStartTime: interventionData.scheduledStartTime || '',
+        scheduledEndTime: interventionData.scheduledEndTime || '',
+        assignedAgentIds: [], // To be set from API if available
+        notes: interventionData.notes || '',
+      });
+    }
+  }, [interventionData, reset]);
+
+  const contractOptions =
+    contractsData?.data?.map((contract: any) => ({
+      value: contract.id,
+      label: `${contract.contractCode || 'N/A'} - ${contract.client?.name || 'N/A'}`,
+    })) || [];
+
+  const siteOptions =
+    sitesData?.data?.map((site: any) => ({
+      value: site.id,
+      label: site.name,
+    })) || [];
+
+  const agentOptions =
+    agentsData?.data?.map((user: any) => ({
+      value: user.id,
+      label: user.fullName || user.email,
+    })) || [];
+
+  const zoneChiefOptions =
+    zoneChiefsData?.data?.map((user: any) => ({
+      value: user.id,
+      label: user.fullName || user.email,
+    })) || [];
+
+  const teamChiefOptions =
+    teamChiefsData?.data?.map((user: any) => ({
+      value: user.id,
+      label: user.fullName || user.email,
+    })) || [];
+
+  const onSubmit = (data: InterventionForm) => {
+    updateInterventionMutation.mutate(data);
+  };
+
+  if (isLoading) {
+    return <Card className="p-6 text-center">{t('common.loading')}</Card>;
+  }
+  if (isError || !interventionData) {
+    return <Card className="p-6 text-center text-red-500">{t('common.error')}</Card>;
+  }
+
+  return (
+    <div className="space-y-6">
+      <div className="flex justify-between items-center">
+        <div>
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
+            {t('interventions.details')}
+          </h1>
+          <p className="mt-1 text-gray-600 dark:text-gray-400">
+            {t('interventions.detailsSubtitle')}
+          </p>
+        </div>
+        <Button variant="danger" onClick={() => deleteInterventionMutation.mutate()}>
+          {t('common.delete')}
+        </Button>
+      </div>
+
+      <Card className="p-6">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+          {/* Step 1: Contract & Site Selection */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <Controller
+              name="contractId"
+              control={control}
+              render={({ field: { value, onChange, onBlur } }) => (
+                <div>
+                  <Select
+                    value={value || ''}
+                    onChange={onChange}
+                    onBlur={onBlur}
+                    label={t('contracts.title')}
+                    options={contractOptions}
+                    error={errors.contractId?.message}
+                  />
+                </div>
+              )}
+            />
+
+            <Controller
+              name="siteId"
+              control={control}
+              render={({ field: { value, onChange, onBlur } }) => (
+                <div>
+                  <Select
+                    value={value || ''}
+                    onChange={onChange}
+                    onBlur={onBlur}
+                    label={t('sites.title')}
+                    options={siteOptions}
+                    disabled={!selectedContractId}
+                    error={errors.siteId?.message}
+                  />
+                </div>
+              )}
+            />
+          </div>
+
+          {/* Step 2: Date & Time */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <Controller
+              name="scheduledDate"
+              control={control}
+              render={({ field: { value, onChange, onBlur } }) => (
+                <div>
+                  <Input
+                    type="date"
+                    label={t('interventions.form.scheduledDate')}
+                    value={value || ''}
+                    onChange={onChange}
+                    onBlur={onBlur}
+                    error={errors.scheduledDate?.message}
+                  />
+                </div>
+              )}
+            />
+
+            <Controller
+              name="scheduledStartTime"
+              control={control}
+              render={({ field: { value, onChange, onBlur } }) => (
+                <div>
+                  <Input
+                    type="time"
+                    label={t('interventions.form.startTime')}
+                    value={value || ''}
+                    onChange={onChange}
+                    onBlur={onBlur}
+                    error={errors.scheduledStartTime?.message}
+                  />
+                </div>
+              )}
+            />
+
+            <Controller
+              name="scheduledEndTime"
+              control={control}
+              render={({ field: { value, onChange, onBlur } }) => (
+                <div>
+                  <Input
+                    type="time"
+                    label={t('interventions.form.endTime')}
+                    value={value || ''}
+                    onChange={onChange}
+                    onBlur={onBlur}
+                    error={errors.scheduledEndTime?.message}
+                  />
+                </div>
+              )}
+            />
+          </div>
+
+          {/* Step 3: Agents Assignment */}
+          <Controller
+            name="assignedAgentIds"
+            control={control}
+            render={({ field: { value, onChange, onBlur } }) => (
+              <div>
+                <Select
+                  value={value || []}
+                  onChange={onChange}
+                  onBlur={onBlur}
+                  label={t('interventions.form.agents')}
+                  options={agentOptions}
+                  multiple
+                  error={errors.assignedAgentIds?.message}
+                />
+              </div>
+            )}
+          />
+
+          {/* Step 4: Chiefs (Optional) */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <Controller
+              name="assignedZoneChiefId"
+              control={control}
+              render={({ field: { value, onChange, onBlur } }) => (
+                <Select
+                  value={value || ''}
+                  onChange={onChange}
+                  onBlur={onBlur}
+                  label={t('interventions.form.zoneChief')}
+                  options={zoneChiefOptions}
+                />
+              )}
+            />
+
+            <Controller
+              name="assignedTeamChiefId"
+              control={control}
+              render={({ field: { value, onChange, onBlur } }) => (
+                <Select
+                  value={value || ''}
+                  onChange={onChange}
+                  onBlur={onBlur}
+                  label={t('interventions.form.teamChief')}
+                  options={teamChiefOptions}
+                />
+              )}
+            />
+          </div>
+
+          {/* Step 5: Notes */}
+          <Controller
+            name="notes"
+            control={control}
+            render={({ field: { value, onChange, onBlur } }) => (
+              <Input
+                value={value || ''}
+                onChange={onChange}
+                onBlur={onBlur}
+                label={t('interventions.form.notes')}
+                placeholder={t('interventions.form.notesPlaceholder')}
+                error={errors.notes?.message}
+              />
+            )}
+          />
+
+          <div className="flex justify-end gap-4">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => navigate('/interventions')}
+            >
+              {t('common.cancel')}
+            </Button>
+            <Button type="submit" disabled={isSubmitting}>
+              {isSubmitting ? t('common.saving') : t('common.save')}
+            </Button>
+          </div>
+        </form>
+      </Card>
+    </div>
+  );
+}

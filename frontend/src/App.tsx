@@ -27,6 +27,8 @@ import SchedulesPage from './pages/schedules/SchedulesPage';
 import CreateSchedulePage from './pages/schedules/CreateSchedulePage';
 import ScheduleDetailPage from './pages/schedules/ScheduleDetailPage';
 import InterventionsPage from './pages/interventions/InterventionsPage';
+import CreateInterventionPage from './pages/interventions/CreateInterventionPage';
+import InterventionDetailPage from './pages/interventions/InterventionDetailPage';
 import AbsencesPage from './pages/absences/AbsencesPage';
 import CreateAbsencePage from './pages/absences/CreateAbsencePage';
 import AbsenceDetailPage from './pages/absences/AbsenceDetailPage';
@@ -177,6 +179,14 @@ function App() {
           element={<ScheduleDetailPage />}
         />
         <Route path="/interventions" element={<InterventionsPage />} />
+        <Route 
+          path="/interventions/create" 
+          element={<CreateInterventionPage />}
+        />
+        <Route 
+          path="/interventions/:id" 
+          element={<InterventionDetailPage />}
+        />
         <Route path="/absences" element={<AbsencesPage />} />
         <Route 
           path="/absences/create" 

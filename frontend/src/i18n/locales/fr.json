@@ -354,6 +354,8 @@
     "subtitle": "Suivre et gérer les interventions de nettoyage",
     "create": "Créer une intervention",
     "createSubtitle": "Planifier une nouvelle intervention",
+    "details": "Détails de l'intervention",
+    "detailsSubtitle": "Voir et modifier les détails de l'intervention",
     "search": "Rechercher une intervention",
     "createError": "Erreur lors de la création de l'intervention",
     "updateError": "Erreur lors de la mise à jour de l'intervention",

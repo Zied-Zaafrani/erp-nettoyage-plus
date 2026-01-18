@@ -354,6 +354,8 @@
     "subtitle": "Track and manage cleaning interventions",
     "create": "Create Intervention",
     "createSubtitle": "Schedule a new intervention",
+    "details": "Intervention Details",
+    "detailsSubtitle": "View and edit intervention details",
     "search": "Search Intervention",
     "createError": "Error creating intervention",
     "updateError": "Error updating intervention",
