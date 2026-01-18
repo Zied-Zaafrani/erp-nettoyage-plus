@@ -41,6 +41,6 @@ export class AuthController {
    */
   @Get('me')
   async getMe(@CurrentUser() user: any) {
-    return { user };
+    return user;
   }
 }

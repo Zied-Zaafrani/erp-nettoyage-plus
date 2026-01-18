@@ -32,7 +32,6 @@ export class RegisterDto {
   @MaxLength(20)
   phone?: string;
 
-  @IsOptional()
-  @IsEnum(UserRole)
-  role?: UserRole;
+  @IsEnum(UserRole, { message: 'Please provide a valid role' })
+  role: UserRole;
 }
