@@ -196,6 +196,7 @@ export default function CreateInterventionPage() {
             render={({ field }) => (
               <Select
                 {...field}
+                value={field.value?.filter((v) => v !== undefined) || []}
                 label={t('interventions.form.agents')}
                 options={agentOptions}
                 multiple
