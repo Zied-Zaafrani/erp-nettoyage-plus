@@ -404,6 +404,10 @@
   "absences": {
     "title": "Gestion des absences",
     "subtitle": "Suivre les absences et demandes de congés",
+    "create": "Créer une demande d'absence",
+    "createSubtitle": "Demander une absence ou un congé",
+    "details": "Détails de l'absence",
+    "detailsSubtitle": "Consulter et modifier les détails de l'absence",
     "addAbsence": "Ajouter une absence",
     "editAbsence": "Modifier l'absence",
     "deleteAbsence": "Supprimer l'absence",
@@ -415,21 +419,95 @@
     "type": "Type",
     "status": "Statut",
     "types": {
-      "vacation": "Congés",
-      "sick": "Maladie",
-      "personal": "Personnel",
-      "other": "Autre"
+      "vacation": "Congés payés",
+      "sick_leave": "Arrêt maladie",
+      "unpaid": "Congés sans solde",
+      "authorized": "Absence autorisée",
+      "unauthorized": "Absence non autorisée"
     },
     "statuses": {
       "pending": "En attente",
       "approved": "Approuvée",
-      "rejected": "Refusée"
+      "rejected": "Refusée",
+      "cancelled": "Annulée"
     },
-    "createSuccess": "Demande d'absence créée",
+    "form": {
+      "agent": "Employé",
+      "agentPlaceholder": "Sélectionner un employé",
+      "type": "Type d'absence",
+      "typePlaceholder": "Sélectionner le type",
+      "startDate": "Date de début",
+      "startDatePlaceholder": "YYYY-MM-DD",
+      "endDate": "Date de fin",
+      "endDatePlaceholder": "YYYY-MM-DD",
+      "reason": "Motif de l'absence",
+      "reasonPlaceholder": "Entrez la raison de votre absence"
+    },
+    "table": {
+      "agent": "Employé",
+      "date": "Période",
+      "type": "Type",
+      "status": "Statut"
+    },
+    "createSuccess": "Demande d'absence créée avec succès",
+    "createError": "Erreur lors de la création de la demande",
     "updateSuccess": "Absence mise à jour avec succès",
     "deleteSuccess": "Absence supprimée avec succès",
     "approveSuccess": "Demande d'absence approuvée",
     "rejectSuccess": "Demande d'absence refusée"
+  },
+  "schedules": {
+    "title": "Plannings",
+    "list": "Liste des plannings",
+    "create": "Créer un planning",
+    "details": "Détails du planning",
+    "detailsSubtitle": "Affichage et modification des détails du planning",
+    "form": {
+      "contract": "Contrat",
+      "site": "Site",
+      "zone": "Zone",
+      "recurrence": "Récurrence",
+      "startTime": "Heure de début",
+      "endTime": "Heure de fin",
+      "validFrom": "Valide à partir de",
+      "validUntil": "Valide jusqu'au",
+      "daysOfWeek": "Jours de la semaine",
+      "dayOfMonth": "Jour du mois",
+      "notes": "Notes",
+      "status": "Statut"
+    },
+    "recurrence": {
+      "daily": "Quotidien",
+      "weekly": "Hebdomadaire",
+      "biweekly": "Bihebdomadaire",
+      "monthly": "Mensuel",
+      "quarterly": "Trimestriel"
+    },
+    "statuses": {
+      "active": "Actif",
+      "paused": "En pause",
+      "completed": "Terminé"
+    },
+    "table": {
+      "contract": "Contrat",
+      "site": "Site",
+      "recurrence": "Récurrence",
+      "time": "Horaire",
+      "validFrom": "Valide à partir de",
+      "validUntil": "Valide jusqu'au",
+      "status": "Statut",
+      "actions": "Actions"
+    },
+    "filters": {
+      "byContract": "Filtrer par contrat",
+      "byStatus": "Filtrer par statut"
+    },
+    "createSuccess": "Planning créé avec succès",
+    "createError": "Erreur lors de la création du planning",
+    "updateSuccess": "Planning mis à jour avec succès",
+    "updateError": "Erreur lors de la mise à jour du planning",
+    "deleteSuccess": "Planning supprimé avec succès",
+    "deleteError": "Erreur lors de la suppression du planning"
   },
   "validation": {
     "required": "Ce champ est obligatoire",

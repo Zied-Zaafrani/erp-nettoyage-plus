@@ -21,14 +21,12 @@ export class ChecklistTemplate {
   description: string;
 
   @Column({
-    type: 'enum',
-    enum: ChecklistFrequency,
+    type: 'varchar',
   })
   frequency: ChecklistFrequency;
 
   @Column({
-    type: 'enum',
-    enum: SiteSize,
+    type: 'varchar',
     nullable: true,
   })
   siteSize: SiteSize; // Template can be specific to site size (SMALL, MEDIUM, LARGE)

@@ -180,14 +180,29 @@ export class InterventionsService {
    * Validate time format and logic
    */
   private validateTimes(startTime: string, endTime: string): void {
-    const start = startTime.split(':').map(Number);
-    const end = endTime.split(':').map(Number);
+    // Parse times in HH:MM format
+    const startMatch = startTime.match(/^([0-1]?[0-9]|2[0-3]):([0-5][0-9])$/);
+    const endMatch = endTime.match(/^([0-1]?[0-9]|2[0-3]):([0-5][0-9])$/);
 
-    const startMinutes = start[0] * 60 + start[1];
-    const endMinutes = end[0] * 60 + end[1];
+    if (!startMatch || !endMatch) {
+      throw new BadRequestException(
+        'Times must be in HH:MM format (e.g., 08:00)',
+      );
+    }
 
-    if (endMinutes <= startMinutes) {
-      throw new BadRequestException('End time must be after start time');
+    const [, startHour, startMin] = startMatch;
+    const [, endHour, endMin] = endMatch;
+
+    const startDate = new Date();
+    startDate.setHours(parseInt(startHour), parseInt(startMin), 0);
+
+    const endDate = new Date();
+    endDate.setHours(parseInt(endHour), parseInt(endMin), 0);
+
+    if (startDate >= endDate) {
+      throw new BadRequestException(
+        'Start time must be before end time',
+      );
     }
   }
 

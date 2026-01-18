@@ -214,39 +214,59 @@ export interface UpdateContractDto extends Partial<CreateContractDto> {
 }
 
 // ============================================
-// SCHEDULE TYPES - PHASE 1 (Simplified)
+// SCHEDULE TYPES
 // ============================================
 
-export type DayOfWeek = 'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday' | 'sunday';
+export type RecurrencePattern = 'DAILY' | 'WEEKLY' | 'BIWEEKLY' | 'MONTHLY' | 'QUARTERLY';
+export type ScheduleStatus = 'ACTIVE' | 'PAUSED' | 'COMPLETED';
 
 export interface Schedule {
   id: string;
-  dayOfWeek: DayOfWeek;
-  startTime: string;
-  endTime: string;
-  isActive: boolean;
   contractId: string;
   siteId: string;
-  agentId: string;
+  zoneId?: string;
+  recurrencePattern: RecurrencePattern;
+  daysOfWeek?: number[];
+  dayOfMonth?: number;
+  startTime: string;
+  endTime: string;
+  validFrom: string;
+  validUntil?: string;
+  status: ScheduleStatus;
+  defaultZoneChiefId?: string;
+  defaultTeamChiefId?: string;
+  defaultAgentIds?: string[];
+  exceptionDates?: string[];
+  notes?: string;
   contract?: Contract;
   site?: Site;
-  agent?: User;
+  zone?: any;
   createdAt: string;
   updatedAt: string;
-  deletedAt?: string;
+  deletedAt?: string | null;
 }
 
 export interface CreateScheduleDto {
-  dayOfWeek: DayOfWeek;
-  startTime: string;
-  endTime: string;
-  isActive?: boolean;
   contractId: string;
   siteId: string;
-  agentId: string;
+  zoneId?: string;
+  recurrencePattern: RecurrencePattern;
+  daysOfWeek?: number[];
+  dayOfMonth?: number;
+  startTime: string;
+  endTime: string;
+  validFrom: string;
+  validUntil?: string;
+  defaultZoneChiefId?: string;
+  defaultTeamChiefId?: string;
+  defaultAgentIds?: string[];
+  exceptionDates?: string[];
+  notes?: string;
 }
 
-export interface UpdateScheduleDto extends Partial<CreateScheduleDto> {}
+export interface UpdateScheduleDto extends Partial<CreateScheduleDto> {
+  status?: ScheduleStatus;
+}
 
 // ============================================
 // INTERVENTION TYPES - PHASE 1
@@ -314,36 +334,41 @@ export interface CompleteInterventionDto {
 // ABSENCE TYPES
 // ============================================
 
-export type AbsenceType = 'sick_leave' | 'vacation' | 'personal' | 'unpaid' | 'other';
-export type AbsenceStatus = 'pending' | 'approved' | 'rejected';
+export type AbsenceType = 'VACATION' | 'SICK_LEAVE' | 'UNPAID' | 'AUTHORIZED' | 'UNAUTHORIZED';
+export type AbsenceStatus = 'PENDING' | 'APPROVED' | 'REJECTED' | 'CANCELLED';
 
 export interface Absence {
   id: string;
+  agentId: string;
   absenceType: AbsenceType;
-  status: AbsenceStatus;
   startDate: string;
   endDate: string;
+  totalDays: number;
   reason?: string;
-  reviewNotes?: string;
-  reviewedAt?: string;
-  userId: string;
-  reviewerId?: string;
-  user?: User;
+  status: AbsenceStatus;
+  requestedAt: string;
+  reviewedBy?: string;
   reviewer?: User;
+  reviewedAt?: string;
+  reviewNotes?: string;
+  attachmentUrl?: string;
+  agent?: User;
   createdAt: string;
   updatedAt: string;
+  deletedAt?: string | null;
 }
 
 export interface CreateAbsenceDto {
+  agentId: string;
   absenceType: AbsenceType;
   startDate: string;
   endDate: string;
   reason?: string;
-  userId: string;
+  attachmentUrl?: string;
 }
 
 export interface ReviewAbsenceDto {
-  status: 'approved' | 'rejected';
+  status: AbsenceStatus;
   reviewNotes?: string;
 }
 

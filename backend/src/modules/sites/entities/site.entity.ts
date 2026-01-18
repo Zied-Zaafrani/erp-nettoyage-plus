@@ -28,8 +28,7 @@ export class Site {
   name: string;
 
   @Column({
-    type: 'enum',
-    enum: SiteSize,
+    type: 'varchar',
     default: SiteSize.MEDIUM,
   })
   size: SiteSize;
@@ -69,8 +68,7 @@ export class Site {
   notes: string | null;
 
   @Column({
-    type: 'enum',
-    enum: SiteStatus,
+    type: 'varchar',
     default: SiteStatus.ACTIVE,
   })
   status: SiteStatus;

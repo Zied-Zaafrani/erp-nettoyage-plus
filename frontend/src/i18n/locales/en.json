@@ -404,6 +404,10 @@
   "absences": {
     "title": "Absences Management",
     "subtitle": "Track employee absences and leave requests",
+    "create": "Create Absence Request",
+    "createSubtitle": "Request an absence or leave",
+    "details": "Absence Details",
+    "detailsSubtitle": "View and edit absence details",
     "addAbsence": "Add Absence",
     "editAbsence": "Edit Absence",
     "deleteAbsence": "Delete Absence",
@@ -415,21 +419,95 @@
     "type": "Type",
     "status": "Status",
     "types": {
-      "vacation": "Vacation",
-      "sick": "Sick Leave",
-      "personal": "Personal",
-      "other": "Other"
+      "vacation": "Paid Leave",
+      "sick_leave": "Sick Leave",
+      "unpaid": "Unpaid Leave",
+      "authorized": "Authorized Absence",
+      "unauthorized": "Unauthorized Absence"
     },
     "statuses": {
       "pending": "Pending",
       "approved": "Approved",
-      "rejected": "Rejected"
+      "rejected": "Rejected",
+      "cancelled": "Cancelled"
     },
-    "createSuccess": "Absence request created",
+    "form": {
+      "agent": "Employee",
+      "agentPlaceholder": "Select an employee",
+      "type": "Type of Absence",
+      "typePlaceholder": "Select type",
+      "startDate": "Start Date",
+      "startDatePlaceholder": "YYYY-MM-DD",
+      "endDate": "End Date",
+      "endDatePlaceholder": "YYYY-MM-DD",
+      "reason": "Reason for Absence",
+      "reasonPlaceholder": "Enter reason for your absence"
+    },
+    "table": {
+      "agent": "Employee",
+      "date": "Period",
+      "type": "Type",
+      "status": "Status"
+    },
+    "createSuccess": "Absence request created successfully",
+    "createError": "Error creating absence request",
     "updateSuccess": "Absence updated successfully",
     "deleteSuccess": "Absence deleted successfully",
     "approveSuccess": "Absence request approved",
     "rejectSuccess": "Absence request rejected"
+  },
+  "schedules": {
+    "title": "Schedules",
+    "list": "Schedule List",
+    "create": "Create Schedule",
+    "details": "Schedule Details",
+    "detailsSubtitle": "View and edit schedule details",
+    "form": {
+      "contract": "Contract",
+      "site": "Site",
+      "zone": "Zone",
+      "recurrence": "Recurrence",
+      "startTime": "Start Time",
+      "endTime": "End Time",
+      "validFrom": "Valid From",
+      "validUntil": "Valid Until",
+      "daysOfWeek": "Days of Week",
+      "dayOfMonth": "Day of Month",
+      "notes": "Notes",
+      "status": "Status"
+    },
+    "recurrence": {
+      "daily": "Daily",
+      "weekly": "Weekly",
+      "biweekly": "Bi-weekly",
+      "monthly": "Monthly",
+      "quarterly": "Quarterly"
+    },
+    "statuses": {
+      "active": "Active",
+      "paused": "Paused",
+      "completed": "Completed"
+    },
+    "table": {
+      "contract": "Contract",
+      "site": "Site",
+      "recurrence": "Recurrence",
+      "time": "Time",
+      "validFrom": "Valid From",
+      "validUntil": "Valid Until",
+      "status": "Status",
+      "actions": "Actions"
+    },
+    "filters": {
+      "byContract": "Filter by Contract",
+      "byStatus": "Filter by Status"
+    },
+    "createSuccess": "Schedule created successfully",
+    "createError": "Error creating schedule",
+    "updateSuccess": "Schedule updated successfully",
+    "updateError": "Error updating schedule",
+    "deleteSuccess": "Schedule deleted successfully",
+    "deleteError": "Error deleting schedule"
   },
   "validation": {
     "required": "This field is required",

@@ -25,7 +25,11 @@ import { JwtAuthGuard } from './common/guards';
       isGlobal: true,
       load: [configuration],
     }),
-    TypeOrmModule.forRoot(getDatabaseConfig()),
+    TypeOrmModule.forRoot({
+      ...getDatabaseConfig(),
+      retryAttempts: 30,
+      retryDelay: 1000,
+    }),
     AuthModule,
     UsersModule,
     ClientsModule,

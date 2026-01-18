@@ -40,8 +40,7 @@ export class Schedule {
   zone: Zone;
 
   @Column({
-    type: 'enum',
-    enum: RecurrencePattern,
+    type: 'varchar',
     name: 'recurrence_pattern',
   })
   recurrencePattern: RecurrencePattern;
@@ -61,8 +60,7 @@ export class Schedule {
   endTime: string; // HH:MM format
 
   @Column({
-    type: 'enum',
-    enum: ScheduleStatus,
+    type: 'varchar',
     default: ScheduleStatus.ACTIVE,
   })
   status: ScheduleStatus;

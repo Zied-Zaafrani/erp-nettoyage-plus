@@ -24,8 +24,12 @@ import CreateContractPage from './pages/contracts/CreateContractPage';
 import ContractDetailPage from './pages/contracts/ContractDetailPage';
 import UpdateContractPage from './pages/contracts/UpdateContractPage';
 import SchedulesPage from './pages/schedules/SchedulesPage';
+import CreateSchedulePage from './pages/schedules/CreateSchedulePage';
+import ScheduleDetailPage from './pages/schedules/ScheduleDetailPage';
 import InterventionsPage from './pages/interventions/InterventionsPage';
 import AbsencesPage from './pages/absences/AbsencesPage';
+import CreateAbsencePage from './pages/absences/CreateAbsencePage';
+import AbsenceDetailPage from './pages/absences/AbsenceDetailPage';
 
 // Protected Route wrapper
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
@@ -164,8 +168,24 @@ function App() {
           } 
         />
         <Route path="/schedules" element={<SchedulesPage />} />
+        <Route 
+          path="/schedules/create" 
+          element={<CreateSchedulePage />}
+        />
+        <Route 
+          path="/schedules/:id" 
+          element={<ScheduleDetailPage />}
+        />
         <Route path="/interventions" element={<InterventionsPage />} />
         <Route path="/absences" element={<AbsencesPage />} />
+        <Route 
+          path="/absences/create" 
+          element={<CreateAbsencePage />}
+        />
+        <Route 
+          path="/absences/:id" 
+          element={<AbsenceDetailPage />}
+        />
       </Route>
 
       {/* Catch all */}

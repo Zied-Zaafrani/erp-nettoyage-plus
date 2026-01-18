@@ -22,19 +22,19 @@ export class CreateInterventionDto {
   @IsNotEmpty()
   scheduledDate: string;
 
-  @IsString()
-  @IsNotEmpty()
-  @Matches(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/, {
-    message: 'scheduledStartTime must be in format HH:MM',
-  })
-  scheduledStartTime: string;
+    @IsString()
+    @IsNotEmpty()
+    @Matches(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/, {
+      message: 'scheduledStartTime must be in HH:MM format (e.g., 08:00)',
+    })
+    scheduledStartTime: string;
 
-  @IsString()
-  @IsNotEmpty()
-  @Matches(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/, {
-    message: 'scheduledEndTime must be in format HH:MM',
-  })
-  scheduledEndTime: string;
+    @IsString()
+    @IsNotEmpty()
+    @Matches(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/, {
+      message: 'scheduledEndTime must be in HH:MM format (e.g., 17:00)',
+    })
+    scheduledEndTime: string;
 
   @IsUUID()
   @IsOptional()

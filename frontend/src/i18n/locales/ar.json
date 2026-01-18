@@ -407,6 +407,10 @@
   "absences": {
     "title": "إدارة الغيابات",
     "subtitle": "تتبع غيابات وإجازات الموظفين",
+    "create": "إنشاء طلب غياب",
+    "createSubtitle": "طلب غياب أو إجازة",
+    "details": "تفاصيل الغياب",
+    "detailsSubtitle": "عرض وتعديل تفاصيل الغياب",
     "addAbsence": "إضافة غياب",
     "editAbsence": "تعديل الغياب",
     "deleteAbsence": "حذف الغياب",
@@ -418,21 +422,95 @@
     "type": "النوع",
     "status": "الحالة",
     "types": {
-      "vacation": "إجازة",
-      "sick": "مرضية",
-      "personal": "شخصية",
-      "other": "أخرى"
+      "vacation": "إجازة مدفوعة",
+      "sick_leave": "إجازة مرضية",
+      "unpaid": "إجازة بدون راتب",
+      "authorized": "غياب مأذون",
+      "unauthorized": "غياب غير مأذون"
     },
     "statuses": {
       "pending": "قيد الانتظار",
       "approved": "موافق عليها",
-      "rejected": "مرفوضة"
+      "rejected": "مرفوضة",
+      "cancelled": "ملغاة"
     },
-    "createSuccess": "تم إنشاء طلب الغياب",
+    "form": {
+      "agent": "الموظف",
+      "agentPlaceholder": "اختر موظفاً",
+      "type": "نوع الغياب",
+      "typePlaceholder": "اختر النوع",
+      "startDate": "تاريخ البداية",
+      "startDatePlaceholder": "YYYY-MM-DD",
+      "endDate": "تاريخ النهاية",
+      "endDatePlaceholder": "YYYY-MM-DD",
+      "reason": "سبب الغياب",
+      "reasonPlaceholder": "أدخل سبب غيابك"
+    },
+    "table": {
+      "agent": "الموظف",
+      "date": "الفترة",
+      "type": "النوع",
+      "status": "الحالة"
+    },
+    "createSuccess": "تم إنشاء طلب الغياب بنجاح",
+    "createError": "خطأ في إنشاء طلب الغياب",
     "updateSuccess": "تم تحديث الغياب بنجاح",
     "deleteSuccess": "تم حذف الغياب بنجاح",
     "approveSuccess": "تمت الموافقة على طلب الغياب",
     "rejectSuccess": "تم رفض طلب الغياب"
+  },
+  "schedules": {
+    "title": "الجداول الزمنية",
+    "list": "قائمة الجداول",
+    "create": "إنشاء جدول زمني",
+    "details": "تفاصيل الجدول الزمني",
+    "detailsSubtitle": "عرض وتحرير تفاصيل الجدول الزمني",
+    "form": {
+      "contract": "العقد",
+      "site": "الموقع",
+      "zone": "المنطقة",
+      "recurrence": "التكرار",
+      "startTime": "وقت البداية",
+      "endTime": "وقت النهاية",
+      "validFrom": "صالح من",
+      "validUntil": "صالح حتى",
+      "daysOfWeek": "أيام الأسبوع",
+      "dayOfMonth": "يوم الشهر",
+      "notes": "ملاحظات",
+      "status": "الحالة"
+    },
+    "recurrence": {
+      "daily": "يومي",
+      "weekly": "أسبوعي",
+      "biweekly": "نصف أسبوعي",
+      "monthly": "شهري",
+      "quarterly": "ربع سنوي"
+    },
+    "statuses": {
+      "active": "نشط",
+      "paused": "معلق",
+      "completed": "مكتمل"
+    },
+    "table": {
+      "contract": "العقد",
+      "site": "الموقع",
+      "recurrence": "التكرار",
+      "time": "الوقت",
+      "validFrom": "صالح من",
+      "validUntil": "صالح حتى",
+      "status": "الحالة",
+      "actions": "الإجراءات"
+    },
+    "filters": {
+      "byContract": "تصفية حسب العقد",
+      "byStatus": "تصفية حسب الحالة"
+    },
+    "createSuccess": "تم إنشاء الجدول الزمني بنجاح",
+    "createError": "خطأ في إنشاء الجدول الزمني",
+    "updateSuccess": "تم تحديث الجدول الزمني بنجاح",
+    "updateError": "خطأ في تحديث الجدول الزمني",
+    "deleteSuccess": "تم حذف الجدول الزمني بنجاح",
+    "deleteError": "خطأ في حذف الجدول الزمني"
   },
   "validation": {
     "required": "هذا الحقل مطلوب",

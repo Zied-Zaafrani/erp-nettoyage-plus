@@ -400,6 +400,11 @@ export const absencesService = {
     return data;
   },
 
+  async update(id: string, dto: Partial<CreateAbsenceDto>): Promise<Absence> {
+    const { data } = await apiClient.patch<Absence>(`/absences/${id}`, dto);
+    return data;
+  },
+
   async review(id: string, dto: ReviewAbsenceDto): Promise<Absence> {
     const { data } = await apiClient.post<Absence>(`/absences/${id}/review`, dto);
     return data;

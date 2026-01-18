@@ -30,8 +30,7 @@ export class Absence {
 
   // Absence details
   @Column({
-    type: 'enum',
-    enum: AbsenceType,
+    type: 'varchar',
   })
   absenceType: AbsenceType;
 
@@ -49,24 +48,23 @@ export class Absence {
 
   // Request status
   @Column({
-    type: 'enum',
-    enum: AbsenceStatus,
+    type: 'varchar',
     default: AbsenceStatus.PENDING,
   })
   status: AbsenceStatus;
 
-  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  @Column({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
   requestedAt: Date;
 
   // Review details
   @Column({ type: 'uuid', nullable: true })
   reviewedBy: string; // Zone Chief or supervisor who approved/rejected
 
-  @ManyToOne(() => User, { nullable: true })
+  @ManyToOne(() => User, { eager: false, nullable: true })
   @JoinColumn({ name: 'reviewedBy' })
   reviewer: User;
 
-  @Column({ type: 'timestamp', nullable: true })
+  @Column({ type: 'datetime', nullable: true })
   reviewedAt: Date;
 
   @Column({ type: 'text', nullable: true })
@@ -84,5 +82,5 @@ export class Absence {
   updatedAt: Date;
 
   @DeleteDateColumn()
-  deletedAt: Date;
+  deletedAt: Date | null;
 }

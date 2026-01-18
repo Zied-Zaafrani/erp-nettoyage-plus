@@ -32,15 +32,13 @@ export class User {
   lastName: string;
 
   @Column({
-    type: 'enum',
-    enum: UserRole,
+    type: 'varchar',
     default: UserRole.AGENT,
   })
   role: UserRole;
 
   @Column({
-    type: 'enum',
-    enum: UserStatus,
+    type: 'varchar',
     default: UserStatus.ACTIVE,
   })
   status: UserStatus;
@@ -52,17 +50,17 @@ export class User {
   @Column({ default: false })
   emailVerified: boolean;
 
-  @Column({ type: 'timestamp', nullable: true })
+  @Column({ type: 'datetime', nullable: true })
   emailVerifiedAt: Date;
 
   // Security: track failed login attempts (for future lockout feature)
   @Column({ default: 0 })
   failedLoginAttempts: number;
 
-  @Column({ type: 'timestamp', nullable: true })
+  @Column({ type: 'datetime', nullable: true })
   lastFailedLoginAt: Date;
 
-  @Column({ type: 'timestamp', nullable: true })
+  @Column({ type: 'datetime', nullable: true })
   lastLoginAt: Date;
 
   @CreateDateColumn()

@@ -39,15 +39,13 @@ export class Contract {
   siteId: string;
 
   @Column({
-    type: 'enum',
-    enum: ContractType,
+    type: 'varchar',
     default: ContractType.PERMANENT,
   })
   type: ContractType;
 
   @Column({
-    type: 'enum',
-    enum: ContractFrequency,
+    type: 'varchar',
     nullable: true,
   })
   frequency: ContractFrequency | null;
@@ -59,16 +57,15 @@ export class Contract {
   endDate: Date | null;
 
   @Column({
-    type: 'enum',
-    enum: ContractStatus,
+    type: 'varchar',
     default: ContractStatus.DRAFT,
   })
   status: ContractStatus;
 
-  @Column({ type: 'jsonb', nullable: true })
+  @Column({ type: 'simple-json', nullable: true })
   pricing: ContractPricing | null;
 
-  @Column({ type: 'jsonb', nullable: true })
+  @Column({ type: 'simple-json', nullable: true })
   serviceScope: ServiceScope | null;
 
   @Column({ type: 'text', nullable: true })

@@ -23,8 +23,7 @@ export class Client {
   name: string;
 
   @Column({
-    type: 'enum',
-    enum: ClientType,
+    type: 'varchar',
     default: ClientType.INDIVIDUAL,
   })
   type: ClientType;
@@ -65,8 +64,7 @@ export class Client {
   notes: string | null;
 
   @Column({
-    type: 'enum',
-    enum: ClientStatus,
+    type: 'varchar',
     default: ClientStatus.PROSPECT,
   })
   status: ClientStatus;

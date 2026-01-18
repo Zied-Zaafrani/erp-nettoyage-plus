@@ -42,15 +42,14 @@ export class Intervention {
   @Column({ type: 'time' })
   scheduledEndTime: string;
 
-  @Column({ type: 'timestamp', nullable: true })
+  @Column({ type: 'datetime', nullable: true })
   actualStartTime: Date | null;
 
-  @Column({ type: 'timestamp', nullable: true })
+  @Column({ type: 'datetime', nullable: true })
   actualEndTime: Date | null;
 
   @Column({
-    type: 'enum',
-    enum: InterventionStatus,
+    type: 'varchar',
     default: InterventionStatus.SCHEDULED,
   })
   status: InterventionStatus;
@@ -76,8 +75,6 @@ export class Intervention {
   @Column({ type: 'decimal', precision: 10, scale: 7, nullable: true })
   gpsCheckInLng: number | null;
 
-  @Column({ type: 'timestamp', nullable: true })
-  gpsCheckInTime: Date | null;
 
   @Column({ type: 'decimal', precision: 10, scale: 7, nullable: true })
   gpsCheckOutLat: number | null;
@@ -85,7 +82,9 @@ export class Intervention {
   @Column({ type: 'decimal', precision: 10, scale: 7, nullable: true })
   gpsCheckOutLng: number | null;
 
-  @Column({ type: 'timestamp', nullable: true })
+  @Column({ type: 'datetime', nullable: true })
+  gpsCheckInTime: Date | null;
+  @Column({ type: 'datetime', nullable: true })
   gpsCheckOutTime: Date | null;
 
   @Column({ type: 'simple-array', nullable: true })

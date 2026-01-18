@@ -29,8 +29,7 @@ export class Zone {
   zoneChiefId: string | null;
 
   @Column({
-    type: 'enum',
-    enum: ZoneStatus,
+    type: 'varchar',
     default: ZoneStatus.ACTIVE,
   })
   status: ZoneStatus;

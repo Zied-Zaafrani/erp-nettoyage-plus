@@ -15,7 +15,21 @@ import {
 const schema = yup.object().shape({
   contractId: yup.string().required('Contract is required'),
   siteId: yup.string().required('Site is required'),
-  scheduledDate: yup.date().required('Scheduled date is required'),
+  scheduledDate: yup.string().required('Scheduled date is required'),
+  scheduledStartTime: yup
+    .string()
+    .required('Start time is required')
+    .matches(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/, 'Format: HH:MM'),
+  scheduledEndTime: yup
+    .string()
+    .required('End time is required')
+    .matches(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/, 'Format: HH:MM'),
+  assignedAgentIds: yup
+    .array()
+    .of(yup.string())
+    .min(1, 'At least one agent required'),
+  assignedZoneChiefId: yup.string().optional(),
+  assignedTeamChiefId: yup.string().optional(),
   notes: yup.string().optional(),
 });
 
@@ -62,7 +76,15 @@ export default function CreateInterventionPage() {
   });
 
   const onSubmit = (data: CreateInterventionForm) => {
-    createInterventionMutation.mutate(data);
+    const payload = {
+      ...data,
+      assignedAgentIds: Array.isArray(data.assignedAgentIds)
+        ? data.assignedAgentIds
+        : [data.assignedAgentIds],
+      scheduledStartTime: data.scheduledStartTime.slice(0,5),
+      scheduledEndTime: data.scheduledEndTime.slice(0,5),
+    };
+    createInterventionMutation.mutate(payload);
   };
 
   const contractOptions =
@@ -76,6 +98,14 @@ export default function CreateInterventionPage() {
       value: site.id,
       label: site.name,
     })) || [];
+
+  // ...existing code...
+  // Ajout des options pour agents, chefs, etc.
+  // Similaire à contractOptions et siteOptions
+  // Exemple :
+  // const agentOptions = ...
+  // const zoneChiefOptions = ...
+  // const teamChiefOptions = ...
 
   return (
     <div className="space-y-6">
@@ -114,7 +144,7 @@ export default function CreateInterventionPage() {
             />
           </div>
 
-          <div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <Controller
               name="scheduledDate"
               control={control}
@@ -122,19 +152,74 @@ export default function CreateInterventionPage() {
                 <Input
                   type="date"
                   label={t('interventions.form.scheduledDate')}
-                  value={field.value instanceof Date ? field.value.toISOString().split('T')[0] : (field.value || '')}
-                  onChange={(e) => field.onChange(new Date(e.target.value))}
+                  value={field.value || ''}
+                  onChange={field.onChange}
                   onBlur={field.onBlur}
                 />
               )}
             />
-            {errors.scheduledDate && (
-              <p className="text-red-500 text-sm mt-1">
-                {errors.scheduledDate.message}
-              </p>
-            )}
+            <Controller
+              name="scheduledStartTime"
+              control={control}
+              render={({ field }) => (
+                <Input
+                  type="time"
+                  label={t('interventions.form.startTime')}
+                  value={field.value || ''}
+                  onChange={field.onChange}
+                  onBlur={field.onBlur}
+                />
+              )}
+            />
+            <Controller
+              name="scheduledEndTime"
+              control={control}
+              render={({ field }) => (
+                <Input
+                  type="time"
+                  label={t('interventions.form.endTime')}
+                  value={field.value || ''}
+                  onChange={field.onChange}
+                  onBlur={field.onBlur}
+                />
+              )}
+            />
           </div>
 
+          <Controller
+            name="assignedAgentIds"
+            control={control}
+            render={({ field }) => (
+              <Select
+                {...field}
+                label={t('interventions.form.agents')}
+                options={agentOptions}
+                multiple
+              />
+            )}
+          />
+          <Controller
+            name="assignedZoneChiefId"
+            control={control}
+            render={({ field }) => (
+              <Select
+                {...field}
+                label={t('interventions.form.zoneChief')}
+                options={zoneChiefOptions}
+              />
+            )}
+          />
+          <Controller
+            name="assignedTeamChiefId"
+            control={control}
+            render={({ field }) => (
+              <Select
+                {...field}
+                label={t('interventions.form.teamChief')}
+                options={teamChiefOptions}
+              />
+            )}
+          />
           <Controller
             name="notes"
             control={control}
