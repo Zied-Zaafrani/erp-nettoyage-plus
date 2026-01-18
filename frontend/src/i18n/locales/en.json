@@ -375,6 +375,9 @@
     },
     "form": {
       "scheduledDate": "Intervention Date",
+      "startTime": "Start Time",
+      "endTime": "End Time",
+      "agents": "Agent",
       "notes": "Notes",
       "notesPlaceholder": "Additional remarks..."
     },

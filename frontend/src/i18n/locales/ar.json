@@ -378,6 +378,9 @@
     },
     "form": {
       "scheduledDate": "تاريخ التدخل",
+      "startTime": "وقت البداية",
+      "endTime": "وقت النهاية",
+      "agents": "العامل",
       "notes": "ملاحظات",
       "notesPlaceholder": "ملاحظات إضافية..."
     },
