@@ -5,28 +5,32 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { useMutation, useQueryClient, useQuery } from '@tanstack/react-query';
 import { Button, Card, Input, Select } from '@/components/ui';
-import { interventionsService, sitesService, usersService } from '@/services';
+import { interventionsService, contractsService, sitesService, usersService } from '@/services';
 import { CreateInterventionDto } from '@/types';
 import { toast } from 'sonner';
 
 const schema = yup.object().shape({
+  contractId: yup.string().required('Contract is required'),
   siteId: yup.string().required('Site is required'),
-  agentId: yup.string().required('Agent is required'),
   scheduledDate: yup.string().required('Scheduled date is required').matches(/^\d{4}-\d{2}-\d{2}$/, 'Invalid date format'),
   scheduledStartTime: yup.string().required('Start time is required').matches(/^([01]\d|2[0-3]):([0-5]\d)$/, 'Invalid time format'),
   scheduledEndTime: yup.string().required('End time is required').matches(/^([01]\d|2[0-3]):([0-5]\d)$/, 'Invalid time format'),
+  assignedAgentIds: yup.array().of(yup.string()).min(1, 'At least one agent required'),
+  assignedZoneChiefId: yup.string().optional().nullable(),
+  assignedTeamChiefId: yup.string().optional().nullable(),
   notes: yup.string().optional().nullable(),
-  scheduleId: yup.string().optional().nullable(),
 });
 
 type CreateInterventionForm = {
+  contractId: string;
   siteId: string;
-  agentId: string;
   scheduledDate: string;
   scheduledStartTime: string;
   scheduledEndTime: string;
+  assignedAgentIds: string[];
+  assignedZoneChiefId?: string | null;
+  assignedTeamChiefId?: string | null;
   notes?: string | null;
-  scheduleId?: string | null;
 };
 
 export default function CreateInterventionPage() {
@@ -38,23 +42,34 @@ export default function CreateInterventionPage() {
     control,
     handleSubmit,
     formState: { errors, isSubmitting },
+    watch,
   } = useForm<CreateInterventionForm>({
     resolver: yupResolver(schema),
     mode: 'onChange',
     defaultValues: {
+      contractId: '',
       siteId: '',
-      agentId: '',
       scheduledDate: new Date().toISOString().split('T')[0],
       scheduledStartTime: '09:00',
       scheduledEndTime: '17:00',
+      assignedAgentIds: [],
+      assignedZoneChiefId: '',
+      assignedTeamChiefId: '',
       notes: '',
-      scheduleId: '',
     },
   });
 
+  const selectedContractId = watch('contractId');
+
+  const { data: contractsData } = useQuery({
+    queryKey: ['contracts'],
+    queryFn: () => contractsService.getAll({ limit: 1000 }),
+  });
+
   const { data: sitesData } = useQuery({
-    queryKey: ['sites'],
+    queryKey: ['sites', { contractId: selectedContractId }],
     queryFn: () => sitesService.getAll({ limit: 1000 }),
+    enabled: !!selectedContractId,
   });
 
   const { data: agentsData } = useQuery({
@@ -62,17 +77,29 @@ export default function CreateInterventionPage() {
     queryFn: () => usersService.getAll({ role: 'AGENT', limit: 1000 }),
   });
 
+  const { data: zoneChiefsData } = useQuery({
+    queryKey: ['users', 'zone-chiefs'],
+    queryFn: () => usersService.getAll({ role: 'ZONE_CHIEF', limit: 1000 }),
+  });
+
+  const { data: teamChiefsData } = useQuery({
+    queryKey: ['users', 'team-chiefs'],
+    queryFn: () => usersService.getAll({ role: 'TEAM_CHIEF', limit: 1000 }),
+  });
+
   const createInterventionMutation = useMutation({
     mutationFn: (data: CreateInterventionForm) => {
       console.log('Creating intervention with data:', data);
       const payload: CreateInterventionDto = {
+        contractId: data.contractId,
         siteId: data.siteId,
-        agentId: data.agentId,
         scheduledDate: data.scheduledDate,
         scheduledStartTime: data.scheduledStartTime,
         scheduledEndTime: data.scheduledEndTime,
+        assignedAgentIds: data.assignedAgentIds.filter(Boolean),
+        assignedZoneChiefId: data.assignedZoneChiefId || undefined,
+        assignedTeamChiefId: data.assignedTeamChiefId || undefined,
         notes: data.notes || undefined,
-        scheduleId: data.scheduleId || undefined,
       };
       return interventionsService.create(payload);
     },
@@ -93,6 +120,12 @@ export default function CreateInterventionPage() {
     createInterventionMutation.mutate(data);
   };
 
+  const contractOptions =
+    contractsData?.data?.map((contract: any) => ({
+      value: contract.id,
+      label: `${contract.contractCode || 'N/A'} - ${contract.client?.name || 'N/A'}`,
+    })) || [];
+
   const siteOptions =
     sitesData?.data?.map((site: any) => ({
       value: site.id,
@@ -101,6 +134,18 @@ export default function CreateInterventionPage() {
 
   const agentOptions =
     agentsData?.data?.map((user: any) => ({
+      value: user.id,
+      label: user.fullName || user.email,
+    })) || [];
+
+  const zoneChiefOptions =
+    zoneChiefsData?.data?.map((user: any) => ({
+      value: user.id,
+      label: user.fullName || user.email,
+    })) || [];
+
+  const teamChiefOptions =
+    teamChiefsData?.data?.map((user: any) => ({
       value: user.id,
       label: user.fullName || user.email,
     })) || [];
@@ -118,7 +163,26 @@ export default function CreateInterventionPage() {
 
       <Card className="p-6">
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+          {/* Step 1: Contract & Site Selection */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <Controller
+              name="contractId"
+              control={control}
+              rules={{ required: 'Contract is required' }}
+              render={({ field: { value, onChange, onBlur } }) => (
+                <div>
+                  <Select
+                    value={value || ''}
+                    onChange={onChange}
+                    onBlur={onBlur}
+                    label={t('contracts.title')}
+                    options={contractOptions}
+                    error={errors.contractId?.message}
+                  />
+                </div>
+              )}
+            />
+
             <Controller
               name="siteId"
               control={control}
@@ -131,32 +195,16 @@ export default function CreateInterventionPage() {
                     onBlur={onBlur}
                     label={t('sites.title')}
                     options={siteOptions}
+                    disabled={!selectedContractId}
                     error={errors.siteId?.message}
-                  />
-                </div>
-              )}
-            />
-
-            <Controller
-              name="agentId"
-              control={control}
-              rules={{ required: 'Agent is required' }}
-              render={({ field: { value, onChange, onBlur } }) => (
-                <div>
-                  <Select
-                    value={value || ''}
-                    onChange={onChange}
-                    onBlur={onBlur}
-                    label={t('interventions.form.agents')}
-                    options={agentOptions}
-                    error={errors.agentId?.message}
                   />
                 </div>
               )}
             />
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* Step 2: Date & Time */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <Controller
               name="scheduledDate"
               control={control}
@@ -192,26 +240,78 @@ export default function CreateInterventionPage() {
                 </div>
               )}
             />
+
+            <Controller
+              name="scheduledEndTime"
+              control={control}
+              rules={{ required: 'End time is required' }}
+              render={({ field: { value, onChange, onBlur } }) => (
+                <div>
+                  <Input
+                    type="time"
+                    label={t('interventions.form.endTime')}
+                    value={value || ''}
+                    onChange={onChange}
+                    onBlur={onBlur}
+                    error={errors.scheduledEndTime?.message}
+                  />
+                </div>
+              )}
+            />
           </div>
 
+          {/* Step 3: Agents Assignment */}
           <Controller
-            name="scheduledEndTime"
+            name="assignedAgentIds"
             control={control}
-            rules={{ required: 'End time is required' }}
+            rules={{ required: 'At least one agent is required' }}
             render={({ field: { value, onChange, onBlur } }) => (
               <div>
-                <Input
-                  type="time"
-                  label={t('interventions.form.endTime')}
-                  value={value || ''}
+                <Select
+                  value={value || []}
                   onChange={onChange}
                   onBlur={onBlur}
-                  error={errors.scheduledEndTime?.message}
+                  label={t('interventions.form.agents')}
+                  options={agentOptions}
+                  multiple
+                  error={errors.assignedAgentIds?.message}
                 />
               </div>
             )}
           />
 
+          {/* Step 4: Chiefs (Optional) */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <Controller
+              name="assignedZoneChiefId"
+              control={control}
+              render={({ field: { value, onChange, onBlur } }) => (
+                <Select
+                  value={value || ''}
+                  onChange={onChange}
+                  onBlur={onBlur}
+                  label={t('interventions.form.zoneChief')}
+                  options={zoneChiefOptions}
+                />
+              )}
+            />
+
+            <Controller
+              name="assignedTeamChiefId"
+              control={control}
+              render={({ field: { value, onChange, onBlur } }) => (
+                <Select
+                  value={value || ''}
+                  onChange={onChange}
+                  onBlur={onBlur}
+                  label={t('interventions.form.teamChief')}
+                  options={teamChiefOptions}
+                />
+              )}
+            />
+          </div>
+
+          {/* Step 5: Notes */}
           <Controller
             name="notes"
             control={control}

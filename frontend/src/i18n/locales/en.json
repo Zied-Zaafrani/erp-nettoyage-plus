@@ -377,7 +377,9 @@
       "scheduledDate": "Intervention Date",
       "startTime": "Start Time",
       "endTime": "End Time",
-      "agents": "Agent",
+      "agents": "Agents",
+      "zoneChief": "Zone Chief",
+      "teamChief": "Team Chief",
       "notes": "Notes",
       "notesPlaceholder": "Additional remarks..."
     },

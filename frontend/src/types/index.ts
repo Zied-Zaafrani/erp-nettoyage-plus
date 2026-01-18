@@ -302,13 +302,16 @@ export interface Intervention {
 }
 
 export interface CreateInterventionDto {
+  contractId: string;
+  siteId: string;
   scheduledDate: string;
   scheduledStartTime: string;
   scheduledEndTime: string;
+  assignedAgentIds: string[];
+  assignedZoneChiefId?: string;
+  assignedTeamChiefId?: string;
+  checklistTemplateId?: string;
   notes?: string;
-  scheduleId?: string;
-  siteId: string;
-  agentId: string;
 }
 
 export interface UpdateInterventionDto {

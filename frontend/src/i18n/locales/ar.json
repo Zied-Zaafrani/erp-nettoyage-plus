@@ -380,7 +380,9 @@
       "scheduledDate": "تاريخ التدخل",
       "startTime": "وقت البداية",
       "endTime": "وقت النهاية",
-      "agents": "العامل",
+      "agents": "العمال",
+      "zoneChief": "رئيس المنطقة",
+      "teamChief": "رئيس الفريق",
       "notes": "ملاحظات",
       "notesPlaceholder": "ملاحظات إضافية..."
     },
