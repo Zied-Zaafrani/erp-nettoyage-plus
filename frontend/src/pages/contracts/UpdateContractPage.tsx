@@ -132,7 +132,7 @@ export default function UpdateContractPage() {
   if (isLoading) {
     return (
       <div className="flex justify-center py-12">
-        <div className="text-gray-500">{t('common.loading')}</div>
+        <div className="text-gray-500 dark:text-gray-400">{t('common.loading')}</div>
       </div>
     );
   }
@@ -150,7 +150,7 @@ export default function UpdateContractPage() {
     return (
       <Card className="p-8 text-center">
         <AlertCircle className="h-12 w-12 text-gray-300 mx-auto mb-4" />
-        <div className="text-gray-600">{t('contracts.notFound')}</div>
+        <div className="text-gray-600 dark:text-gray-400">{t('contracts.notFound')}</div>
       </Card>
     );
   }
@@ -165,8 +165,8 @@ export default function UpdateContractPage() {
           <ArrowLeft className="h-5 w-5" />
         </button>
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">{t('contracts.edit')}</h1>
-          <p className="mt-1 text-gray-600">{contractData.contractCode}</p>
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">{t('contracts.edit')}</h1>
+          <p className="mt-1 text-gray-600 dark:text-gray-400">{contractData.contractCode}</p>
         </div>
       </div>
 
@@ -176,7 +176,7 @@ export default function UpdateContractPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Client */}
             <div>
-              <label className="block text-sm font-medium text-gray-700">{t('common.client')}</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">{t('common.client')}</label>
               <Controller
                 name="clientId"
                 control={control}
@@ -193,7 +193,7 @@ export default function UpdateContractPage() {
 
             {/* Site */}
             <div>
-              <label className="block text-sm font-medium text-gray-700">{t('sites.title')}</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">{t('sites.title')}</label>
               <Controller
                 name="siteId"
                 control={control}
@@ -210,7 +210,7 @@ export default function UpdateContractPage() {
 
             {/* Type */}
             <div>
-              <label className="block text-sm font-medium text-gray-700">{t('contracts.form.type')}</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">{t('contracts.form.type')}</label>
               <Controller
                 name="type"
                 control={control}
@@ -226,7 +226,7 @@ export default function UpdateContractPage() {
 
             {/* Status */}
             <div>
-              <label className="block text-sm font-medium text-gray-700">{t('common.status')}</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">{t('common.status')}</label>
               <Controller
                 name="status"
                 control={control}
@@ -243,7 +243,7 @@ export default function UpdateContractPage() {
             {/* Frequency (for PERMANENT contracts) */}
             {selectedType === 'PERMANENT' && (
               <div>
-                <label className="block text-sm font-medium text-gray-700">{t('contracts.form.frequency')}</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">{t('contracts.form.frequency')}</label>
                 <Controller
                   name="frequency"
                   control={control}
@@ -263,7 +263,7 @@ export default function UpdateContractPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Start Date */}
             <div>
-              <label className="block text-sm font-medium text-gray-700">{t('contracts.form.startDate')}</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">{t('contracts.form.startDate')}</label>
               <Controller
                 name="startDate"
                 control={control}
@@ -281,7 +281,7 @@ export default function UpdateContractPage() {
 
             {/* End Date */}
             <div>
-              <label className="block text-sm font-medium text-gray-700">{t('contracts.form.endDate')}</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">{t('contracts.form.endDate')}</label>
               <Controller
                 name="endDate"
                 control={control}
@@ -300,7 +300,7 @@ export default function UpdateContractPage() {
 
           {/* Notes */}
           <div>
-            <label className="block text-sm font-medium text-gray-700">{t('common.notes')}</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">{t('common.notes')}</label>
             <Controller
               name="notes"
               control={control}

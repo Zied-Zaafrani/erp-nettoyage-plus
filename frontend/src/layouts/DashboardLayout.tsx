@@ -19,6 +19,7 @@ import {
   CheckCircle,
 } from 'lucide-react';
 import { useAuth, ROLE_KEYS } from '@/contexts/AuthContext';
+import { useTheme } from '@/contexts/ThemeContext';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
 import clsx from 'clsx';
 
@@ -52,6 +53,7 @@ export default function DashboardLayout() {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { user, logout } = useAuth();
+  const { theme, toggleTheme } = useTheme();
   const navigate = useNavigate();
   const location = useLocation();
   const { t, i18n } = useTranslation();
@@ -73,11 +75,11 @@ export default function DashboardLayout() {
   const pageTitle = currentPage ? t(currentPage.labelKey) : t('nav.dashboard');
 
   return (
-    <div className="flex min-h-screen bg-gray-50">
+    <div className="flex min-h-screen bg-gray-50 dark:bg-gray-950">
       {/* Sidebar */}
       <aside
         className={clsx(
-          'fixed inset-y-0 z-50 flex flex-col border-gray-200 bg-white transition-all duration-300',
+          'fixed inset-y-0 z-50 flex flex-col border-gray-200 bg-white dark:bg-gray-900 dark:border-gray-700 transition-all duration-300',
           sidebarCollapsed ? 'w-20' : 'w-64',
           isRTL ? 'right-0 border-l' : 'left-0 border-r',
           mobileMenuOpen 
@@ -88,18 +90,18 @@ export default function DashboardLayout() {
         )}
       >
         {/* Logo */}
-        <div className="flex h-16 items-center justify-between border-b border-gray-200 px-4">
+        <div className="flex h-16 items-center justify-between border-b border-gray-200 dark:border-gray-700 px-4">
           {!sidebarCollapsed && (
             <div className="flex items-center gap-2">
               <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary-600 text-white">
                 <span className="text-lg">🧹</span>
               </div>
-              <span className="font-bold text-gray-900">NettoyagePlus</span>
+              <span className="font-bold text-gray-900 dark:text-white">NettoyagePlus</span>
             </div>
           )}
           <button
             onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
-            className="hidden rounded-lg p-2 text-gray-500 hover:bg-gray-100 lg:block"
+            className="hidden rounded-lg p-2 text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800 lg:block"
           >
             <ChevronLeft
               size={20}
@@ -119,8 +121,8 @@ export default function DashboardLayout() {
                     clsx(
                       'flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors',
                       isActive
-                        ? 'bg-primary-50 text-primary-700'
-                        : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
+                        ? 'bg-primary-50 text-primary-700 dark:bg-primary-900/30 dark:text-primary-400'
+                        : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-800 dark:hover:text-white'
                     )
                   }
                   onClick={() => setMobileMenuOpen(false)}
@@ -134,7 +136,7 @@ export default function DashboardLayout() {
         </nav>
 
         {/* User section */}
-        <div className="border-t border-gray-200 p-4">
+        <div className="border-t border-gray-200 dark:border-gray-700 p-4">
           <div
             className={clsx(
               'flex items-center gap-3',
@@ -147,17 +149,17 @@ export default function DashboardLayout() {
             </div>
             {!sidebarCollapsed && (
               <div className="flex-1 min-w-0">
-                <p className="truncate text-sm font-medium text-gray-900">
+                <p className="truncate text-sm font-medium text-gray-900 dark:text-white">
                   {user?.firstName} {user?.lastName}
                 </p>
-                <p className="text-xs text-gray-500">{t(ROLE_KEYS[user?.role || 'AGENT'])}</p>
+                <p className="text-xs text-gray-500 dark:text-gray-400">{t(ROLE_KEYS[user?.role || 'AGENT'])}</p>
               </div>
             )}
           </div>
           <button
             onClick={handleLogout}
             className={clsx(
-              'mt-4 flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-red-600 hover:bg-red-50 transition-colors',
+              'mt-4 flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-950/30 transition-colors',
               sidebarCollapsed && 'justify-center'
             )}
           >
@@ -185,28 +187,28 @@ export default function DashboardLayout() {
         )}
       >
         {/* Top header */}
-        <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-gray-200 bg-white px-4 lg:px-6">
+        <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 px-4 lg:px-6">
           <div className="flex items-center gap-4">
             {/* Mobile menu button */}
             <button
               onClick={() => setMobileMenuOpen(true)}
-              className="rounded-lg p-2 text-gray-500 hover:bg-gray-100 lg:hidden"
+              className="rounded-lg p-2 text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800 lg:hidden"
             >
               <Menu size={24} />
             </button>
 
             {/* Page title */}
-            <h1 className="text-xl font-semibold text-gray-900">{pageTitle}</h1>
+            <h1 className="text-xl font-semibold text-gray-900 dark:text-white">{pageTitle}</h1>
           </div>
 
           <div className="flex items-center gap-3">
             {/* Search */}
-            <button className="hidden rounded-lg p-2 text-gray-500 hover:bg-gray-100 sm:block">
+            <button className="hidden rounded-lg p-2 text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800 sm:block">
               <Search size={20} />
             </button>
 
             {/* Notifications */}
-            <button className="relative rounded-lg p-2 text-gray-500 hover:bg-gray-100">
+            <button className="relative rounded-lg p-2 text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800">
               <Bell size={20} />
               <span className="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-red-500" />
             </button>
@@ -214,10 +216,13 @@ export default function DashboardLayout() {
             {/* Language Switcher */}
             <LanguageSwitcher />
 
-            {/* Theme toggle (placeholder) */}
-            <button className="hidden rounded-lg p-2 text-gray-500 hover:bg-gray-100 sm:block">
-              <Sun size={20} className="dark:hidden" />
-              <Moon size={20} className="hidden dark:block" />
+            {/* Theme toggle */}
+            <button 
+              onClick={toggleTheme}
+              className="rounded-lg p-2 text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800"
+              title={theme === 'light' ? 'Switch to dark mode' : 'Switch to light mode'}
+            >
+              {theme === 'light' ? <Moon size={20} /> : <Sun size={20} />}
             </button>
           </div>
         </header>

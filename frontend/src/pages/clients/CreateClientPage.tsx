@@ -66,7 +66,7 @@ export default function CreateClientPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold text-gray-900">{t('clients.create')}</h1>
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-white">{t('clients.create')}</h1>
         <p className="mt-1 text-gray-600">{t('clients.createSubtitle')}</p>
       </div>
 
@@ -75,7 +75,7 @@ export default function CreateClientPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Client Name */}
             <div>
-              <label className="block text-sm font-medium text-gray-700">{t('clients.form.name')}</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">{t('clients.form.name')}</label>
               <Controller
                 name="name"
                 control={control}
@@ -88,7 +88,7 @@ export default function CreateClientPage() {
 
             {/* Client Type */}
             <div>
-              <label className="block text-sm font-medium text-gray-700">{t('clients.form.type')}</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">{t('clients.form.type')}</label>
               <Controller
                 name="type"
                 control={control}
@@ -104,7 +104,7 @@ export default function CreateClientPage() {
 
             {/* Email */}
             <div>
-              <label className="block text-sm font-medium text-gray-700">{t('clients.form.email')}</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">{t('clients.form.email')}</label>
               <Controller
                 name="email"
                 control={control}
@@ -117,7 +117,7 @@ export default function CreateClientPage() {
 
             {/* Phone */}
             <div>
-              <label className="block text-sm font-medium text-gray-700">{t('clients.form.phone')}</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">{t('clients.form.phone')}</label>
               <Controller
                 name="phone"
                 control={control}
@@ -130,7 +130,7 @@ export default function CreateClientPage() {
 
           {/* Address */}
           <div>
-              <label className="block text-sm font-medium text-gray-700">{t('clients.form.address')}</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">{t('clients.form.address')}</label>
               <Controller
                 name="address"
                 control={control}
@@ -143,7 +143,7 @@ export default function CreateClientPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {/* City */}
             <div>
-              <label className="block text-sm font-medium text-gray-700">{t('clients.form.city')}</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">{t('clients.form.city')}</label>
               <Controller
                 name="city"
                 control={control}
@@ -155,7 +155,7 @@ export default function CreateClientPage() {
 
              {/* Postal Code */}
              <div>
-              <label className="block text-sm font-medium text-gray-700">{t('clients.form.postalCode')}</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">{t('clients.form.postalCode')}</label>
               <Controller
                 name="postalCode"
                 control={control}
@@ -167,7 +167,7 @@ export default function CreateClientPage() {
 
              {/* Country */}
              <div>
-              <label className="block text-sm font-medium text-gray-700">{t('clients.form.country')}</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">{t('clients.form.country')}</label>
               <Controller
                 name="country"
                 control={control}

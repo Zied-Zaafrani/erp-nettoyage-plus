@@ -50,7 +50,7 @@ export default function ContractsPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">{t('contracts.title')}</h1>
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">{t('contracts.title')}</h1>
           <p className="mt-1 text-gray-600">{t('contracts.subtitle')}</p>
         </div>
         <Button
@@ -88,7 +88,7 @@ export default function ContractsPage() {
 
         {showFilters && (
           <div className="pt-4 border-t">
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
               {t('common.status')}
             </label>
             <select
@@ -116,7 +116,7 @@ export default function ContractsPage() {
       ) : contractsData?.data?.length === 0 ? (
         <Card className="flex flex-col items-center justify-center py-12">
           <FileText className="h-16 w-16 text-gray-300" />
-          <h3 className="mt-4 text-lg font-medium text-gray-900">{t('contracts.title')}</h3>
+          <h3 className="mt-4 text-lg font-medium text-gray-900 dark:text-white">{t('contracts.title')}</h3>
           <p className="mt-1 text-sm text-gray-500">{t('common.noData')}</p>
           <Button
             onClick={() => navigate('/contracts/create')}
@@ -137,7 +137,7 @@ export default function ContractsPage() {
                 <div className="flex items-center justify-between">
                   <div className="flex-1">
                      <div className="flex items-center gap-3">
-                        <h3 className="text-lg font-semibold text-gray-900">{contract.contractCode}</h3>
+                        <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{contract.contractCode}</h3>
                         <Badge className={getStatusColor(contract.status)}>
                           {statusOptions.find((s) => s.value === contract.status)?.label}
                         </Badge>

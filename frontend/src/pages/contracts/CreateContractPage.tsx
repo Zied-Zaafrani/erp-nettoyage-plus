@@ -89,7 +89,7 @@ export default function CreateContractPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold text-gray-900">{t('contracts.create')}</h1>
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-white">{t('contracts.create')}</h1>
         <p className="mt-1 text-gray-600">{t('contracts.createSubtitle')}</p>
       </div>
 

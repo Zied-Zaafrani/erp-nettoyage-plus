@@ -42,7 +42,7 @@ export default function ContractDetailPage() {
   if (isLoading) {
     return (
       <div className="flex justify-center py-12">
-        <div className="text-gray-500">{t('common.loading')}</div>
+        <div className="text-gray-500 dark:text-gray-400">{t('common.loading')}</div>
       </div>
     );
   }
@@ -60,7 +60,7 @@ export default function ContractDetailPage() {
     return (
       <Card className="p-8 text-center">
         <FileText className="h-12 w-12 text-gray-300 mx-auto mb-4" />
-        <div className="text-gray-600">{t('contracts.notFound')}</div>
+        <div className="text-gray-600 dark:text-gray-400">{t('contracts.notFound')}</div>
       </Card>
     );
   }
@@ -91,8 +91,8 @@ export default function ContractDetailPage() {
             <ArrowLeft className="h-5 w-5" />
           </button>
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">{contract.contractCode}</h1>
-            <p className="mt-1 text-gray-600">{clientData?.name}</p>
+            <h1 className="text-3xl font-bold text-gray-900 dark:text-white">{contract.contractCode}</h1>
+            <p className="mt-1 text-gray-600 dark:text-gray-400">{clientData?.name}</p>
           </div>
         </div>
         <div className="flex gap-2">
@@ -143,10 +143,10 @@ export default function ContractDetailPage() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Basic Information */}
         <Card className="p-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">{t('contracts.form.basicInfo')}</h2>
+          <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">{t('contracts.form.basicInfo')}</h2>
           <div className="space-y-4">
             <div>
-              <label className="text-sm text-gray-600">{t('contracts.form.status')}</label>
+              <label className="text-sm text-gray-600 dark:text-gray-400">{t('contracts.form.status')}</label>
               <div className="mt-1">
                 <Badge className={getStatusColor(contract.status)}>
                   {t(`contracts.status.${contract.status.toLowerCase()}`)}
@@ -155,19 +155,19 @@ export default function ContractDetailPage() {
             </div>
 
             <div>
-              <label className="text-sm text-gray-600">{t('contracts.form.type')}</label>
+              <label className="text-sm text-gray-600 dark:text-gray-400">{t('contracts.form.type')}</label>
               <p className="mt-1 font-medium">{contract.type ? t(`contracts.type.${contract.type.toLowerCase()}`) : ''}</p>
             </div>
 
             {contract.frequency && (
               <div>
-                <label className="text-sm text-gray-600">{t('contracts.form.frequency')}</label>
+                <label className="text-sm text-gray-600 dark:text-gray-400">{t('contracts.form.frequency')}</label>
                 <p className="mt-1 font-medium">{t(`contracts.frequency.${contract.frequency.toLowerCase()}`)}</p>
               </div>
             )}
 
             <div>
-              <label className="text-sm text-gray-600">{t('common.client')}</label>
+              <label className="text-sm text-gray-600 dark:text-gray-400">{t('common.client')}</label>
               <p className="mt-1 font-medium text-blue-600 cursor-pointer hover:underline" 
                  onClick={() => navigate(`/clients/${contract.clientId}`)}>
                 {clientData?.name}
@@ -178,28 +178,28 @@ export default function ContractDetailPage() {
 
         {/* Dates */}
         <Card className="p-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">{t('contracts.form.period')}</h2>
+          <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">{t('contracts.form.period')}</h2>
           <div className="space-y-4">
             <div>
-              <label className="text-sm text-gray-600">{t('contracts.form.startDate')}</label>
+              <label className="text-sm text-gray-600 dark:text-gray-400">{t('contracts.form.startDate')}</label>
               <p className="mt-1 font-medium">{formatDate(contract.startDate)}</p>
             </div>
 
             <div>
-              <label className="text-sm text-gray-600">{t('contracts.form.endDate')}</label>
+              <label className="text-sm text-gray-600 dark:text-gray-400">{t('contracts.form.endDate')}</label>
               <p className="mt-1 font-medium">
                 {contract.endDate ? formatDate(contract.endDate) : t('common.ongoing')}
               </p>
             </div>
 
             <div>
-              <label className="text-sm text-gray-600">{t('common.createdAt')}</label>
-              <p className="mt-1 text-sm text-gray-600">{formatDate(contract.createdAt)}</p>
+              <label className="text-sm text-gray-600 dark:text-gray-400">{t('common.createdAt')}</label>
+              <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">{formatDate(contract.createdAt)}</p>
             </div>
 
             <div>
-              <label className="text-sm text-gray-600">{t('common.updatedAt')}</label>
-              <p className="mt-1 text-sm text-gray-600">{formatDate(contract.updatedAt)}</p>
+              <label className="text-sm text-gray-600 dark:text-gray-400">{t('common.updatedAt')}</label>
+              <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">{formatDate(contract.updatedAt)}</p>
             </div>
           </div>
         </Card>
@@ -208,39 +208,39 @@ export default function ContractDetailPage() {
       {/* Pricing Information */}
       {contract.pricing && (
         <Card className="p-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">{t('contracts.form.pricing')}</h2>
+          <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">{t('contracts.form.pricing')}</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {contract.pricing.hourlyRate && (
               <div>
-                <label className="text-sm text-gray-600">{t('contracts.form.hourlyRate')}</label>
+                <label className="text-sm text-gray-600 dark:text-gray-400">{t('contracts.form.hourlyRate')}</label>
                 <p className="mt-1 font-medium">{contract.pricing.hourlyRate} {contract.pricing.currency}</p>
               </div>
             )}
 
             {contract.pricing.monthlyFee && (
               <div>
-                <label className="text-sm text-gray-600">{t('contracts.form.monthlyFee')}</label>
+                <label className="text-sm text-gray-600 dark:text-gray-400">{t('contracts.form.monthlyFee')}</label>
                 <p className="mt-1 font-medium">{contract.pricing.monthlyFee} {contract.pricing.currency}</p>
               </div>
             )}
 
             {contract.pricing.perInterventionFee && (
               <div>
-                <label className="text-sm text-gray-600">{t('contracts.form.perInterventionFee')}</label>
+                <label className="text-sm text-gray-600 dark:text-gray-400">{t('contracts.form.perInterventionFee')}</label>
                 <p className="mt-1 font-medium">{contract.pricing.perInterventionFee} {contract.pricing.currency}</p>
               </div>
             )}
 
             {contract.pricing.billingCycle && (
               <div>
-                <label className="text-sm text-gray-600">{t('contracts.form.billingCycle')}</label>
+                <label className="text-sm text-gray-600 dark:text-gray-400">{t('contracts.form.billingCycle')}</label>
                 <p className="mt-1 font-medium">{contract.pricing.billingCycle}</p>
               </div>
             )}
 
             {contract.pricing.paymentTerms && (
               <div>
-                <label className="text-sm text-gray-600">{t('contracts.form.paymentTerms')}</label>
+                <label className="text-sm text-gray-600 dark:text-gray-400">{t('contracts.form.paymentTerms')}</label>
                 <p className="mt-1 font-medium">{contract.pricing.paymentTerms}</p>
               </div>
             )}
@@ -251,11 +251,11 @@ export default function ContractDetailPage() {
       {/* Service Scope */}
       {contract.serviceScope && (
         <Card className="p-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">{t('contracts.form.serviceScope')}</h2>
+          <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">{t('contracts.form.serviceScope')}</h2>
           <div className="space-y-6">
             {contract.serviceScope.zones && contract.serviceScope.zones.length > 0 && (
               <div>
-                <label className="text-sm font-medium text-gray-700 mb-2 block">{t('contracts.form.zones')}</label>
+                <label className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 block">{t('contracts.form.zones')}</label>
                 <div className="flex flex-wrap gap-2">
                   {contract.serviceScope.zones.map((zone: string, idx: number) => (
                     <Badge key={idx} className="bg-blue-100 text-blue-800">
@@ -268,7 +268,7 @@ export default function ContractDetailPage() {
 
             {contract.serviceScope.tasks && contract.serviceScope.tasks.length > 0 && (
               <div>
-                <label className="text-sm font-medium text-gray-700 mb-2 block">{t('contracts.form.tasks')}</label>
+                <label className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 block">{t('contracts.form.tasks')}</label>
                 <div className="flex flex-wrap gap-2">
                   {contract.serviceScope.tasks.map((task: string, idx: number) => (
                     <Badge key={idx} className="bg-green-100 text-green-800">
@@ -281,14 +281,14 @@ export default function ContractDetailPage() {
 
             {contract.serviceScope.specialInstructions && (
               <div>
-                <label className="text-sm font-medium text-gray-700 mb-2 block">{t('contracts.form.specialInstructions')}</label>
-                <p className="text-gray-700 p-3 bg-gray-50 rounded-lg">{contract.serviceScope.specialInstructions}</p>
+                <label className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 block">{t('contracts.form.specialInstructions')}</label>
+                <p className="text-gray-700 dark:text-gray-300 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">{contract.serviceScope.specialInstructions}</p>
               </div>
             )}
 
             {contract.serviceScope.excludedAreas && contract.serviceScope.excludedAreas.length > 0 && (
               <div>
-                <label className="text-sm font-medium text-gray-700 mb-2 block">{t('contracts.form.excludedAreas')}</label>
+                <label className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 block">{t('contracts.form.excludedAreas')}</label>
                 <div className="flex flex-wrap gap-2">
                   {contract.serviceScope.excludedAreas.map((area: string, idx: number) => (
                     <Badge key={idx} className="bg-red-100 text-red-800">
@@ -305,8 +305,8 @@ export default function ContractDetailPage() {
       {/* Notes */}
       {contract.notes && (
         <Card className="p-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">{t('common.notes')}</h2>
-          <p className="text-gray-700 whitespace-pre-wrap">{contract.notes}</p>
+          <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">{t('common.notes')}</h2>
+          <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap">{contract.notes}</p>
         </Card>
       )}
     </div>

@@ -48,7 +48,7 @@ export default function InterventionsPage() {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-96">
-        <p className="text-gray-600">{t('common.loading')}</p>
+        <p className="text-gray-600 dark:text-gray-400">{t('common.loading')}</p>
       </div>
     );
   }
@@ -57,7 +57,7 @@ export default function InterventionsPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
             {t('interventions.title')}
           </h1>
           <p className="mt-1 text-gray-600">{t('interventions.subtitle')}</p>
@@ -98,7 +98,7 @@ export default function InterventionsPage() {
         {showFilters && (
           <div className="pt-4 border-t grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 {t('common.status')}
               </label>
               <select
@@ -129,7 +129,7 @@ export default function InterventionsPage() {
       {!interventionsData?.data || interventionsData.data.length === 0 ? (
         <Card className="p-12 text-center">
           <Calendar className="h-16 w-16 mx-auto text-gray-300" />
-          <h3 className="mt-4 text-lg font-medium text-gray-900">
+          <h3 className="mt-4 text-lg font-medium text-gray-900 dark:text-white">
             {t('interventions.title')}
           </h3>
           <p className="mt-1 text-sm text-gray-500">{t('common.noData')}</p>
@@ -154,7 +154,7 @@ export default function InterventionsPage() {
                     <div className="flex items-center gap-3">
                       <div className="flex-1">
                         <div className="flex items-center gap-2 mb-1">
-                          <h4 className="font-semibold text-gray-900">
+                          <h4 className="font-semibold text-gray-900 dark:text-white">
                             {intervention.interventionCode}
                           </h4>
                           <Badge className={getStatusColor(intervention.status)}>

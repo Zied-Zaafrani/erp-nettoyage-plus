@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useState, useCallback, ReactNode } from 'react';
 import { User, LoginCredentials, RegisterDto, UserRole } from '@/types';
 import { authService } from '@/services';
-import { getStoredToken, getStoredUser, clearAuthToken } from '@/services/api';
+import { getStoredToken, getStoredUser, clearAuthToken, setStoredUser } from '@/services/api';
 
 // ============================================
 // TYPES
@@ -65,6 +65,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
     setIsLoading(true);
     try {
       const response = await authService.login(credentials);
+      // Store user to ensure persistence across page refreshes
+      setStoredUser(response.user);
       setUser(response.user);
     } finally {
       setIsLoading(false);
@@ -76,6 +78,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
     setIsLoading(true);
     try {
       const response = await authService.register(dto);
+      // Store user to ensure persistence across page refreshes
+      setStoredUser(response.user);
       setUser(response.user);
     } finally {
       setIsLoading(false);
@@ -175,8 +179,8 @@ export const ROLE_KEYS: Record<UserRole, string> = {
 };
 
 export const ROLE_COLORS: Record<UserRole, string> = {
-  SUPER_ADMIN: 'bg-purple-100 text-purple-800',
-  SUPERVISOR: 'bg-blue-100 text-blue-800',
-  AGENT: 'bg-green-100 text-green-800',
-  CLIENT: 'bg-gray-100 text-gray-800',
+  SUPER_ADMIN: 'bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-400',
+  SUPERVISOR: 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400',
+  AGENT: 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400',
+  CLIENT: 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-300',
 };

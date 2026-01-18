@@ -20,7 +20,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
     return (
       <div className="w-full">
         {label && (
-          <label htmlFor={inputId} className="mb-1.5 block text-sm font-medium text-gray-700">
+          <label htmlFor={inputId} className="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300">
             {label}
             {props.required && <span className="ml-1 text-danger-500">*</span>}
           </label>
@@ -35,9 +35,9 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
             ref={ref}
             id={inputId}
             className={clsx(
-              'w-full rounded-lg border bg-white px-4 py-2.5 text-sm text-gray-900',
-              'placeholder:text-gray-400 focus:outline-none focus:ring-2',
-              'disabled:cursor-not-allowed disabled:bg-gray-50 disabled:text-gray-500',
+              'w-full rounded-lg border bg-white px-4 py-2.5 text-sm text-gray-900 dark:bg-gray-800 dark:text-white dark:border-gray-600',
+              'placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:outline-none focus:ring-2',
+              'disabled:cursor-not-allowed disabled:bg-gray-50 dark:disabled:bg-gray-900 disabled:text-gray-500',
               error
                 ? 'border-danger-500 focus:border-danger-500 focus:ring-danger-500/20'
                 : 'border-gray-300 focus:border-primary-500 focus:ring-primary-500/20',

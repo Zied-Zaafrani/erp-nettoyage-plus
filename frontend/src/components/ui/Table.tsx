@@ -13,8 +13,8 @@ interface TableProps {
 
 export function Table({ children, className }: TableProps) {
   return (
-    <div className="overflow-x-auto rounded-lg border border-gray-200">
-      <table className={clsx('min-w-full divide-y divide-gray-200', className)}>
+    <div className="overflow-x-auto rounded-lg border border-gray-200 dark:border-gray-700">
+      <table className={clsx('min-w-full divide-y divide-gray-200 dark:divide-gray-700', className)}>
         {children}
       </table>
     </div>
@@ -27,7 +27,7 @@ interface TableHeadProps {
 }
 
 export function TableHead({ children, className }: TableHeadProps) {
-  return <thead className={clsx('bg-gray-50', className)}>{children}</thead>;
+  return <thead className={clsx('bg-gray-50 dark:bg-gray-800', className)}>{children}</thead>;
 }
 
 interface TableBodyProps {
@@ -37,7 +37,7 @@ interface TableBodyProps {
 
 export function TableBody({ children, className }: TableBodyProps) {
   return (
-    <tbody className={clsx('divide-y divide-gray-200 bg-white', className)}>
+    <tbody className={clsx('divide-y divide-gray-200 dark:divide-gray-700 bg-white dark:bg-gray-900', className)}>
       {children}
     </tbody>
   );
@@ -56,7 +56,7 @@ export function TableRow({ children, className, onClick, isSelected }: TableRowP
       className={clsx(
         'transition-colors',
         onClick && 'cursor-pointer',
-        isSelected ? 'bg-primary-50' : 'hover:bg-gray-50',
+        isSelected ? 'bg-primary-50 dark:bg-primary-900/30' : 'hover:bg-gray-50 dark:hover:bg-gray-800',
         className
       )}
       onClick={onClick}
@@ -84,8 +84,8 @@ export function TableHeader({
   return (
     <th
       className={clsx(
-        'px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500',
-        sortable && 'cursor-pointer select-none hover:text-gray-700',
+        'px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400',
+        sortable && 'cursor-pointer select-none hover:text-gray-700 dark:hover:text-gray-300',
         className
       )}
       onClick={sortable ? onSort : undefined}
@@ -109,7 +109,7 @@ interface TableCellProps {
 
 export function TableCell({ children, className }: TableCellProps) {
   return (
-    <td className={clsx('whitespace-nowrap px-6 py-4 text-sm text-gray-900', className)}>
+    <td className={clsx('whitespace-nowrap px-6 py-4 text-sm text-gray-900 dark:text-gray-100', className)}>
       {children}
     </td>
   );
@@ -153,9 +153,9 @@ export function Pagination({
   }
 
   return (
-    <div className="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3">
+    <div className="flex items-center justify-between border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 px-4 py-3">
       {showInfo && (
-        <div className="text-sm text-gray-500">
+        <div className="text-sm text-gray-500 dark:text-gray-400">
           Showing <span className="font-medium">{startItem}</span> to{' '}
           <span className="font-medium">{endItem}</span> of{' '}
           <span className="font-medium">{safeTotalItems}</span> results
@@ -166,14 +166,14 @@ export function Pagination({
         <button
           onClick={() => onPageChange(1)}
           disabled={!canGoPrev}
-          className="rounded-lg p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-600 disabled:cursor-not-allowed disabled:opacity-50"
+          className="rounded-lg p-2 text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-600 dark:hover:text-gray-300 disabled:cursor-not-allowed disabled:opacity-50"
         >
           <ChevronsLeft size={16} />
         </button>
         <button
           onClick={() => onPageChange(safePage - 1)}
           disabled={!canGoPrev}
-          className="rounded-lg p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-600 disabled:cursor-not-allowed disabled:opacity-50"
+          className="rounded-lg p-2 text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-600 dark:hover:text-gray-300 disabled:cursor-not-allowed disabled:opacity-50"
         >
           <ChevronLeft size={16} />
         </button>
@@ -181,7 +181,7 @@ export function Pagination({
         <div className="flex items-center gap-1 px-2">
           {generatePageNumbers(safePage, safeTotal).map((page, i) =>
             page === '...' ? (
-              <span key={`ellipsis-${i}`} className="px-2 text-gray-400">
+              <span key={`ellipsis-${i}`} className="px-2 text-gray-400 dark:text-gray-500">
                 ...
               </span>
             ) : (
@@ -192,7 +192,7 @@ export function Pagination({
                   'min-w-[32px] rounded-lg px-3 py-1.5 text-sm font-medium transition-colors',
                   safePage === page
                     ? 'bg-primary-600 text-white'
-                    : 'text-gray-600 hover:bg-gray-100'
+                    : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
                 )}
               >
                 {page}
@@ -204,14 +204,14 @@ export function Pagination({
         <button
           onClick={() => onPageChange(safePage + 1)}
           disabled={!canGoNext}
-          className="rounded-lg p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-600 disabled:cursor-not-allowed disabled:opacity-50"
+          className="rounded-lg p-2 text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-600 dark:hover:text-gray-300 disabled:cursor-not-allowed disabled:opacity-50"
         >
           <ChevronRight size={16} />
         </button>
         <button
           onClick={() => onPageChange(totalPages)}
           disabled={!canGoNext}
-          className="rounded-lg p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-600 disabled:cursor-not-allowed disabled:opacity-50"
+          className="rounded-lg p-2 text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-600 dark:hover:text-gray-300 disabled:cursor-not-allowed disabled:opacity-50"
         >
           <ChevronsRight size={16} />
         </button>
@@ -251,9 +251,9 @@ interface EmptyStateProps {
 export function EmptyState({ icon, title, description, action }: EmptyStateProps) {
   return (
     <div className="flex flex-col items-center justify-center py-12 text-center">
-      {icon && <div className="mb-4 text-gray-400">{icon}</div>}
-      <h3 className="text-lg font-medium text-gray-900">{title}</h3>
-      {description && <p className="mt-1 text-sm text-gray-500">{description}</p>}
+      {icon && <div className="mb-4 text-gray-400 dark:text-gray-500">{icon}</div>}
+      <h3 className="text-lg font-medium text-gray-900 dark:text-white">{title}</h3>
+      {description && <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">{description}</p>}
       {action && <div className="mt-4">{action}</div>}
     </div>
   );

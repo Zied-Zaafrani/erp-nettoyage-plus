@@ -25,7 +25,7 @@ export function Card({ children, className, padding = 'md', onClick }: CardProps
       role={onClick ? 'button' : undefined}
       onClick={onClick}
       className={clsx(
-        'rounded-xl border border-gray-200 bg-white shadow-soft',
+        'rounded-xl border border-gray-200 bg-white shadow-soft dark:bg-gray-800 dark:border-gray-700',
         paddingStyles[padding],
         onClick && 'cursor-pointer',
         className
@@ -51,8 +51,8 @@ export function CardHeader({ title, subtitle, action, className }: CardHeaderPro
   return (
     <div className={clsx('flex items-center justify-between', className)}>
       <div>
-        <h3 className="text-lg font-semibold text-gray-900">{title}</h3>
-        {subtitle && <p className="text-sm text-gray-500">{subtitle}</p>}
+        <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{title}</h3>
+        {subtitle && <p className="text-sm text-gray-500 dark:text-gray-400">{subtitle}</p>}
       </div>
       {action && <div>{action}</div>}
     </div>

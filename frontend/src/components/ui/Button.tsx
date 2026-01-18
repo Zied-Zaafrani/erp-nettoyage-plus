@@ -12,8 +12,8 @@ type ButtonSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 const variantStyles: Record<ButtonVariant, string> = {
   primary: 'bg-primary-600 text-white hover:bg-primary-700 focus:ring-primary-500',
   secondary: 'bg-secondary-600 text-white hover:bg-secondary-700 focus:ring-secondary-500',
-  outline: 'border-2 border-gray-300 bg-white text-gray-700 hover:bg-gray-50 focus:ring-gray-500',
-  ghost: 'bg-transparent text-gray-600 hover:bg-gray-100 focus:ring-gray-500',
+  outline: 'border-2 border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 focus:ring-gray-500',
+  ghost: 'bg-transparent text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 focus:ring-gray-500',
   danger: 'bg-danger-600 text-white hover:bg-danger-700 focus:ring-danger-500',
   success: 'bg-success-600 text-white hover:bg-success-700 focus:ring-success-500',
 };

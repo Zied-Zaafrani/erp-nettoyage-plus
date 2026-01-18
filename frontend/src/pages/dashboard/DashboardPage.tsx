@@ -128,39 +128,39 @@ export default function DashboardPage() {
             <div className="space-y-2">
               <Link
                 to="/schedules"
-                className="flex items-center justify-between rounded-lg border border-gray-200 p-3 hover:bg-gray-50 transition-colors"
+                className="flex items-center justify-between rounded-lg border border-gray-200 dark:border-gray-700 p-3 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
               >
                 <div className="flex items-center gap-3">
                   <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-100">
                     <CalendarCheck className="h-5 w-5 text-blue-600" />
                   </div>
-                  <span className="font-medium text-gray-900">{t('nav.schedules')}</span>
+                  <span className="font-medium text-gray-900 dark:text-white">{t('nav.schedules')}</span>
                 </div>
-                <ArrowRight size={20} className="text-gray-400" />
+                <ArrowRight size={20} className="text-gray-400 dark:text-gray-500" />
               </Link>
               <Link
                 to="/users"
-                className="flex items-center justify-between rounded-lg border border-gray-200 p-3 hover:bg-gray-50 transition-colors"
+                className="flex items-center justify-between rounded-lg border border-gray-200 dark:border-gray-700 p-3 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
               >
                 <div className="flex items-center gap-3">
                   <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-green-100">
                     <Users className="h-5 w-5 text-green-600" />
                   </div>
-                  <span className="font-medium text-gray-900">{t('nav.users')}</span>
+                  <span className="font-medium text-gray-900 dark:text-white">{t('nav.users')}</span>
                 </div>
-                <ArrowRight size={20} className="text-gray-400" />
+                <ArrowRight size={20} className="text-gray-400 dark:text-gray-500" />
               </Link>
               <Link
                 to="/absences"
-                className="flex items-center justify-between rounded-lg border border-gray-200 p-3 hover:bg-gray-50 transition-colors"
+                className="flex items-center justify-between rounded-lg border border-gray-200 dark:border-gray-700 p-3 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
               >
                 <div className="flex items-center gap-3">
                   <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-yellow-100">
                     <Clock className="h-5 w-5 text-yellow-600" />
                   </div>
-                  <span className="font-medium text-gray-900">{t('nav.absences')}</span>
+                  <span className="font-medium text-gray-900 dark:text-white">{t('nav.absences')}</span>
                 </div>
-                <ArrowRight size={20} className="text-gray-400" />
+                <ArrowRight size={20} className="text-gray-400 dark:text-gray-500" />
               </Link>
             </div>
           </CardContent>
@@ -174,46 +174,46 @@ export default function DashboardPage() {
             PHASE 2
           </Badge>
         </div>
-        <div className="border-b border-gray-200 px-6 py-4">
+        <div className="border-b border-gray-200 dark:border-gray-700 px-6 py-4">
           <div className="flex items-center justify-between">
             <div>
               <div className="flex items-center gap-2">
-                <Lock size={20} className="text-gray-400" />
-                <h3 className="text-lg font-semibold text-gray-900">{t('dashboard.advancedReports')}</h3>
+                <Lock size={20} className="text-gray-400 dark:text-gray-500" />
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{t('dashboard.advancedReports')}</h3>
               </div>
-              <p className="text-sm text-gray-500 mt-1">{t('dashboard.availableInPhase2')}</p>
+              <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{t('dashboard.availableInPhase2')}</p>
             </div>
           </div>
         </div>
         <CardContent>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            <div className="rounded-lg border border-gray-200 p-4 bg-gray-50">
+            <div className="rounded-lg border border-gray-200 dark:border-gray-700 p-4 bg-gray-50 dark:bg-gray-800">
               <div className="flex items-center gap-3 mb-2">
-                <BarChart3 className="h-5 w-5 text-gray-400" />
-                <span className="text-sm font-medium text-gray-500">Completion Rate</span>
+                <BarChart3 className="h-5 w-5 text-gray-400 dark:text-gray-500" />
+                <span className="text-sm font-medium text-gray-500 dark:text-gray-400">Completion Rate</span>
               </div>
-              <p className="text-2xl font-bold text-gray-400">--</p>
+              <p className="text-2xl font-bold text-gray-400 dark:text-gray-500">--</p>
             </div>
-            <div className="rounded-lg border border-gray-200 p-4 bg-gray-50">
+            <div className="rounded-lg border border-gray-200 dark:border-gray-700 p-4 bg-gray-50 dark:bg-gray-800">
               <div className="flex items-center gap-3 mb-2">
-                <BarChart3 className="h-5 w-5 text-gray-400" />
-                <span className="text-sm font-medium text-gray-500">Performance Score</span>
+                <BarChart3 className="h-5 w-5 text-gray-400 dark:text-gray-500" />
+                <span className="text-sm font-medium text-gray-500 dark:text-gray-400">Performance Score</span>
               </div>
-              <p className="text-2xl font-bold text-gray-400">--</p>
+              <p className="text-2xl font-bold text-gray-400 dark:text-gray-500">--</p>
             </div>
-            <div className="rounded-lg border border-gray-200 p-4 bg-gray-50">
+            <div className="rounded-lg border border-gray-200 dark:border-gray-700 p-4 bg-gray-50 dark:bg-gray-800">
               <div className="flex items-center gap-3 mb-2">
-                <BarChart3 className="h-5 w-5 text-gray-400" />
-                <span className="text-sm font-medium text-gray-500">Quality Score</span>
+                <BarChart3 className="h-5 w-5 text-gray-400 dark:text-gray-500" />
+                <span className="text-sm font-medium text-gray-500 dark:text-gray-400">Quality Score</span>
               </div>
-              <p className="text-2xl font-bold text-gray-400">--</p>
+              <p className="text-2xl font-bold text-gray-400 dark:text-gray-500">--</p>
             </div>
-            <div className="rounded-lg border border-gray-200 p-4 bg-gray-50">
+            <div className="rounded-lg border border-gray-200 dark:border-gray-700 p-4 bg-gray-50 dark:bg-gray-800">
               <div className="flex items-center gap-3 mb-2">
-                <BarChart3 className="h-5 w-5 text-gray-400" />
-                <span className="text-sm font-medium text-gray-500">Revenue Analysis</span>
+                <BarChart3 className="h-5 w-5 text-gray-400 dark:text-gray-500" />
+                <span className="text-sm font-medium text-gray-500 dark:text-gray-400">Revenue Analysis</span>
               </div>
-              <p className="text-2xl font-bold text-gray-400">--</p>
+              <p className="text-2xl font-bold text-gray-400 dark:text-gray-500">--</p>
             </div>
           </div>
         </CardContent>
@@ -241,8 +241,8 @@ function QuickNavCard({ title, count, icon, iconBg, iconColor, href }: QuickNavC
       <Card className="hover:shadow-md transition-shadow cursor-pointer">
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-sm text-gray-500 mb-1">{title}</p>
-            <p className="text-lg font-semibold text-gray-900">{count}</p>
+            <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">{title}</p>
+            <p className="text-lg font-semibold text-gray-900 dark:text-white">{count}</p>
           </div>
           <div className={`flex h-12 w-12 items-center justify-center rounded-lg ${iconBg} ${iconColor}`}>
             {icon}
@@ -276,23 +276,23 @@ function InterventionItem({ intervention, t }: InterventionItemProps) {
   };
 
   return (
-    <div className="flex items-center justify-between rounded-lg border border-gray-100 p-3 hover:bg-gray-50">
+    <div className="flex items-center justify-between rounded-lg border border-gray-100 dark:border-gray-700 p-3 hover:bg-gray-50 dark:hover:bg-gray-800">
       <div className="flex items-center gap-3">
-        <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gray-100">
-          <CheckCircle className="h-5 w-5 text-gray-600" />
+        <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gray-100 dark:bg-gray-800">
+          <CheckCircle className="h-5 w-5 text-gray-600 dark:text-gray-400" />
         </div>
         <div>
-          <p className="text-sm font-medium text-gray-900">
+          <p className="text-sm font-medium text-gray-900 dark:text-white">
             {intervention.site?.name || intervention.zone?.site?.name || t('dashboard.unknownSite')}
           </p>
-          <p className="text-xs text-gray-500">
+          <p className="text-xs text-gray-500 dark:text-gray-400">
             {intervention.agent?.firstName} {intervention.agent?.lastName}
           </p>
         </div>
       </div>
       <div className="flex items-center gap-3">
         <div className="text-right">
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-gray-600 dark:text-gray-400">
             {intervention.scheduledStartTime} - {intervention.scheduledEndTime}
           </p>
         </div>
@@ -309,10 +309,10 @@ function LoadingSkeleton({ rows }: { rows: number }) {
     <div className="space-y-3">
       {Array.from({ length: rows }).map((_, i) => (
         <div key={i} className="flex items-center gap-3">
-          <div className="h-10 w-10 animate-pulse rounded-lg bg-gray-200" />
+          <div className="h-10 w-10 animate-pulse rounded-lg bg-gray-200 dark:bg-gray-700" />
           <div className="flex-1 space-y-2">
-            <div className="h-4 w-3/4 animate-pulse rounded bg-gray-200" />
-            <div className="h-3 w-1/2 animate-pulse rounded bg-gray-200" />
+            <div className="h-4 w-3/4 animate-pulse rounded bg-gray-200 dark:bg-gray-700" />
+            <div className="h-3 w-1/2 animate-pulse rounded bg-gray-200 dark:bg-gray-700" />
           </div>
         </div>
       ))}
@@ -323,8 +323,8 @@ function LoadingSkeleton({ rows }: { rows: number }) {
 function EmptyMessage({ icon, message }: { icon: React.ReactNode; message: string }) {
   return (
     <div className="flex flex-col items-center justify-center py-8 text-center">
-      <div className="mb-3 text-gray-400">{icon}</div>
-      <p className="text-sm text-gray-500">{message}</p>
+      <div className="mb-3 text-gray-400 dark:text-gray-500">{icon}</div>
+      <p className="text-sm text-gray-500 dark:text-gray-400">{message}</p>
     </div>
   );
 }

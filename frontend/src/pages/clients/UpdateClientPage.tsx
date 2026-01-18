@@ -147,7 +147,7 @@ export default function UpdateClientPage() {
           <ArrowLeft className="h-5 w-5" />
         </button>
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">{t('clients.edit')}</h1>
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">{t('clients.edit')}</h1>
           <p className="mt-1 text-gray-600">{clientData.name}</p>
         </div>
       </div>
@@ -157,7 +157,7 @@ export default function UpdateClientPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Client Name */}
             <div>
-              <label className="block text-sm font-medium text-gray-700">{t('clients.form.name')}</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">{t('clients.form.name')}</label>
               <Controller
                 name="name"
                 control={control}
@@ -170,7 +170,7 @@ export default function UpdateClientPage() {
 
             {/* Client Type */}
             <div>
-              <label className="block text-sm font-medium text-gray-700">{t('clients.form.type')}</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">{t('clients.form.type')}</label>
               <Controller
                 name="type"
                 control={control}
@@ -186,7 +186,7 @@ export default function UpdateClientPage() {
 
             {/* Client Status */}
             <div>
-              <label className="block text-sm font-medium text-gray-700">{t('common.status')}</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">{t('common.status')}</label>
               <Controller
                 name="status"
                 control={control}
@@ -202,7 +202,7 @@ export default function UpdateClientPage() {
 
             {/* Email */}
             <div>
-              <label className="block text-sm font-medium text-gray-700">{t('clients.form.email')}</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">{t('clients.form.email')}</label>
               <Controller
                 name="email"
                 control={control}
@@ -222,7 +222,7 @@ export default function UpdateClientPage() {
 
             {/* Phone */}
             <div>
-              <label className="block text-sm font-medium text-gray-700">{t('clients.form.phone')}</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">{t('clients.form.phone')}</label>
               <Controller
                 name="phone"
                 control={control}
@@ -240,7 +240,7 @@ export default function UpdateClientPage() {
 
             {/* Contact Person */}
             <div>
-              <label className="block text-sm font-medium text-gray-700">{t('clients.form.contactPerson')}</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">{t('clients.form.contactPerson')}</label>
               <Controller
                 name="contactPerson"
                 control={control}
@@ -258,7 +258,7 @@ export default function UpdateClientPage() {
 
             {/* Contact Phone */}
             <div>
-              <label className="block text-sm font-medium text-gray-700">{t('clients.form.contactPhone')}</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">{t('clients.form.contactPhone')}</label>
               <Controller
                 name="contactPhone"
                 control={control}
@@ -277,7 +277,7 @@ export default function UpdateClientPage() {
 
           {/* Address */}
           <div>
-            <label className="block text-sm font-medium text-gray-700">{t('clients.form.address')}</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">{t('clients.form.address')}</label>
             <Controller
               name="address"
               control={control}
@@ -296,7 +296,7 @@ export default function UpdateClientPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {/* City */}
             <div>
-              <label className="block text-sm font-medium text-gray-700">{t('clients.form.city')}</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">{t('clients.form.city')}</label>
               <Controller
                 name="city"
                 control={control}
@@ -314,7 +314,7 @@ export default function UpdateClientPage() {
 
             {/* Postal Code */}
             <div>
-              <label className="block text-sm font-medium text-gray-700">{t('clients.form.postalCode')}</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">{t('clients.form.postalCode')}</label>
               <Controller
                 name="postalCode"
                 control={control}
@@ -332,7 +332,7 @@ export default function UpdateClientPage() {
 
             {/* Country */}
             <div>
-              <label className="block text-sm font-medium text-gray-700">{t('clients.form.country')}</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">{t('clients.form.country')}</label>
               <Controller
                 name="country"
                 control={control}
@@ -351,7 +351,7 @@ export default function UpdateClientPage() {
 
           {/* Notes */}
           <div>
-            <label className="block text-sm font-medium text-gray-700">{t('common.notes')}</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">{t('common.notes')}</label>
             <Controller
               name="notes"
               control={control}

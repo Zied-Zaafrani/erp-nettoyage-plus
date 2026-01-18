@@ -86,23 +86,23 @@ export default function Modal({
         <div
           ref={modalRef}
           className={clsx(
-            'relative w-full rounded-xl bg-white shadow-xl animate-slide-up',
+            'relative w-full rounded-xl bg-white dark:bg-gray-800 shadow-xl animate-slide-up',
             sizeStyles[size]
           )}
           onClick={(e) => e.stopPropagation()}
         >
           {/* Header */}
-          <div className="flex items-start justify-between border-b border-gray-200 px-6 py-4">
+          <div className="flex items-start justify-between border-b border-gray-200 dark:border-gray-700 px-6 py-4">
             <div>
-              <h2 className="text-lg font-semibold text-gray-900">{title}</h2>
+              <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{title}</h2>
               {description && (
-                <p className="mt-1 text-sm text-gray-500">{description}</p>
+                <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">{description}</p>
               )}
             </div>
             {showCloseButton && (
               <button
                 onClick={onClose}
-                className="rounded-lg p-1 text-gray-400 hover:bg-gray-100 hover:text-gray-600"
+                className="rounded-lg p-1 text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-600 dark:hover:text-gray-300"
               >
                 <X size={20} />
               </button>
@@ -114,7 +114,7 @@ export default function Modal({
 
           {/* Footer */}
           {footer && (
-            <div className="flex items-center justify-end gap-3 border-t border-gray-200 px-6 py-4">
+            <div className="flex items-center justify-end gap-3 border-t border-gray-200 dark:border-gray-700 px-6 py-4">
               {footer}
             </div>
           )}

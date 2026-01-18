@@ -9,12 +9,12 @@ type BadgeVariant = 'primary' | 'secondary' | 'success' | 'warning' | 'danger' |
 type BadgeSize = 'sm' | 'md' | 'lg';
 
 const variantStyles: Record<BadgeVariant, string> = {
-  primary: 'bg-primary-100 text-primary-800',
-  secondary: 'bg-secondary-100 text-secondary-800',
-  success: 'bg-success-100 text-success-800',
-  warning: 'bg-warning-100 text-warning-800',
-  danger: 'bg-danger-100 text-danger-800',
-  gray: 'bg-gray-100 text-gray-800',
+  primary: 'bg-primary-100 text-primary-800 dark:bg-primary-900/30 dark:text-primary-400',
+  secondary: 'bg-secondary-100 text-secondary-800 dark:bg-secondary-900/30 dark:text-secondary-400',
+  success: 'bg-success-100 text-success-800 dark:bg-success-900/30 dark:text-success-400',
+  warning: 'bg-warning-100 text-warning-800 dark:bg-warning-900/30 dark:text-warning-400',
+  danger: 'bg-danger-100 text-danger-800 dark:bg-danger-900/30 dark:text-danger-400',
+  gray: 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-300',
 };
 
 const sizeStyles: Record<BadgeSize, string> = {

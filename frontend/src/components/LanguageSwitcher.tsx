@@ -40,7 +40,7 @@ export default function LanguageSwitcher() {
         onClick={() => setIsOpen(!isOpen)}
         className={clsx(
           'flex items-center gap-2 px-3 py-2 rounded-lg',
-          'text-gray-600 hover:text-gray-900 hover:bg-gray-100',
+          'text-gray-600 hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-800',
           'transition-colors duration-200',
           'focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2'
         )}
@@ -55,7 +55,7 @@ export default function LanguageSwitcher() {
         <div
           className={clsx(
             'absolute top-full mt-2 py-1',
-            'w-48 bg-white rounded-lg shadow-lg border border-gray-200',
+            'w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700',
             'z-50',
             isRTL ? 'left-0' : 'right-0'
           )}
@@ -68,8 +68,8 @@ export default function LanguageSwitcher() {
                 'w-full flex items-center gap-3 px-4 py-2',
                 'text-sm',
                 isRTL ? 'text-right flex-row-reverse' : 'text-left',
-                'hover:bg-gray-50 transition-colors',
-                i18n.language === language.code && 'bg-primary-50 text-primary-700'
+                'hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors',
+                i18n.language === language.code && 'bg-primary-50 dark:bg-primary-900/30 text-primary-700 dark:text-primary-400'
               )}
             >
               <span className="text-lg">{language.flag}</span>

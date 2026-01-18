@@ -58,8 +58,8 @@ export default function ClientsPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">{t('clients.title')}</h1>
-          <p className="mt-1 text-gray-600">{t('clients.subtitle')}</p>
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">{t('clients.title')}</h1>
+          <p className="mt-1 text-gray-600 dark:text-gray-400">{t('clients.subtitle')}</p>
         </div>
         <Button
           onClick={() => navigate('/clients/create')}
@@ -99,7 +99,7 @@ export default function ClientsPage() {
         {showFilters && (
           <div className="pt-4 border-t grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 {t('common.status')}
               </label>
               <select
@@ -108,7 +108,7 @@ export default function ClientsPage() {
                   setSelectedStatus(e.target.value as ClientStatus | '');
                   setPage(1);
                 }}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
                 {statusOptions.map((opt) => (
                   <option key={opt.value} value={opt.value}>
@@ -124,17 +124,17 @@ export default function ClientsPage() {
       {/* Clients Table */}
       {isLoading ? (
         <div className="flex justify-center py-12">
-          <div className="text-gray-500">{t('common.loading')}</div>
+          <div className="text-gray-500 dark:text-gray-400">{t('common.loading')}</div>
         </div>
       ) : error ? (
         <Card className="p-8 text-center">
-          <div className="text-red-600">{t('common.error')}</div>
+          <div className="text-red-600 dark:text-red-400">{t('common.error')}</div>
         </Card>
       ) : clientsData?.data?.length === 0 ? (
         <Card className="flex flex-col items-center justify-center py-12">
-          <Building2 className="h-16 w-16 text-gray-300" />
-          <h3 className="mt-4 text-lg font-medium text-gray-900">{t('clients.title')}</h3>
-          <p className="mt-1 text-sm text-gray-500">{t('common.noData')}</p>
+          <Building2 className="h-16 w-16 text-gray-300 dark:text-gray-600" />
+          <h3 className="mt-4 text-lg font-medium text-gray-900 dark:text-white">{t('clients.title')}</h3>
+          <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">{t('common.noData')}</p>
           <Button
             onClick={() => navigate('/clients/create')}
             className="mt-4"
@@ -151,22 +151,22 @@ export default function ClientsPage() {
                 onClick={() => navigate(`/clients/${client.id}`)}
                 className="cursor-pointer"
               >
-                <Card className="p-4 hover:bg-gray-50 transition">
+                <Card className="p-4 hover:bg-gray-50 dark:hover:bg-gray-800 transition">
                   <div className="flex items-center justify-between">
                     <div className="flex-1">
                       <div className="flex items-center gap-3">
                         <div className="flex-1">
                           <div className="flex items-center gap-2">
-                            <h3 className="text-lg font-semibold text-gray-900">{client.name}</h3>
+                            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{client.name}</h3>
                             <Badge className={getStatusColor(client.status)}>
                               {statusOptions.find((s) => s.value === client.status)?.label}
                             </Badge>
                             <Tag className="h-3 w-3 text-gray-400" />
-                            <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
+                            <span className="text-xs text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">
                               {typeOptions[client.type as keyof typeof typeOptions]}
                             </span>
                           </div>
-                          <div className="mt-2 flex flex-wrap gap-4 text-sm text-gray-600">
+                          <div className="mt-2 flex flex-wrap gap-4 text-sm text-gray-600 dark:text-gray-400">
                             {client.email && (
                               <div className="flex items-center gap-1">
                                 <Mail className="h-3 w-3" />
@@ -189,7 +189,7 @@ export default function ClientsPage() {
                         </div>
                       </div>
                     </div>
-                    <ChevronRight className="h-5 w-5 text-gray-400" />
+                    <ChevronRight className="h-5 w-5 text-gray-400 dark:text-gray-500" />
                   </div>
                 </Card>
               </div>
@@ -199,7 +199,7 @@ export default function ClientsPage() {
           {/* Pagination */}
           {(clientsData?.pagination || clientsData?.meta) && (
             <div className="flex items-center justify-between">
-              <div className="text-sm text-gray-600">
+              <div className="text-sm text-gray-600 dark:text-gray-400">
                 {t('common.showing')} {(page - 1) * 10 + 1}-
                 {Math.min(page * 10, (clientsData?.pagination || clientsData?.meta)?.total || 0)} {t('common.of')}{' '}
                 {(clientsData?.pagination || clientsData?.meta)?.total}

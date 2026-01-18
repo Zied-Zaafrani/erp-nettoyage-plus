@@ -70,10 +70,10 @@ export default function LoginPage() {
           <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary-600">
             <span className="text-xl text-white">🧹</span>
           </div>
-          <span className="text-xl font-bold text-gray-900">{t('common.appName')}</span>
+          <span className="text-xl font-bold text-gray-900 dark:text-white">{t('common.appName')}</span>
         </div>
-        <h1 className="text-2xl font-bold text-gray-900">{t('auth.loginTitle')}</h1>
-        <p className="mt-2 text-sm text-gray-600">
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('auth.loginTitle')}</h1>
+        <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
           {t('auth.loginSubtitle')}
         </p>
       </div>

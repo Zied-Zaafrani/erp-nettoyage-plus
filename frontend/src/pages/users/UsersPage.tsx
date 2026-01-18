@@ -228,7 +228,7 @@ export default function UsersPage() {
                 setStatusFilter(e.target.value as 'ALL' | UserStatus);
                 setPage(1);
               }}
-              className="rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-gray-900 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/20"
+              className="rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-4 py-2.5 text-sm text-gray-900 dark:text-white focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/20"
             >
               <option value="ALL">{t('users.statusFilter.all')}</option>
               <option value="ACTIVE">{t('users.statusFilter.active')}</option>
@@ -241,7 +241,7 @@ export default function UsersPage() {
                 setRoleFilter(e.target.value as 'ALL' | UserRole);
                 setPage(1);
               }}
-              className="rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-gray-900 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/20"
+              className="rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-4 py-2.5 text-sm text-gray-900 dark:text-white focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/20"
             >
               <option value="ALL">{t('users.roleFilter.all')}</option>
               <option value="SUPER_ADMIN">{t('users.roles.SUPER_ADMIN')}</option>
@@ -251,7 +251,7 @@ export default function UsersPage() {
             </select>
           </div>
           <div className="flex items-center gap-2">
-            <span className="text-sm text-gray-500">
+            <span className="text-sm text-gray-500 dark:text-gray-400">
               {data?.meta?.total || 0} {t('common.results')}
             </span>
           </div>
@@ -301,10 +301,10 @@ export default function UsersPage() {
                           {user.lastName?.[0]}
                         </div>
                         <div>
-                          <p className="font-medium text-gray-900">
+                          <p className="font-medium text-gray-900 dark:text-white">
                             {user.firstName} {user.lastName}
                           </p>
-                          <p className="text-xs text-gray-500">{user.phone || '-'}</p>
+                          <p className="text-xs text-gray-500 dark:text-gray-400">{user.phone || '-'}</p>
                         </div>
                       </div>
                     </TableCell>
@@ -326,7 +326,7 @@ export default function UsersPage() {
                         {canEdit && user.status !== 'ARCHIVED' && (
                           <button
                             onClick={() => handleEdit(user)}
-                            className="rounded p-1.5 text-gray-400 hover:bg-gray-100 hover:text-gray-600"
+                            className="rounded p-1.5 text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-600 dark:hover:text-gray-300"
                             title={t('common.edit')}
                           >
                             <Edit size={16} />
@@ -353,7 +353,7 @@ export default function UsersPage() {
                         {canDeactivate && user.status !== 'ARCHIVED' && (
                           <button
                             onClick={() => handleDeactivate(user)}
-                            className="rounded p-1.5 text-gray-400 hover:bg-red-50 hover:text-red-600"
+                            className="rounded p-1.5 text-gray-400 hover:bg-red-50 dark:hover:bg-red-900/30 hover:text-red-600 dark:hover:text-red-400"
                             title={t('users.deactivate')}
                           >
                             <UserX size={16} />
@@ -362,7 +362,7 @@ export default function UsersPage() {
                         {canRestore && user.status === 'ARCHIVED' && (
                           <button
                             onClick={() => handleRestore(user)}
-                            className="rounded p-1.5 text-gray-400 hover:bg-green-50 hover:text-green-600"
+                            className="rounded p-1.5 text-gray-400 hover:bg-green-50 dark:hover:bg-green-900/30 hover:text-green-600 dark:hover:text-green-400"
                             title={t('users.restore')}
                             disabled={restoreMutation.isPending}
                           >
