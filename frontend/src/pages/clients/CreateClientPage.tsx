@@ -16,10 +16,9 @@ const schema = yup.object().shape({
   city: yup.string().optional(),
   postalCode: yup.string().optional(),
   country: yup.string().optional(),
-  type: yup
+  clientType: yup
     .string()
-    .oneOf(['INDIVIDUAL', 'COMPANY', 'MULTI_SITE'])
-      .oneOf(['INDIVIDUAL', 'COMPANY', 'MULTISITE'] as any)
+    .oneOf(['INDIVIDUAL', 'COMPANY', 'MULTISITE'])
     .required('Client type is required'),
 });
 
@@ -37,7 +36,7 @@ export default function CreateClientPage() {
   } = useForm<CreateClientForm>({
     resolver: yupResolver(schema),
     defaultValues: {
-      type: 'INDIVIDUAL',
+      clientType: 'INDIVIDUAL',
     },
   });
 
@@ -90,7 +89,7 @@ export default function CreateClientPage() {
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">{t('clients.form.type')}</label>
               <Controller
-                name="type"
+                name="clientType"
                 control={control}
                 render={({ field }) => (
                   <Select
@@ -99,7 +98,7 @@ export default function CreateClientPage() {
                   />
                 )}
               />
-               {errors.type && <p className="text-red-500 text-sm mt-1">{errors.type.message}</p>}
+               {errors.clientType && <p className="text-red-500 text-sm mt-1">{errors.clientType.message}</p>}
             </div>
 
             {/* Email */}

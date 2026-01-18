@@ -163,7 +163,7 @@ export default function ClientsPage() {
                             </Badge>
                             <Tag className="h-3 w-3 text-gray-400" />
                             <span className="text-xs text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">
-                              {typeOptions[client.type as keyof typeof typeOptions]}
+                              {typeOptions[(client.clientType || client.type) as keyof typeof typeOptions]}
                             </span>
                           </div>
                           <div className="mt-2 flex flex-wrap gap-4 text-sm text-gray-600 dark:text-gray-400">
