@@ -119,8 +119,11 @@ export default function CreateContractPage() {
 
       {clientsError && (
         <Card className="p-4 bg-red-50 border border-red-200">
-          <p className="text-red-700 text-sm">
-            Error loading clients: {clientsError instanceof Error ? clientsError.message : 'Unknown error'}
+          <p className="text-red-700 text-sm font-semibold">Error loading clients:</p>
+          <p className="text-red-600 text-sm mt-2">
+            {clientsError instanceof Error 
+              ? clientsError.message 
+              : JSON.stringify(clientsError)}
           </p>
         </Card>
       )}
