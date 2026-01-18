@@ -44,7 +44,7 @@ export default function CreateInterventionPage() {
     control,
     handleSubmit,
     watch,
-    formState: { errors, isSubmitting },
+    formState: { isSubmitting },
   } = useForm<CreateInterventionForm>({
     resolver: yupResolver(schema),
   });
@@ -99,13 +99,17 @@ export default function CreateInterventionPage() {
       label: site.name,
     })) || [];
 
-  // ...existing code...
-  // Ajout des options pour agents, chefs, etc.
-  // Similaire à contractOptions et siteOptions
-  // Exemple :
-  // const agentOptions = ...
-  // const zoneChiefOptions = ...
-  // const teamChiefOptions = ...
+  const agentOptions = [
+    { value: '', label: t('common.select') },
+  ];
+
+  const zoneChiefOptions = [
+    { value: '', label: t('common.select') },
+  ];
+
+  const teamChiefOptions = [
+    { value: '', label: t('common.select') },
+  ];
 
   return (
     <div className="space-y-6">

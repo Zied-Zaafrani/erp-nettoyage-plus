@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { Plus, Calendar, Trash2 } from 'lucide-react';
 import { Button, Card, Input, Select } from '@/components/ui';
 import { schedulesService } from '@/services';
-import { Schedule, RecurrencePattern, ScheduleStatus } from '@/types';
+import { RecurrencePattern, ScheduleStatus } from '@/types';
 import { toast } from 'sonner';
 
 export default function SchedulesListPage() {
