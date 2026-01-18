@@ -12,7 +12,7 @@ export const api: AxiosInstance = axios.create({
 // Add token to requests
 api.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('access_token');
+    const token = localStorage.getItem('accessToken');
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -27,7 +27,7 @@ api.interceptors.response.use(
   (error: AxiosError) => {
     if (error.response?.status === 401) {
       // Token expired or invalid - redirect to login
-      localStorage.removeItem('access_token');
+      localStorage.removeItem('accessToken');
       localStorage.removeItem('user');
       window.location.href = '/auth/login';
     }

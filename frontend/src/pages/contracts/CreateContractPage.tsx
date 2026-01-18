@@ -58,13 +58,11 @@ export default function CreateContractPage() {
 
   // Debug: Log clients data
   useEffect(() => {
-    if (clientsData) {
-      console.log('Clients loaded:', clientsData);
-    }
-    if (clientsError) {
-      console.error('Clients error:', clientsError);
-    }
-  }, [clientsData, clientsError]);
+    console.log('CreateContractPage - clientsData:', clientsData);
+    console.log('CreateContractPage - clientsError:', clientsError);
+    console.log('CreateContractPage - isClientsLoading:', isClientsLoading);
+    console.log('CreateContractPage - clientOptions:', clientOptions);
+  }, [clientsData, clientsError, isClientsLoading, clientOptions]);
 
   const createContractMutation = useMutation({
     mutationFn: (data: any) => contractsService.create(data),
@@ -116,6 +114,22 @@ export default function CreateContractPage() {
         <h1 className="text-3xl font-bold text-gray-900 dark:text-white">{t('contracts.create')}</h1>
         <p className="mt-1 text-gray-600">{t('contracts.createSubtitle')}</p>
       </div>
+
+      {clientsError && (
+        <Card className="p-4 bg-red-50 border border-red-200">
+          <p className="text-red-700 text-sm">
+            Error loading clients: {clientsError instanceof Error ? clientsError.message : 'Unknown error'}
+          </p>
+        </Card>
+      )}
+
+      {clientsData && clientsData.data && clientsData.data.length === 0 && (
+        <Card className="p-4 bg-yellow-50 border border-yellow-200">
+          <p className="text-yellow-700 text-sm">
+            No clients found in database. Please create a client first.
+          </p>
+        </Card>
+      )}
 
       <Card className="p-6">
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
