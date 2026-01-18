@@ -6,7 +6,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { Button, Card, Input, Select } from '@/components/ui';
 import { schedulesService, contractsService } from '@/services';
-import { UpdateScheduleDto, RecurrencePattern, ScheduleStatus } from '@/types';
+import { UpdateScheduleDto } from '@/types';
 import { toast } from 'sonner';
 
 const schema = yup.object().shape({

@@ -15,13 +15,14 @@ export default function SchedulesListPage() {
   const [contractFilter, setContractFilter] = useState('');
   const [statusFilter, setStatusFilter] = useState<ScheduleStatus | ''>('');
 
-  const { data: schedulesData = [], isLoading, isError } = useQuery({
+  const { data: schedulesData, isLoading, isError } = useQuery({
     queryKey: ['schedules', contractFilter, statusFilter],
     queryFn: () => schedulesService.getAll({
       contractId: contractFilter || undefined,
-      status: (statusFilter as ScheduleStatus) || undefined,
     }),
   });
+
+  const schedules = schedulesData?.data || [];
 
   const deleteScheduleMutation = useMutation({
     mutationFn: (id: string) => schedulesService.delete(id),
@@ -96,7 +97,7 @@ export default function SchedulesListPage() {
         </div>
       </Card>
 
-      {schedulesData.length === 0 ? (
+      {schedules.length === 0 ? (
         <Card className="flex flex-col items-center justify-center py-12">
           <Calendar className="h-16 w-16 text-gray-300" />
           <h3 className="mt-4 text-lg font-medium text-gray-900 dark:text-white">
@@ -130,7 +131,7 @@ export default function SchedulesListPage() {
               </tr>
             </thead>
             <tbody className="bg-white dark:bg-gray-900 divide-y divide-gray-200 dark:divide-gray-700">
-              {(schedulesData as Schedule[]).map((schedule) => (
+              {schedules.map((schedule) => (
                 <tr key={schedule.id} className="hover:bg-gray-50 dark:hover:bg-gray-800">
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
                     {schedule.contract?.contractCode || '-'}

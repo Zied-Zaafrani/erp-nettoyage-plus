@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { useMutation, useQueryClient, useQuery } from '@tanstack/react-query';
 import { Button, Card, Input, Select } from '@/components/ui';
 import { schedulesService, contractsService } from '@/services';
-import { CreateScheduleDto, RecurrencePattern } from '@/types';
+import { CreateScheduleDto } from '@/types';
 import { toast } from 'sonner';
 
 const schema = yup.object().shape({
@@ -54,7 +54,7 @@ export default function CreateSchedulePage() {
 
   const { data: sitesData } = useQuery({
     queryKey: ['sites', { contractId }],
-    queryFn: () => contractsService.getById(contractId).then(c => c.sites || []),
+    queryFn: () => contractsService.getById(contractId).then(c => (c.site ? [c.site] : [])),
     enabled: !!contractId,
   });
 
