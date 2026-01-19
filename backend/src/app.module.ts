@@ -17,6 +17,7 @@ import { SchedulesModule } from './modules/schedules/schedules.module';
 import { ChecklistsModule } from './modules/checklists/checklists.module';
 import { AbsencesModule } from './modules/absences/absences.module';
 import { DashboardModule } from './modules/dashboard/dashboard.module';
+import { EmailModule } from './modules/email/email.module';
 import { JwtAuthGuard } from './common/guards';
 
 @Module({
@@ -41,6 +42,7 @@ import { JwtAuthGuard } from './common/guards';
     ChecklistsModule,
     AbsencesModule,
     DashboardModule,
+    EmailModule,
   ],
   controllers: [AppController],
   providers: [

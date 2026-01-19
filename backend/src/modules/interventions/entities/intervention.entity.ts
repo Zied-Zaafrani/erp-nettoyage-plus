@@ -42,10 +42,10 @@ export class Intervention {
   @Column({ type: 'time' })
   scheduledEndTime: string;
 
-  @Column({ type: 'datetime', nullable: true })
+  @Column({ type: 'timestamp', nullable: true })
   actualStartTime: Date | null;
 
-  @Column({ type: 'datetime', nullable: true })
+  @Column({ type: 'timestamp', nullable: true })
   actualEndTime: Date | null;
 
   @Column({
@@ -82,9 +82,9 @@ export class Intervention {
   @Column({ type: 'decimal', precision: 10, scale: 7, nullable: true })
   gpsCheckOutLng: number | null;
 
-  @Column({ type: 'datetime', nullable: true })
+  @Column({ type: 'timestamp', nullable: true })
   gpsCheckInTime: Date | null;
-  @Column({ type: 'datetime', nullable: true })
+  @Column({ type: 'timestamp', nullable: true })
   gpsCheckOutTime: Date | null;
 
   @Column({ type: 'simple-array', nullable: true })

@@ -33,7 +33,7 @@ export class ChecklistItem {
   @Column({ name: 'is_completed', default: false })
   isCompleted: boolean;
 
-  @Column({ name: 'completed_at', type: 'datetime', nullable: true })
+  @Column({ name: 'completed_at', type: 'timestamp', nullable: true })
   completedAt: Date | null;
 
   @Column({ name: 'completed_by', nullable: true })

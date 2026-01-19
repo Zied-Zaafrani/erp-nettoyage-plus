@@ -53,7 +53,7 @@ export class Absence {
   })
   status: AbsenceStatus;
 
-  @Column({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   requestedAt: Date;
 
   // Review details
@@ -64,7 +64,7 @@ export class Absence {
   @JoinColumn({ name: 'reviewedBy' })
   reviewer: User;
 
-  @Column({ type: 'datetime', nullable: true })
+  @Column({ type: 'timestamp', nullable: true })
   reviewedAt: Date;
 
   @Column({ type: 'text', nullable: true })

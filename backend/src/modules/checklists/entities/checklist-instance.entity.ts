@@ -42,10 +42,10 @@ export class ChecklistInstance {
   })
   status: ChecklistStatus;
 
-  @Column({ name: 'started_at', type: 'datetime', nullable: true })
+  @Column({ name: 'started_at', type: 'timestamp', nullable: true })
   startedAt: Date | null;
 
-  @Column({ name: 'completed_at', type: 'datetime', nullable: true })
+  @Column({ name: 'completed_at', type: 'timestamp', nullable: true })
   completedAt: Date | null;
 
   @Column({ name: 'completion_percentage', type: 'int', default: 0 })

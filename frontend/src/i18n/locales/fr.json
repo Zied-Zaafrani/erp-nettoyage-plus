@@ -53,7 +53,8 @@
     "noFilters": "Aucun filtre",
     "applyFilters": "Appliquer les filtres",
     "clearFilters": "Effacer les filtres",
-    "filterBy": "Filtrer par"
+    "filterBy": "Filtrer par",
+    "processing": "Traitement en cours..."
   },
   "auth": {
     "login": "Connexion",
@@ -79,7 +80,32 @@
     "demologgingInAs": "Connexion en tant que {{role}}...",
     "demoLoginSuccess": "Bienvenue {{role}} !",
     "platformHeadline": "Gestion Professionnelle du Nettoyage",
-    "platformDescription": "Rationalisez vos opérations de nettoyage avec notre plateforme de gestion complète"
+    "platformDescription": "Rationalisez vos opérations de nettoyage avec notre plateforme de gestion complète",
+    "managementPlatform": "Plateforme de Gestion",
+    "featureSecure": "Sécurisé",
+    "featureTeam": "Gestion d'équipe",
+    "featureRealtime": "Temps réel",
+    "forgotPasswordTitle": "Mot de passe oublié ?",
+    "forgotPasswordSubtitle": "Entrez votre adresse email et nous vous enverrons un lien de réinitialisation.",
+    "forgotPasswordDescription": "Pas de souci ! Ça arrive. Entrez votre email et nous vous enverrons les instructions pour réinitialiser votre mot de passe.",
+    "sendResetLink": "Envoyer le lien",
+    "sendingResetLink": "Envoi en cours...",
+    "forgotSentTitle": "Lien de réinitialisation envoyé",
+    "forgotSentSubtitle": "Si un compte existe pour cet email, vous recevrez bientôt un lien de réinitialisation.",
+    "backToLogin": "Retour à la connexion",
+    "resetPasswordTitle": "Réinitialiser Votre Mot de Passe",
+    "resetPasswordDescription": "Entrez un nouveau mot de passe pour sécuriser votre compte",
+    "resetPassword": "Réinitialiser le mot de passe",
+    "resetPasswordButton": "Réinitialiser le mot de passe",
+    "newPassword": "Nouveau mot de passe",
+    "confirmPassword": "Confirmer le mot de passe",
+    "enterNewPassword": "Entrez votre nouveau mot de passe ci-dessous",
+    "passwordRequirements": "Exigences du mot de passe:",
+    "rememberPassword": "Vous vous souvenez de votre mot de passe ?",
+    "loginHere": "Connectez-vous ici",
+    "passwordResetSuccess": "Mot de Passe Réinitialisé avec Succès!",
+    "passwordResetSuccessMessage": "Votre mot de passe a été réinitialisé avec succès. Redirection vers connexion...",
+    "redirectingToLogin": "Vous serez redirigé vers la page de connexion..."
   },
   "landing": {
     "title": "Plateforme de Gestion",
@@ -532,6 +558,11 @@
     "minLength": "Doit contenir au moins {{min}} caractères",
     "maxLength": "Doit contenir au maximum {{max}} caractères",
     "passwordMismatch": "Les mots de passe ne correspondent pas",
+    "passwordMatch": "Les mots de passe ne correspondent pas",
+    "passwordMin": "Le mot de passe doit contenir au moins 8 caractères",
+    "passwordLower": "Le mot de passe doit contenir au moins une lettre minuscule",
+    "passwordUpper": "Le mot de passe doit contenir au moins une lettre majuscule",
+    "passwordNumber": "Le mot de passe doit contenir au moins un chiffre",
     "invalidDate": "Veuillez entrer une date valide",
     "invalidPhone": "Veuillez entrer un numéro de téléphone valide",
     "endDateBeforeStart": "La date de fin doit être après la date de début"
@@ -541,6 +572,8 @@
     "network": "Erreur réseau. Veuillez vérifier votre connexion.",
     "unauthorized": "Vous n'êtes pas autorisé à effectuer cette action.",
     "notFound": "La ressource demandée n'a pas été trouvée.",
-    "serverError": "Erreur serveur. Veuillez réessayer plus tard."
+    "serverError": "Erreur serveur. Veuillez réessayer plus tard.",
+    "invalidToken": "Lien de réinitialisation invalide ou expiré",
+    "tokenExpired": "Le lien de réinitialisation est invalide ou a expiré"
   }
 }

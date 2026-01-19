@@ -50,17 +50,17 @@ export class User {
   @Column({ default: false })
   emailVerified: boolean;
 
-  @Column({ type: 'datetime', nullable: true })
+  @Column({ type: 'timestamp', nullable: true })
   emailVerifiedAt: Date;
 
   // Security: track failed login attempts (for future lockout feature)
   @Column({ default: 0 })
   failedLoginAttempts: number;
 
-  @Column({ type: 'datetime', nullable: true })
+  @Column({ type: 'timestamp', nullable: true })
   lastFailedLoginAt: Date;
 
-  @Column({ type: 'datetime', nullable: true })
+  @Column({ type: 'timestamp', nullable: true })
   lastLoginAt: Date;
 
   @CreateDateColumn()

@@ -53,7 +53,8 @@
     "noFilters": "لا توجد مرشحات",
     "applyFilters": "تطبيق المرشحات",
     "clearFilters": "مسح المرشحات",
-    "filterBy": "تصفية حسب"
+    "filterBy": "تصفية حسب",
+    "processing": "جاري المعالجة..."
   },
   "auth": {
     "login": "تسجيل الدخول",
@@ -79,7 +80,32 @@
     "demologgingInAs": "جاري تسجيل الدخول باسم {{role}}...",
     "demoLoginSuccess": "مرحباً {{role}}!",
     "platformHeadline": "إدارة التنظيف الاحترافية",
-    "platformDescription": "بسّط عمليات التنظيف الخاصة بك باستخدام منصة الإدارة الشاملة لدينا"
+    "platformDescription": "بسّط عمليات التنظيف الخاصة بك باستخدام منصتنا الشاملة",
+    "managementPlatform": "منصة الإدارة",
+    "featureSecure": "آمن",
+    "featureTeam": "إدارة الفريق",
+    "featureRealtime": "آني",
+    "forgotPasswordTitle": "نسيت كلمة المرور؟",
+    "forgotPasswordSubtitle": "أدخل بريدك الإلكتروني وسنرسل لك رابط إعادة التعيين.",
+    "forgotPasswordDescription": "لا تقلق! هذا يحدث. أدخل بريدك الإلكتروني وسنرسل لك تعليمات إعادة تعيين كلمة المرور.",
+    "sendResetLink": "إرسال رابط الاستعادة",
+    "sendingResetLink": "جاري الإرسال...",
+    "forgotSentTitle": "تم إرسال رابط الاستعادة",
+    "forgotSentSubtitle": "إذا كان هناك حساب لهذا البريد، ستتلقى رابط إعادة التعيين قريباً.",
+    "backToLogin": "العودة لتسجيل الدخول",
+    "resetPasswordTitle": "إعادة تعيين كلمة المرور",
+    "resetPasswordDescription": "أدخل كلمة مرور جديدة لتأمين حسابك",
+    "resetPassword": "إعادة تعيين كلمة المرور",
+    "resetPasswordButton": "إعادة تعيين كلمة المرور",
+    "newPassword": "كلمة مرور جديدة",
+    "confirmPassword": "تأكيد كلمة المرور",
+    "enterNewPassword": "أدخل كلمة مرورك الجديدة أدناه",
+    "passwordRequirements": "متطلبات كلمة المرور:",
+    "rememberPassword": "هل تتذكر كلمة مرورك؟",
+    "loginHere": "سجل دخولك هنا",
+    "passwordResetSuccess": "تم إعادة تعيين كلمة المرور بنجاح!",
+    "passwordResetSuccessMessage": "تم إعادة تعيين كلمة المرور الخاصة بك بنجاح. جاري إعادة التوجيه للدخول...",
+    "redirectingToLogin": "ستتم إعادة توجيهك إلى صفحة تسجيل الدخول..."
   },
   "landing": {
     "title": "منصة إدارة",
@@ -535,6 +561,11 @@
     "minLength": "يجب أن يحتوي على {{min}} أحرف على الأقل",
     "maxLength": "يجب ألا يتجاوز {{max}} حرفاً",
     "passwordMismatch": "كلمتا المرور غير متطابقتين",
+    "passwordMatch": "كلمتا المرور غير متطابقتين",
+    "passwordMin": "يجب أن تحتوي كلمة المرور على 8 أحرف على الأقل",
+    "passwordLower": "يجب أن تحتوي كلمة المرور على حرف صغير واحد على الأقل",
+    "passwordUpper": "يجب أن تحتوي كلمة المرور على حرف كبير واحد على الأقل",
+    "passwordNumber": "يجب أن تحتوي كلمة المرور على رقم واحد على الأقل",
     "invalidDate": "يرجى إدخال تاريخ صالح",
     "invalidPhone": "يرجى إدخال رقم هاتف صالح",
     "endDateBeforeStart": "يجب أن يكون تاريخ النهاية بعد تاريخ البداية"
@@ -544,6 +575,8 @@
     "network": "خطأ في الشبكة. يرجى التحقق من اتصالك.",
     "unauthorized": "غير مصرح لك بتنفيذ هذا الإجراء.",
     "notFound": "المورد المطلوب غير موجود.",
-    "serverError": "خطأ في الخادم. يرجى المحاولة لاحقاً."
+    "serverError": "خطأ في الخادم. يرجى المحاولة لاحقاً.",
+    "invalidToken": "رابط إعادة التعيين غير صالح أو منتهي الصلاحية",
+    "tokenExpired": "رابط إعادة التعيين غير صالح أو انتهت صلاحيته"
   }
 }

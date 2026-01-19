@@ -372,9 +372,61 @@
     animation-delay: 100ms;
   }
 
+  .animation-delay-1000 {
+    animation-delay: 1000ms;
+  }
+
   .animation-delay-2000 {
     animation-delay: 2000ms;
   }
+
+  /* Floating card animations for login page */
+  @keyframes float {
+    0%, 100% {
+      transform: translate(-50%, -50%) translateY(0px);
+    }
+    50% {
+      transform: translate(-50%, -50%) translateY(-12px);
+    }
+  }
+
+  @keyframes float-simple {
+    0%, 100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-8px);
+    }
+  }
+
+  .animate-float {
+    animation: float 4s ease-in-out infinite;
+  }
+
+  .animate-float-delayed {
+    animation: float-simple 4s ease-in-out infinite;
+    animation-delay: 1s;
+  }
+
+  .animate-float-slow {
+    animation: float-simple 5s ease-in-out infinite;
+    animation-delay: 2s;
+  }
+
+  /* Error shake + toast fade effects */
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20% { transform: translateX(-6px); }
+    40% { transform: translateX(6px); }
+    60% { transform: translateX(-4px); }
+    80% { transform: translateX(4px); }
+  }
+  .animate-shake { animation: shake 400ms ease-in-out; }
+
+  @keyframes fade-in { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes fade-out { from { opacity: 1; transform: translateY(0); } to { opacity: 0; transform: translateY(-4px); } }
+  .animate-fade-in { animation: fade-in 200ms ease-out; }
+  .animate-fade-out { animation: fade-out 200ms ease-in forwards; }
 
   /* Hide scrollbar */
   .scrollbar-hide {

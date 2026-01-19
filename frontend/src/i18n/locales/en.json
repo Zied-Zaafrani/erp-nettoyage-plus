@@ -53,7 +53,8 @@
     "noFilters": "No filters",
     "applyFilters": "Apply filters",
     "clearFilters": "Clear filters",
-    "filterBy": "Filter by"
+    "filterBy": "Filter by",
+    "processing": "Processing..."
   },
   "auth": {
     "login": "Login",
@@ -79,7 +80,32 @@
     "demologgingInAs": "Logging in as {{role}}...",
     "demoLoginSuccess": "Welcome {{role}}!",
     "platformHeadline": "Professional Cleaning Management",
-    "platformDescription": "Streamline your cleaning operations with our comprehensive management platform"
+    "platformDescription": "Streamline your cleaning operations with our comprehensive management platform",
+    "managementPlatform": "Management Platform",
+    "featureSecure": "Secure",
+    "featureTeam": "Team Management",
+    "featureRealtime": "Real-time",
+    "forgotPasswordTitle": "Forgot Password?",
+    "forgotPasswordSubtitle": "Enter your email address and we'll send you a password reset link.",
+    "forgotPasswordDescription": "Don't worry! It happens. Enter your email and we'll send you instructions to reset your password.",
+    "sendResetLink": "Send Reset Link",
+    "sendingResetLink": "Sending...",
+    "forgotSentTitle": "Reset link sent",
+    "forgotSentSubtitle": "If an account exists for that email, you'll receive a reset link shortly.",
+    "backToLogin": "Back to Login",
+    "resetPasswordTitle": "Reset Your Password",
+    "resetPasswordDescription": "Enter a new password to secure your account",
+    "resetPassword": "Reset Password",
+    "resetPasswordButton": "Reset Password",
+    "newPassword": "New Password",
+    "confirmPassword": "Confirm Password",
+    "enterNewPassword": "Enter your new password below",
+    "passwordRequirements": "Password requirements:",
+    "rememberPassword": "Remember your password?",
+    "loginHere": "Login here",
+    "passwordResetSuccess": "Password Reset Successful!",
+    "passwordResetSuccessMessage": "Your password has been reset successfully. Redirecting to login...",
+    "redirectingToLogin": "You will be redirected to login page shortly..."
   },
   "landing": {
     "title": "Operations",
@@ -532,6 +558,11 @@
     "minLength": "Must be at least {{min}} characters",
     "maxLength": "Must be at most {{max}} characters",
     "passwordMismatch": "Passwords do not match",
+    "passwordMatch": "Passwords do not match",
+    "passwordMin": "Password must be at least 8 characters long",
+    "passwordLower": "Password must contain at least one lowercase letter",
+    "passwordUpper": "Password must contain at least one uppercase letter",
+    "passwordNumber": "Password must contain at least one number",
     "invalidDate": "Please enter a valid date",
     "invalidPhone": "Please enter a valid phone number",
     "endDateBeforeStart": "End date must be after start date"
@@ -541,6 +572,8 @@
     "network": "Network error. Please check your connection.",
     "unauthorized": "You are not authorized to perform this action.",
     "notFound": "The requested resource was not found.",
-    "serverError": "Server error. Please try again later."
+    "serverError": "Server error. Please try again later.",
+    "invalidToken": "Invalid or expired reset token",
+    "tokenExpired": "The reset link is invalid or has expired"
   }
 }

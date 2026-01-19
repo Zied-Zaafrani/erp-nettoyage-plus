@@ -10,6 +10,7 @@ import { JwtService } from '@nestjs/jwt';
 import { User } from '../users/entities/user.entity';
 import { RegisterDto, LoginDto } from './dto';
 import { UserStatus } from '../../shared/types/user.types';
+import { EmailService } from '../email/email.service';
 
 @Injectable()
 export class AuthService {
@@ -19,6 +20,7 @@ export class AuthService {
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
     private readonly jwtService: JwtService,
+    private readonly emailService: EmailService,
   ) {}
 
   /**
@@ -124,6 +126,65 @@ export class AuthService {
     };
 
     return this.jwtService.sign(payload);
+  }
+
+  /**
+   * Initiate password reset
+   */
+  async forgotPassword(email: string): Promise<{ message: string }> {
+    const user = await this.userRepository.findOne({
+      where: { email: email.toLowerCase() },
+    });
+
+    // Always return success message (security best practice)
+    // Don't reveal if email exists or not
+    if (!user) {
+      this.logger.log(`Password reset requested for non-existent email: ${email}`);
+      return { message: 'If an account exists, a reset link has been sent' };
+    }
+
+    // Generate a secure reset token (for demo, use JWT, in prod use random string)
+    const resetToken = this.jwtService.sign(
+      { sub: user.id, email: user.email },
+      { expiresIn: '1h' }
+    );
+    // Construct reset URL (frontend should handle this route)
+    const resetUrl = `${process.env.FRONTEND_URL || 'http://localhost:5173'}/auth/reset-password?token=${resetToken}`;
+    this.logger.log(`Password reset requested for: ${user.email}`);
+    await this.emailService.sendPasswordReset(user.email, resetUrl);
+    return { message: 'If an account exists, a reset link has been sent' };
+  }
+
+  /**
+   * Reset password with token
+   */
+  async resetPassword(token: string, newPassword: string): Promise<{ message: string }> {
+    try {
+      // Verify token and extract user info
+      const payload = this.jwtService.verify(token);
+      const user = await this.userRepository.findOne({
+        where: { id: payload.sub },
+      });
+
+      if (!user) {
+        throw new UnauthorizedException('User not found');
+      }
+
+      // Hash and update password
+      user.password = newPassword; // The entity's setter should hash it
+      await this.userRepository.save(user);
+
+      this.logger.log(`Password reset successful for: ${user.email}`);
+      return { message: 'Password has been reset successfully' };
+    } catch (error) {
+      if (error.name === 'TokenExpiredError') {
+        throw new UnauthorizedException('Reset token has expired. Please request a new one.');
+      }
+      if (error.name === 'JsonWebTokenError') {
+        throw new UnauthorizedException('Invalid reset token.');
+      }
+      throw error;
+    }
   }
 
   /**

@@ -8,6 +8,9 @@ import AuthLayout from './layouts/AuthLayout';
 
 // Auth Pages
 import LoginPage from './pages/auth/LoginPage';
+import ForgotPasswordPage from './pages/auth/ForgotPasswordPage';
+import ForgotPasswordSent from './pages/auth/ForgotPasswordSent';
+import ResetPasswordPage from './pages/auth/ResetPasswordPage';
 
 // Dashboard Pages
 import DashboardPage from './pages/dashboard/DashboardPage';
@@ -75,6 +78,9 @@ function App() {
       {/* Auth Routes */}
       <Route element={<AuthLayout />}>
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+        <Route path="/forgot-password/sent" element={<ForgotPasswordSent />} />
+        <Route path="/auth/reset-password" element={<ResetPasswordPage />} />
       </Route>
 
       {/* Dashboard Routes (Protected) */}
