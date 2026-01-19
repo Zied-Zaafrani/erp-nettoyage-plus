@@ -5,7 +5,12 @@ import { ApiError } from '@/types';
 // API CLIENT CONFIGURATION
 // ============================================
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+// Log environment for debugging
+console.log('DEBUG: VITE_API_URL =', import.meta.env.VITE_API_URL);
+console.log('DEBUG: MODE =', import.meta.env.MODE);
+console.log('DEBUG: DEV =', import.meta.env.DEV);
+
+const API_BASE_URL = import.meta.env.VITE_API_URL?.trim() || 'http://localhost:3000/api';
 
 // Create axios instance
 const apiClient: AxiosInstance = axios.create({
