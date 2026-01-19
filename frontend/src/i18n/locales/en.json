@@ -69,7 +69,17 @@
     "loginError": "Invalid email or password",
     "loginSuccess": "Login successful!",
     "logoutSuccess": "You have been logged out",
-    "sessionExpired": "Your session has expired. Please log in again."
+    "sessionExpired": "Your session has expired. Please log in again.",
+    "demoAccounts": "Demo Accounts",
+    "demoAdmin": "Admin",
+    "demoAgent": "Agent",
+    "demoClient": "Client",
+    "demoSupervisor": "Supervisor",
+    "demoLoginAs": "Login as {{role}}",
+    "demologgingInAs": "Logging in as {{role}}...",
+    "demoLoginSuccess": "Welcome {{role}}!",
+    "platformHeadline": "Professional Cleaning Management",
+    "platformDescription": "Streamline your cleaning operations with our comprehensive management platform"
   },
   "landing": {
     "title": "Operations",

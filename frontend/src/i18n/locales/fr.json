@@ -69,7 +69,17 @@
     "loginError": "Email ou mot de passe invalide",
     "loginSuccess": "Connexion réussie !",
     "logoutSuccess": "Vous avez été déconnecté",
-    "sessionExpired": "Votre session a expiré. Veuillez vous reconnecter."
+    "sessionExpired": "Votre session a expiré. Veuillez vous reconnecter.",
+    "demoAccounts": "Comptes Démo",
+    "demoAdmin": "Administrateur",
+    "demoAgent": "Agent",
+    "demoClient": "Client",
+    "demoSupervisor": "Superviseur",
+    "demoLoginAs": "Se connecter en tant que {{role}}",
+    "demologgingInAs": "Connexion en tant que {{role}}...",
+    "demoLoginSuccess": "Bienvenue {{role}} !",
+    "platformHeadline": "Gestion Professionnelle du Nettoyage",
+    "platformDescription": "Rationalisez vos opérations de nettoyage avec notre plateforme de gestion complète"
   },
   "landing": {
     "title": "Plateforme de Gestion",

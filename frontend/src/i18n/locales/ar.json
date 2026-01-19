@@ -69,7 +69,17 @@
     "loginError": "البريد الإلكتروني أو كلمة المرور غير صحيحة",
     "loginSuccess": "تم تسجيل الدخول بنجاح!",
     "logoutSuccess": "تم تسجيل الخروج",
-    "sessionExpired": "انتهت جلستك. يرجى تسجيل الدخول مرة أخرى."
+    "sessionExpired": "انتهت جلستك. يرجى تسجيل الدخول مرة أخرى.",
+    "demoAccounts": "حسابات توضيحية",
+    "demoAdmin": "مسؤول",
+    "demoAgent": "وكيل",
+    "demoClient": "عميل",
+    "demoSupervisor": "مشرف",
+    "demoLoginAs": "تسجيل الدخول باسم {{role}}",
+    "demologgingInAs": "جاري تسجيل الدخول باسم {{role}}...",
+    "demoLoginSuccess": "مرحباً {{role}}!",
+    "platformHeadline": "إدارة التنظيف الاحترافية",
+    "platformDescription": "بسّط عمليات التنظيف الخاصة بك باستخدام منصة الإدارة الشاملة لدينا"
   },
   "landing": {
     "title": "منصة إدارة",

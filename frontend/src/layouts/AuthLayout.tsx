@@ -66,7 +66,7 @@ export default function AuthLayout() {
       </div>
 
       {/* Auth forms panel */}
-      <div className="flex w-full items-center justify-center bg-gray-50 p-8 lg:w-1/2">
+      <div className="flex w-full items-center justify-center bg-white dark:bg-gray-950 p-8 lg:w-1/2">
         <div className={`w-full max-w-md ${isRTL ? 'text-right' : 'text-left'}`} style={{ direction: isRTL ? 'rtl' : 'ltr' }}>
           <Outlet />
         </div>
