@@ -8,7 +8,16 @@ export class EmailService {
 
   constructor() {
     const resendApiKey = process.env.RESEND_API_KEY;
+    const isDevelopment = process.env.NODE_ENV !== 'production';
 
+    // In development, Resend is optional (we just log to console)
+    if (!resendApiKey && isDevelopment) {
+      this.logger.log('📧 Email service initialized in DEVELOPMENT mode');
+      this.logger.log('💡 Password reset URLs will be logged to console');
+      return;
+    }
+
+    // In production, Resend API key is required
     if (!resendApiKey) {
       this.logger.error(
         '❌ RESEND_API_KEY not found in environment variables!',
