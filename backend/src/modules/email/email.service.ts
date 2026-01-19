@@ -1,23 +1,43 @@
 import { Injectable, Logger } from '@nestjs/common';
 import * as nodemailer from 'nodemailer';
 import { Transporter } from 'nodemailer';
+import { Resend } from 'resend';
 
 @Injectable()
 export class EmailService {
   private readonly logger = new Logger(EmailService.name);
   private transporter: Transporter;
+  private resend: Resend;
+  private useResend: boolean;
 
   constructor() {
-    this.initializeTransporter();
+    this.initializeEmailService();
   }
 
-  private initializeTransporter() {
+  private initializeEmailService() {
+    const resendApiKey = process.env.RESEND_API_KEY;
+
+    // Prefer Resend for production (HTTP API, no SMTP port issues)
+    if (resendApiKey) {
+      this.resend = new Resend(resendApiKey);
+      this.useResend = true;
+      this.logger.log('✅ Email service initialized with Resend');
+      this.logger.log('💡 Using HTTP API - works great with Railway!');
+      return;
+    }
+
+    // Fallback to SMTP for local development
+    this.useResend = false;
+    this.initializeSMTP();
+  }
+
+  private initializeSMTP() {
     const smtpHost = process.env.SMTP_HOST;
     const smtpPort = process.env.SMTP_PORT;
     const smtpUser = process.env.SMTP_USER;
     const smtpPass = process.env.SMTP_PASS;
 
-    this.logger.log(`🔧 Initializing email transporter...`);
+    this.logger.log(`🔧 Initializing SMTP transporter...`);
     this.logger.log(`   SMTP_HOST: ${smtpHost || '❌ NOT SET'}`);
     this.logger.log(`   SMTP_PORT: ${smtpPort || '❌ NOT SET'}`);
     this.logger.log(`   SMTP_USER: ${smtpUser ? '✅ SET' : '❌ NOT SET'}`);
@@ -64,8 +84,37 @@ export class EmailService {
   }
 
   async sendPasswordReset(email: string, resetUrl: string): Promise<void> {
-    const fromEmail = process.env.SMTP_FROM || 'noreply@nettoyageplus.com';
+    const fromEmail = process.env.SMTP_FROM || 'onboarding@resend.dev';
+    const fromName = 'NettoyagePlus';
 
+    // Use Resend if configured (production)
+    if (this.useResend) {
+      try {
+        const { data, error } = await this.resend.emails.send({
+          from: `${fromName} <${fromEmail}>`,
+          to: [email],
+          subject: 'Réinitialisation de votre mot de passe - NettoyagePlus',
+          html: this.getPasswordResetEmailHtml(resetUrl),
+        });
+
+        if (error) {
+          throw new Error(error.message);
+        }
+
+        this.logger.log(
+          `✅ Password reset email sent via Resend to ${email}. ID: ${data.id}`,
+        );
+        return;
+      } catch (error) {
+        this.logger.error(
+          `❌ Failed to send password reset email via Resend to ${email}`,
+          error.message,
+        );
+        throw new Error(`Failed to send password reset email: ${error.message}`);
+      }
+    }
+
+    // Fallback to SMTP for local development
     // In production, if SMTP is not properly configured, just log the reset URL
     if (process.env.NODE_ENV === 'production' && !this.transporter.sendMail) {
       this.logger.warn(`⚠️ Email service unavailable. Reset URL for ${email}:`);
@@ -79,45 +128,7 @@ export class EmailService {
         to: email,
         subject: 'Réinitialisation de votre mot de passe - NettoyagePlus',
         text: `Bonjour,\n\nVous avez demandé la réinitialisation de votre mot de passe.\n\nCliquez sur le lien suivant pour réinitialiser votre mot de passe :\n${resetUrl}\n\nCe lien expirera dans 1 heure.\n\nSi vous n'avez pas demandé cette réinitialisation, ignorez cet email.\n\nCordialement,\nL'équipe NettoyagePlus`,
-        html: `
-          <!DOCTYPE html>
-          <html>
-          <head>
-            <meta charset="utf-8">
-            <style>
-              body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
-              .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-              .header { background-color: #2563eb; color: white; padding: 20px; text-align: center; border-radius: 5px 5px 0 0; }
-              .content { background-color: #f9fafb; padding: 30px; border-radius: 0 0 5px 5px; }
-              .button { display: inline-block; padding: 12px 30px; background-color: #2563eb; color: white; text-decoration: none; border-radius: 5px; margin: 20px 0; }
-              .footer { text-align: center; margin-top: 20px; color: #6b7280; font-size: 12px; }
-            </style>
-          </head>
-          <body>
-            <div class="container">
-              <div class="header">
-                <h1>NettoyagePlus</h1>
-              </div>
-              <div class="content">
-                <h2>Réinitialisation de votre mot de passe</h2>
-                <p>Bonjour,</p>
-                <p>Vous avez demandé la réinitialisation de votre mot de passe.</p>
-                <p>Cliquez sur le bouton ci-dessous pour réinitialiser votre mot de passe :</p>
-                <div style="text-align: center;">
-                  <a href="${resetUrl}" class="button">Réinitialiser mon mot de passe</a>
-                </div>
-                <p>Ou copiez ce lien dans votre navigateur :</p>
-                <p style="word-break: break-all; color: #2563eb;">${resetUrl}</p>
-                <p><strong>Ce lien expirera dans 1 heure.</strong></p>
-                <p>Si vous n'avez pas demandé cette réinitialisation, ignorez cet email.</p>
-              </div>
-              <div class="footer">
-                <p>© 2026 NettoyagePlus. Tous droits réservés.</p>
-              </div>
-            </div>
-          </body>
-          </html>
-        `,
+        html: this.getPasswordResetEmailHtml(resetUrl),
       });
 
       this.logger.log(
@@ -149,5 +160,47 @@ export class EmailService {
       
       throw new Error(`Failed to send password reset email: ${error.message}`);
     }
+  }
+
+  private getPasswordResetEmailHtml(resetUrl: string): string {
+    return `
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <meta charset="utf-8">
+        <style>
+          body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+          .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+          .header { background-color: #2563eb; color: white; padding: 20px; text-align: center; border-radius: 5px 5px 0 0; }
+          .content { background-color: #f9fafb; padding: 30px; border-radius: 0 0 5px 5px; }
+          .button { display: inline-block; padding: 12px 30px; background-color: #2563eb; color: white; text-decoration: none; border-radius: 5px; margin: 20px 0; }
+          .footer { text-align: center; margin-top: 20px; color: #6b7280; font-size: 12px; }
+        </style>
+      </head>
+      <body>
+        <div class="container">
+          <div class="header">
+            <h1>NettoyagePlus</h1>
+          </div>
+          <div class="content">
+            <h2>Réinitialisation de votre mot de passe</h2>
+            <p>Bonjour,</p>
+            <p>Vous avez demandé la réinitialisation de votre mot de passe.</p>
+            <p>Cliquez sur le bouton ci-dessous pour réinitialiser votre mot de passe :</p>
+            <div style="text-align: center;">
+              <a href="${resetUrl}" class="button">Réinitialiser mon mot de passe</a>
+            </div>
+            <p>Ou copiez ce lien dans votre navigateur :</p>
+            <p style="word-break: break-all; color: #2563eb;">${resetUrl}</p>
+            <p><strong>Ce lien expirera dans 1 heure.</strong></p>
+            <p>Si vous n'avez pas demandé cette réinitialisation, ignorez cet email.</p>
+          </div>
+          <div class="footer">
+            <p>© 2026 NettoyagePlus. Tous droits réservés.</p>
+          </div>
+        </div>
+      </body>
+      </html>
+    `;
   }
 }
