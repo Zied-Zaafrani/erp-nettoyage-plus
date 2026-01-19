@@ -47,10 +47,10 @@ export class EmailService {
       tls: {
         rejectUnauthorized: false, // For Ethereal and test SMTP servers
       },
-      // Connection options - increased for Railway
-      connectionTimeout: 30000,
-      greetingTimeout: 10000,
-      socketTimeout: 60000,
+      // Connection options - reduced for faster failure
+      connectionTimeout: 5000,
+      greetingTimeout: 3000,
+      socketTimeout: 10000,
     };
 
     this.transporter = nodemailer.createTransport(transportConfig);
@@ -65,6 +65,13 @@ export class EmailService {
 
   async sendPasswordReset(email: string, resetUrl: string): Promise<void> {
     const fromEmail = process.env.SMTP_FROM || 'noreply@nettoyageplus.com';
+
+    // In production, if SMTP is not properly configured, just log the reset URL
+    if (process.env.NODE_ENV === 'production' && !this.transporter.sendMail) {
+      this.logger.warn(`⚠️ Email service unavailable. Reset URL for ${email}:`);
+      this.logger.warn(resetUrl);
+      return;
+    }
 
     try {
       const info = await this.transporter.sendMail({
