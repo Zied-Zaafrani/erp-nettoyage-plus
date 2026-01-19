@@ -47,10 +47,10 @@ export class EmailService {
       tls: {
         rejectUnauthorized: false, // For Ethereal and test SMTP servers
       },
-      // Connection options
-      connectionTimeout: 10000,
-      greetingTimeout: 5000,
-      socketTimeout: 20000,
+      // Connection options - increased for Railway
+      connectionTimeout: 30000,
+      greetingTimeout: 10000,
+      socketTimeout: 60000,
     };
 
     this.transporter = nodemailer.createTransport(transportConfig);

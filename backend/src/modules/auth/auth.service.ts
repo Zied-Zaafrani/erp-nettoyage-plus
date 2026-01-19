@@ -149,9 +149,15 @@ export class AuthService {
       { expiresIn: '1h' }
     );
     // Construct reset URL (frontend should handle this route)
-    const resetUrl = `${process.env.FRONTEND_URL || 'http://localhost:5173'}/auth/reset-password?token=${resetToken}`;
+    const resetUrl = `${process.env.FRONTEND_URL || 'http://localhost:5173'}/reset-password?token=${resetToken}`;
     this.logger.log(`Password reset requested for: ${user.email}`);
-    await this.emailService.sendPasswordReset(user.email, resetUrl);
+    try {
+      await this.emailService.sendPasswordReset(user.email, resetUrl);
+      this.logger.log(`Password reset email sent successfully to: ${user.email}`);
+    } catch (error) {
+      this.logger.error(`Failed to send password reset email: ${error.message}`);
+      // Still return success to not reveal if email exists
+    }
     return { message: 'If an account exists, a reset link has been sent' };
   }
 
