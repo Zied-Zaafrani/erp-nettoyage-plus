@@ -29,7 +29,21 @@ export class EmailService {
   async sendPasswordReset(email: string, resetUrl: string): Promise<void> {
     const fromEmail = process.env.SMTP_FROM || 'onboarding@resend.dev';
     const fromName = 'NettoyagePlus';
+    const isDevelopment = process.env.NODE_ENV !== 'production';
 
+    // In development, just log the reset URL (no email sending)
+    if (isDevelopment) {
+      this.logger.log('=================================================');
+      this.logger.log('📧 PASSWORD RESET EMAIL (Development Mode)');
+      this.logger.log('=================================================');
+      this.logger.log(`To: ${email}`);
+      this.logger.log(`Reset URL: ${resetUrl}`);
+      this.logger.log('=================================================');
+      this.logger.log('💡 Copy the URL above and paste it in your browser to test');
+      return;
+    }
+
+    // In production, send via Resend
     try {
       const { data, error } = await this.resend.emails.send({
         from: `${fromName} <${fromEmail}>`,
