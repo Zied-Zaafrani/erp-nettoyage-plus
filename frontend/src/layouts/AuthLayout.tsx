@@ -8,7 +8,7 @@ import { useAuth } from '@/contexts/AuthContext';
  */
 export default function AuthLayout() {
   const { isAuthenticated, isLoading } = useAuth();
-  const { t, i18n } = useTranslation();
+  const { i18n } = useTranslation();
   const isRTL = i18n.language === 'ar';
 
   // Show loading state
