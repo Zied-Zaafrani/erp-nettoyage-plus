@@ -1,163 +1,55 @@
 import { Injectable, Logger } from '@nestjs/common';
-import * as nodemailer from 'nodemailer';
-import { Transporter } from 'nodemailer';
 import { Resend } from 'resend';
 
 @Injectable()
 export class EmailService {
   private readonly logger = new Logger(EmailService.name);
-  private transporter: Transporter;
   private resend: Resend;
-  private useResend: boolean;
 
   constructor() {
-    this.initializeEmailService();
-  }
-
-  private initializeEmailService() {
     const resendApiKey = process.env.RESEND_API_KEY;
 
-    // Prefer Resend for production (HTTP API, no SMTP port issues)
-    if (resendApiKey) {
-      this.resend = new Resend(resendApiKey);
-      this.useResend = true;
-      this.logger.log('✅ Email service initialized with Resend');
-      this.logger.log('💡 Using HTTP API - works great with Railway!');
-      return;
-    }
-
-    // Fallback to SMTP for local development
-    this.useResend = false;
-    this.initializeSMTP();
-  }
-
-  private initializeSMTP() {
-    const smtpHost = process.env.SMTP_HOST;
-    const smtpPort = process.env.SMTP_PORT;
-    const smtpUser = process.env.SMTP_USER;
-    const smtpPass = process.env.SMTP_PASS;
-
-    this.logger.log(`🔧 Initializing SMTP transporter...`);
-    this.logger.log(`   SMTP_HOST: ${smtpHost || '❌ NOT SET'}`);
-    this.logger.log(`   SMTP_PORT: ${smtpPort || '❌ NOT SET'}`);
-    this.logger.log(`   SMTP_USER: ${smtpUser ? '✅ SET' : '❌ NOT SET'}`);
-    this.logger.log(`   SMTP_PASS: ${smtpPass ? '✅ SET' : '❌ NOT SET'}`);
-
-    if (!smtpHost || !smtpPort || !smtpUser || !smtpPass) {
-      this.logger.warn(
-        '⚠️  SMTP credentials not fully configured. Email sending will be simulated.',
+    if (!resendApiKey) {
+      this.logger.error(
+        '❌ RESEND_API_KEY not found in environment variables!',
       );
-      this.transporter = nodemailer.createTransport({
-        streamTransport: true,
-        newline: 'unix',
-        buffer: true,
-      } as any);
-      return;
+      this.logger.error(
+        '💡 Get your free API key at https://resend.com (3,000 emails/month)',
+      );
+      throw new Error(
+        'Email service cannot initialize without RESEND_API_KEY',
+      );
     }
 
-    // Configure nodemailer with proper SMTP transport
-    const transportConfig: any = {
-      host: smtpHost,
-      port: parseInt(smtpPort, 10),
-      secure: false, // Use STARTTLS for port 587
-      auth: {
-        user: smtpUser,
-        pass: smtpPass,
-      },
-      tls: {
-        rejectUnauthorized: false, // For Ethereal and test SMTP servers
-      },
-      // Connection options - reduced for faster failure
-      connectionTimeout: 5000,
-      greetingTimeout: 3000,
-      socketTimeout: 10000,
-    };
-
-    this.transporter = nodemailer.createTransport(transportConfig);
-
-    this.logger.log(
-      `✅ Email transporter configured with ${smtpHost}:${smtpPort}`,
-    );
-    this.logger.log(
-      `💡 For Ethereal (demo): Generate new creds at https://ethereal.email/create`,
-    );
+    this.resend = new Resend(resendApiKey);
+    this.logger.log('✅ Email service initialized with Resend');
+    this.logger.log('💡 Using HTTP API - works great with Railway!');
   }
 
   async sendPasswordReset(email: string, resetUrl: string): Promise<void> {
     const fromEmail = process.env.SMTP_FROM || 'onboarding@resend.dev';
     const fromName = 'NettoyagePlus';
 
-    // Use Resend if configured (production)
-    if (this.useResend) {
-      try {
-        const { data, error } = await this.resend.emails.send({
-          from: `${fromName} <${fromEmail}>`,
-          to: [email],
-          subject: 'Réinitialisation de votre mot de passe - NettoyagePlus',
-          html: this.getPasswordResetEmailHtml(resetUrl),
-        });
-
-        if (error) {
-          throw new Error(error.message);
-        }
-
-        this.logger.log(
-          `✅ Password reset email sent via Resend to ${email}. ID: ${data.id}`,
-        );
-        return;
-      } catch (error) {
-        this.logger.error(
-          `❌ Failed to send password reset email via Resend to ${email}`,
-          error.message,
-        );
-        throw new Error(`Failed to send password reset email: ${error.message}`);
-      }
-    }
-
-    // Fallback to SMTP for local development
-    // In production, if SMTP is not properly configured, just log the reset URL
-    if (process.env.NODE_ENV === 'production' && !this.transporter.sendMail) {
-      this.logger.warn(`⚠️ Email service unavailable. Reset URL for ${email}:`);
-      this.logger.warn(resetUrl);
-      return;
-    }
-
     try {
-      const info = await this.transporter.sendMail({
-        from: fromEmail,
-        to: email,
+      const { data, error } = await this.resend.emails.send({
+        from: `${fromName} <${fromEmail}>`,
+        to: [email],
         subject: 'Réinitialisation de votre mot de passe - NettoyagePlus',
-        text: `Bonjour,\n\nVous avez demandé la réinitialisation de votre mot de passe.\n\nCliquez sur le lien suivant pour réinitialiser votre mot de passe :\n${resetUrl}\n\nCe lien expirera dans 1 heure.\n\nSi vous n'avez pas demandé cette réinitialisation, ignorez cet email.\n\nCordialement,\nL'équipe NettoyagePlus`,
         html: this.getPasswordResetEmailHtml(resetUrl),
       });
 
-      this.logger.log(
-        `Password reset email sent to ${email}. Message ID: ${info.messageId}`,
-      );
-
-      // For Ethereal, log the preview URL
-      if (process.env.SMTP_HOST?.includes('ethereal.email')) {
-        const previewUrl = nodemailer.getTestMessageUrl(info);
-        if (previewUrl) {
-          this.logger.log(`Preview URL: ${previewUrl}`);
-        }
+      if (error) {
+        throw new Error(error.message);
       }
+
+      this.logger.log(
+        `✅ Password reset email sent via Resend to ${email}. ID: ${data.id}`,
+      );
     } catch (error) {
       this.logger.error(
         `❌ Failed to send password reset email to ${email}`,
         error.message,
       );
-      
-      // Log detailed error info for debugging
-      if (error.message?.includes('Authentication failed')) {
-        this.logger.error(
-          `🔑 Auth Error: Check SMTP_USER and SMTP_PASS in .env`,
-        );
-        this.logger.error(
-          `💡 For Ethereal: Generate new credentials at https://ethereal.email/create`,
-        );
-      }
-      
       throw new Error(`Failed to send password reset email: ${error.message}`);
     }
   }

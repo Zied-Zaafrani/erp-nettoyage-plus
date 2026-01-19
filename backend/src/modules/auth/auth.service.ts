@@ -148,8 +148,12 @@ export class AuthService {
       { sub: user.id, email: user.email },
       { expiresIn: '1h' }
     );
-    // Construct reset URL (frontend should handle this route)
-    const resetUrl = `${process.env.FRONTEND_URL || 'http://localhost:5173'}/reset-password?token=${resetToken}`;
+    
+    // Construct reset URL with proper protocol handling
+    const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
+    const baseUrl = frontendUrl.startsWith('http') ? frontendUrl : `https://${frontendUrl}`;
+    const resetUrl = `${baseUrl}/reset-password?token=${resetToken}`;
+    
     this.logger.log(`Password reset requested for: ${user.email}`);
     try {
       await this.emailService.sendPasswordReset(user.email, resetUrl);
