@@ -253,11 +253,11 @@ export default function CreateInterventionPage() {
             render={({ field: { value, onChange, onBlur } }) => (
               <div>
                 <Select
-                  value={value || []}
+                  value={(value || []) as any}
                   onChange={onChange}
                   onBlur={onBlur}
                   label={t('interventions.form.agents')}
-                  options={agentOptions}
+                  options={agentOptions as any}
                   multiple
                   error={errors.assignedAgentIds?.message}
                 />
