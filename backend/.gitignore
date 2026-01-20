@@ -6,7 +6,7 @@ dist/
 build/
 
 # Environment variables
-.env
+# .env  # Commented to allow .env in Git (ONLY for private repos!)
 .env.local
 .env.production
 
