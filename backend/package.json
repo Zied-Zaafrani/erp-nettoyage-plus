@@ -1,7 +1,7 @@
 {
   "name": "nettoyage-plus-backend",
-  "version": "1.0.0",
-  "description": "Backend API for Nettoyage Plus Management System",
+  "version": "2.0.0",
+  "description": "Backend API for Nettoyage Plus Management System - With Absences Module",
   "author": "Zied Zaafrani",
   "private": true,
   "license": "UNLICENSED",

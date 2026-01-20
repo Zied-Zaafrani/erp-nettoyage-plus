@@ -19,9 +19,3 @@ EXPOSE 3000
 
 # Start the application (main.js is in dist/src/)
 CMD ["node", "dist/src/main.js"]
-
-# Expose port
-EXPOSE 3000
-
-# Start the application
-CMD ["node", "dist/main.js"]
