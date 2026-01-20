@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import { sitesService } from '@/services';
+import React from 'react';
 import { Site } from '@/types';
 import { Card } from '@/components/ui';
 

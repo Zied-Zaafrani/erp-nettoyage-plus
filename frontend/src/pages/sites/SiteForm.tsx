@@ -25,6 +25,7 @@ const SiteForm: React.FC<SiteFormProps> = ({ onCreated }) => {
         address,
         latitude: latitude ? parseFloat(latitude) : undefined,
         longitude: longitude ? parseFloat(longitude) : undefined,
+        clientId: '', // TODO: Add client selection
       };
       const site = await sitesService.create(dto);
       setName('');
@@ -68,7 +69,7 @@ const SiteForm: React.FC<SiteFormProps> = ({ onCreated }) => {
         step="any"
       />
       {error && <div className="text-red-500">{error}</div>}
-      <Button type="submit" loading={loading}>
+      <Button type="submit" isLoading={loading}>
         Ajouter le site
       </Button>
     </form>

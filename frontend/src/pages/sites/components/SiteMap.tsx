@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { Site } from '@/services/api/sitesApi';
 
 // Note: In a real app, move this to env vars
