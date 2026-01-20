@@ -21,14 +21,22 @@ import { AbsenceType, AbsenceStatus } from '../../shared/types/absence.types';
 @Controller('absences')
 @UseGuards(JwtAuthGuard, RolesGuard)
 export class AbsencesController {
-  constructor(private readonly absencesService: AbsencesService) {}
+  constructor(private readonly absencesService: AbsencesService) { }
 
   /**
    * Create absence request
    * Access: AGENT, TEAM_CHIEF (for themselves)
    */
   @Post()
-  @Roles(UserRole.AGENT, UserRole.SUPERVISOR)
+  @Roles(
+    UserRole.SUPER_ADMIN,
+    UserRole.DIRECTOR,
+    UserRole.SECTOR_CHIEF,
+    UserRole.ZONE_CHIEF,
+    UserRole.TEAM_CHIEF,
+    UserRole.SUPERVISOR,
+    UserRole.AGENT,
+  )
   create(@Body() createAbsenceDto: CreateAbsenceDto) {
     return this.absencesService.create(createAbsenceDto);
   }
@@ -38,22 +46,25 @@ export class AbsencesController {
    * Access: All authenticated users
    */
   @Get()
-  findAll(
+  async findAll(
     @Query('agentId') agentId?: string,
     @Query('zoneId') zoneId?: string,
     @Query('type') type?: AbsenceType,
     @Query('status') status?: AbsenceStatus,
     @Query('dateFrom') dateFrom?: string,
     @Query('dateTo') dateTo?: string,
+    @Query('search') search?: string,
   ) {
-    return this.absencesService.findAll(
+    const data = await this.absencesService.findAll(
       agentId,
       zoneId,
       type,
       status,
       dateFrom,
       dateTo,
+      search,
     );
+    return { data };
   }
 
   /**

@@ -59,6 +59,27 @@ export default function DashboardLayout() {
   const { t, i18n } = useTranslation();
   const isRTL = i18n.language === 'ar';
 
+  const [globalSearch, setGlobalSearch] = useState('');
+
+  const handleGlobalSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    const term = globalSearch.trim();
+    if (!term) return;
+
+    // Context-aware search
+    if (location.pathname.startsWith('/users')) {
+      navigate(`/users?search=${encodeURIComponent(term)}`);
+    } else if (location.pathname.startsWith('/sites')) {
+      // Assuming SitesPage will support this later, or now
+      navigate(`/sites?search=${encodeURIComponent(term)}`);
+    } else if (location.pathname.startsWith('/contracts')) {
+      navigate(`/contracts?search=${encodeURIComponent(term)}`);
+    } else {
+      // Default to Clients search as a safe fallback for "Global" search
+      navigate(`/clients?search=${encodeURIComponent(term)}`);
+    }
+  };
+
   const handleLogout = () => {
     logout();
     navigate('/login');
@@ -82,9 +103,9 @@ export default function DashboardLayout() {
           'fixed inset-y-0 z-50 flex flex-col border-gray-200 bg-white dark:bg-gray-900 dark:border-gray-700 transition-all duration-300',
           sidebarCollapsed ? 'w-20' : 'w-64',
           isRTL ? 'right-0 border-l' : 'left-0 border-r',
-          mobileMenuOpen 
-            ? 'translate-x-0' 
-            : isRTL 
+          mobileMenuOpen
+            ? 'translate-x-0'
+            : isRTL
               ? 'translate-x-full lg:translate-x-0'
               : '-translate-x-full lg:translate-x-0'
         )}
@@ -181,8 +202,8 @@ export default function DashboardLayout() {
       <div
         className={clsx(
           'flex-1 transition-all duration-300',
-          sidebarCollapsed 
-            ? isRTL ? 'lg:mr-20' : 'lg:ml-20' 
+          sidebarCollapsed
+            ? isRTL ? 'lg:mr-20' : 'lg:ml-20'
             : isRTL ? 'lg:mr-64' : 'lg:ml-64'
         )}
       >
@@ -203,9 +224,17 @@ export default function DashboardLayout() {
 
           <div className="flex items-center gap-3">
             {/* Search */}
-            <button className="hidden rounded-lg p-2 text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800 sm:block">
-              <Search size={20} />
-            </button>
+            {/* Search */}
+            <form onSubmit={handleGlobalSearch} className="relative hidden w-64 rounded-lg bg-gray-100 dark:bg-gray-800 sm:block">
+              <Search className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400" />
+              <input
+                type="text"
+                placeholder={t('common.search') + '...'}
+                value={globalSearch}
+                onChange={(e) => setGlobalSearch(e.target.value)}
+                className="h-10 w-full rounded-lg border-none bg-transparent pl-10 pr-4 text-sm text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary-500 dark:text-white dark:placeholder-gray-400"
+              />
+            </form>
 
             {/* Notifications */}
             <button className="relative rounded-lg p-2 text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800">
@@ -217,7 +246,7 @@ export default function DashboardLayout() {
             <LanguageSwitcher />
 
             {/* Theme toggle */}
-            <button 
+            <button
               onClick={toggleTheme}
               className="rounded-lg p-2 text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800"
               title={theme === 'light' ? 'Switch to dark mode' : 'Switch to light mode'}

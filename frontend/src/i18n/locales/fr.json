@@ -218,7 +218,6 @@
     "phone": "Téléphone",
     "address": "Adresse",
     "city": "Ville",
-    "type": "Type",
     "from": "De",
     "sitesCount": "Sites",
     "contractsCount": "Contrats",
@@ -402,9 +401,8 @@
     "startTime": "Heure de début",
     "endTime": "Heure de fin",
     "duration": "Durée",
-    "status": "Statut",
     "notes": "Notes",
-    "status": {
+    "statuses": {
       "scheduled": "Planifiée",
       "in_progress": "En cours",
       "completed": "Terminée",
@@ -461,12 +459,13 @@
     "reason": "Motif",
     "type": "Type",
     "status": "Statut",
+    "filterByCause": "Filtrer par cause",
     "types": {
-      "vacation": "Congés payés",
-      "sick_leave": "Arrêt maladie",
-      "unpaid": "Congés sans solde",
-      "authorized": "Absence autorisée",
-      "unauthorized": "Absence non autorisée"
+      "VACATION": "Congés payés",
+      "SICK_LEAVE": "Arrêt maladie",
+      "UNPAID": "Congés sans solde",
+      "AUTHORIZED": "Absence autorisée",
+      "UNAUTHORIZED": "Absence non autorisée"
     },
     "statuses": {
       "pending": "En attente",

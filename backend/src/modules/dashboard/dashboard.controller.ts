@@ -15,7 +15,7 @@ import {
 
 @Controller('dashboard')
 export class DashboardController {
-  constructor(private readonly dashboardService: DashboardService) {}
+  constructor(private readonly dashboardService: DashboardService) { }
 
   /**
    * GET /api/dashboard/summary
@@ -32,17 +32,17 @@ export class DashboardController {
    * Get all interventions scheduled for today
    * Accessible by: All authenticated users
    */
-  @Get('interventions-today')
+  @Get('interventions/today')
   async getInterventionsToday(): Promise<InterventionSummary[]> {
     return this.dashboardService.getInterventionsToday();
   }
 
   /**
-   * GET /api/dashboard/interventions-week
+   * GET /api/dashboard/interventions/week
    * Get all interventions for current week
    * Accessible by: All authenticated users
    */
-  @Get('interventions-week')
+  @Get('interventions/week')
   async getInterventionsWeek(): Promise<InterventionSummary[]> {
     return this.dashboardService.getInterventionsWeek();
   }

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Building2, Plus, Search, Filter, ChevronRight, Mail, Phone, MapPin, Tag } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation, useSearchParams } from 'react-router-dom';
 import { Card, Button, Input, Badge } from '@/components/ui';
 import { useQuery } from '@tanstack/react-query';
 import { clientsService } from '@/services';
@@ -10,12 +10,25 @@ import { Client, ClientStatus } from '@/types';
 export default function ClientsPage() {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const location = useLocation();
+  const [searchParams, setSearchParams] = useSearchParams();
+
   // queryClient available if needed later
   // const queryClient = useQueryClient();
   const [page, setPage] = useState(1);
-  const [search, setSearch] = useState('');
+  const search = searchParams.get('search') || '';
   const [selectedStatus, setSelectedStatus] = useState<ClientStatus | ''>('');
   const [showFilters, setShowFilters] = useState(false);
+
+  const setSearch = (value: string) => {
+    if (value) {
+      setSearchParams({ ...Object.fromEntries(searchParams), search: value });
+    } else {
+      const newParams = Object.fromEntries(searchParams);
+      delete newParams.search;
+      setSearchParams(newParams);
+    }
+  };
 
   // Fetch clients
   const { data: clientsData, isLoading, error } = useQuery({

@@ -5,7 +5,7 @@ import {
   ForbiddenException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, ILike } from 'typeorm';
 import { Absence } from './entities/absence.entity';
 import { User } from '../users/entities/user.entity';
 import { AgentZoneAssignment } from '../zones/entities/agent-zone-assignment.entity';
@@ -26,7 +26,7 @@ export class AbsencesService {
     private readonly userRepository: Repository<User>,
     @InjectRepository(AgentZoneAssignment)
     private readonly agentZoneAssignmentRepository: Repository<AgentZoneAssignment>,
-  ) {}
+  ) { }
 
   /**
    * Calculate working days between two dates (excluding weekends)
@@ -127,11 +127,20 @@ export class AbsencesService {
     status?: AbsenceStatus,
     dateFrom?: string,
     dateTo?: string,
+    search?: string,
   ): Promise<Absence[]> {
     const queryBuilder = this.absenceRepository
       .createQueryBuilder('absence')
       .leftJoinAndSelect('absence.agent', 'agent')
       .leftJoinAndSelect('absence.reviewer', 'reviewer');
+
+    if (search) {
+      const searchPattern = `%${search}%`;
+      queryBuilder.andWhere(
+        '(agent.firstName ILIKE :search OR agent.lastName ILIKE :search OR agent.email ILIKE :search)',
+        { search: searchPattern },
+      );
+    }
 
     if (agentId) {
       queryBuilder.andWhere('absence.agentId = :agentId', { agentId });

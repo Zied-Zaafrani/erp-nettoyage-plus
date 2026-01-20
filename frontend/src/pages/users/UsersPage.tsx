@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useSearchParams } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Plus, Search, Edit, UserX, UserCheck, RefreshCw, RotateCcw } from 'lucide-react';
 import toast from 'react-hot-toast';
@@ -31,10 +32,11 @@ export default function UsersPage() {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
   const { hasRole } = useAuth();
-  
+
   // State
   const [page, setPage] = useState(1);
-  const [search, setSearch] = useState('');
+  const [searchParams, setSearchParams] = useSearchParams();
+  const search = searchParams.get('search') || '';
   const [debouncedSearch, setDebouncedSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState<'ALL' | UserStatus>('ALL');
   const [roleFilter, setRoleFilter] = useState<'ALL' | UserRole>('ALL');
@@ -60,9 +62,9 @@ export default function UsersPage() {
   // Fetch users
   const { data, isLoading, error, refetch } = useQuery({
     queryKey: ['users', { page, limit, search: debouncedSearch, status: statusFilter, role: roleFilter }],
-    queryFn: () => usersService.getAll({ 
-      page, 
-      limit, 
+    queryFn: () => usersService.getAll({
+      page,
+      limit,
       search: debouncedSearch || undefined,
       status: statusFilter === 'ALL' ? undefined : statusFilter,
       role: roleFilter === 'ALL' ? undefined : roleFilter,
@@ -98,7 +100,7 @@ export default function UsersPage() {
 
   // Suspend mutation
   const suspendMutation = useMutation({
-    mutationFn: ({ id, data }: { id: string; data: UpdateUserDto }) => 
+    mutationFn: ({ id, data }: { id: string; data: UpdateUserDto }) =>
       usersService.update(id, data),
     onSuccess: () => {
       toast.success(t('users.suspendSuccess'));
@@ -113,7 +115,7 @@ export default function UsersPage() {
 
   // Activate mutation
   const activateMutation = useMutation({
-    mutationFn: ({ id, data }: { id: string; data: UpdateUserDto }) => 
+    mutationFn: ({ id, data }: { id: string; data: UpdateUserDto }) =>
       usersService.update(id, data),
     onSuccess: () => {
       toast.success(t('users.activateSuccess'));
@@ -126,7 +128,13 @@ export default function UsersPage() {
 
   // Handlers
   const handleSearch = (value: string) => {
-    setSearch(value);
+    if (value) {
+      setSearchParams({ ...Object.fromEntries(searchParams), search: value });
+    } else {
+      const newParams = Object.fromEntries(searchParams);
+      delete newParams.search;
+      setSearchParams(newParams);
+    }
   };
 
   const handleCreate = () => {
@@ -161,9 +169,9 @@ export default function UsersPage() {
 
   const confirmSuspend = () => {
     if (userToSuspend) {
-      suspendMutation.mutate({ 
-        id: userToSuspend.id, 
-        data: { status: 'SUSPENDED' } 
+      suspendMutation.mutate({
+        id: userToSuspend.id,
+        data: { status: 'SUSPENDED' }
       });
     }
   };
@@ -311,9 +319,8 @@ export default function UsersPage() {
                     <TableCell>{user.email}</TableCell>
                     <TableCell>
                       <span
-                        className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
-                          ROLE_COLORS[user.role]
-                        }`}
+                        className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${ROLE_COLORS[user.role]
+                          }`}
                       >
                         {t(ROLE_KEYS[user.role])}
                       </span>
